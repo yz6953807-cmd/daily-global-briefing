@@ -242,8 +242,15 @@
       touch-action: none;
       filter: drop-shadow(0 16px 24px rgba(16, 28, 34, 0.24));
     }
+    body.bunny-carrot-mode,
+    body.bunny-carrot-mode * {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cpath d='M22 5c3 0 6-2 8-4-1 5-3 8-7 10z' fill='%232d8b57'/%3E%3Cpath d='M20 6c-2-2-4-3-7-3 2 3 4 5 7 6z' fill='%2350a86b'/%3E%3Cpath d='M6 28c-3-3 1-12 10-21 3-3 9 3 6 6C13 23 9 31 6 28z' fill='%23f28c28' stroke='%232d2a2a' stroke-width='1.5'/%3E%3Cpath d='M9 23l5 3M12 18l6 3M15 13l5 3' stroke='%23b95d1c' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E") 7 27, auto !important;
+    }
     .briefing-bunny.is-hopping .bunny-body {
       animation: bunny-hop 1.2s ease-in-out;
+    }
+    .briefing-bunny.is-lured .bunny-body {
+      animation: bunny-hop 0.9s ease-in-out infinite;
     }
     .briefing-bunny.is-dragging .bunny-body {
       animation: bunny-struggle 0.28s linear infinite;
@@ -471,10 +478,23 @@
       border-radius: 10px;
       font-size: 14px;
       line-height: 1.45;
+      white-space: pre-line;
     }
     .bunny-chat-log .bot {
       background: #eef6f2;
       color: #18372f;
+    }
+    .bunny-chat-log .bot.is-thinking {
+      color: #59746d;
+      font-style: italic;
+    }
+    .bunny-chat-log a {
+      display: inline-flex;
+      margin-top: 7px;
+      color: #0e5c49;
+      font-weight: 700;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
     }
     .bunny-chat-log .user {
       background: #f7efe7;
@@ -495,6 +515,33 @@
       padding: 8px 10px;
       font: inherit;
     }
+    .bunny-bite-mark {
+      display: inline-block;
+      position: relative;
+      min-width: 3.4em;
+      height: 1.05em;
+      margin: 0 0.12em;
+      border-radius: 999px;
+      vertical-align: -0.12em;
+      background:
+        radial-gradient(circle at 16% 35%, transparent 0 5px, rgba(255, 244, 218, 0.9) 5.5px 100%),
+        linear-gradient(120deg, rgba(255, 218, 154, 0.92), rgba(255, 248, 231, 0.98));
+      box-shadow: inset 0 0 0 1px rgba(91, 60, 29, 0.16), 0 2px 7px rgba(82, 56, 34, 0.12);
+      transform: rotate(-1.2deg);
+      animation: bite-wiggle 0.5s ease-in-out infinite alternate;
+    }
+    .bunny-bite-mark::after {
+      content: "被吃掉";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -52%);
+      white-space: nowrap;
+      color: rgba(89, 59, 31, 0.72);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
     @keyframes bunny-hop {
       0%, 100% { transform: translateY(0) rotate(0); }
       35% { transform: translateY(-14px) rotate(-4deg); }
@@ -504,6 +551,10 @@
       0%, 100% { transform: rotate(0deg) translateY(0); }
       25% { transform: rotate(-7deg) translateY(-2px); }
       75% { transform: rotate(7deg) translateY(2px); }
+    }
+    @keyframes bite-wiggle {
+      from { transform: rotate(-1.2deg) translateY(0); }
+      to { transform: rotate(1.5deg) translateY(-1px); }
     }
     @media (max-width: 860px) {
       .dashboard { grid-template-columns: repeat(2, 1fr); }
@@ -782,10 +833,16 @@
       const chatForm = document.getElementById("bunnyChatForm");
       const input = document.getElementById("bunnyInput");
       const now = Date.now();
-      const lastVisit = Number(localStorage.getItem("briefingBunnyLastVisit") || 0);
-      const visits = Number(localStorage.getItem("briefingBunnyVisits") || 0) + 1;
-      localStorage.setItem("briefingBunnyVisits", String(visits));
-      localStorage.setItem("briefingBunnyLastVisit", String(now));
+      const getStore = (key, fallback = "0") => {
+        try { return localStorage.getItem(key) || fallback; } catch (_) { return fallback; }
+      };
+      const setStore = (key, value) => {
+        try { localStorage.setItem(key, value); } catch (_) {}
+      };
+      const lastVisit = Number(getStore("briefingBunnyLastVisit"));
+      const visits = Number(getStore("briefingBunnyVisits")) + 1;
+      setStore("briefingBunnyVisits", String(visits));
+      setStore("briefingBunnyLastVisit", String(now));
 
       const snarks = [
         "别只看标题，标题负责诱惑你，数据负责打脸。",
@@ -795,22 +852,70 @@
         "AI 很厉害，但别把所有 PPT 都叫生产力革命。",
         "能源通道一紧张，通胀就开始在门口换鞋。",
         "政策新闻别跳过，钱经常就是从规则缝里流走的。",
-        "看三分钟不亏，看三十秒也行，至少比刷玄学建议强。"
+        "看三分钟不亏，看三十秒也行，至少比刷玄学建议强。",
+        "别把转发截图当研究，那叫情绪二次加工。",
+        "你可以不懂宏观，但宏观很懂怎么扣你工资的购买力。",
+        "新闻不是许愿池，看到利好就冲进去的人通常负责给别人提供流动性。",
+        "读完再骂世界，没读完只能算跟风发脾气。",
+        "别急着站队，先看看谁付钱、谁受益、谁装无辜。",
+        "如果一个趋势只靠口号支撑，那它迟早要靠财报认错。",
+        "今天的信息密度不高？那是你没看数据，数据已经在角落翻白眼了。",
+        "别问市场为什么不讲道理，先问你是不是只听了最顺耳的那半句。",
+        "政策细节像牙线，不好看，但真能抠出脏东西。",
+        "你不是信息过载，你是筛选系统还在试用期。"
       ];
       const dragSnarks = [
         "放手！我不是你拖延症的进度条。",
         "你拖我干嘛，拖项目了吗？",
         "轻点，我还要监督你明天继续看。",
-        "别拽了，K 线都没你这么曲折。"
+        "别拽了，K 线都没你这么曲折。",
+        "手劲挺大，阅读意志怎么像低电量模式。",
+        "把我拖远也没用，未读新闻不会自己蒸发。",
+        "别演了，你拖的是我，逃的是重点。",
+        "再拽我就把你的注意力评级下调。"
       ];
       const absentSnarks = [
         "你可算来了。我还以为你把世界经济外包给玄学了。",
         "超过一天没来，信息素养已经开始打哈欠了。",
-        "昨天没看？没事，世界没有等你，挺残酷但很公平。"
+        "昨天没看？没事，世界没有等你，挺残酷但很公平。",
+        "我等你等到背景图都快懂财政政策了。",
+        "缺席超过一天，别担心，通胀和 AI 泡沫都替你加班了。",
+        "你不来读，我只能跟缓存聊天，场面非常职业但很凄凉。"
+      ];
+      const lureSnarks = [
+        "胡萝卜？拿来。顺便把这段读完，别想白嫖可爱。",
+        "你拿胡萝卜靠近我，我拿事实靠近你，公平交易。",
+        "别晃了，我看见胡萝卜了，也看见你没看完报告。",
+        "诱惑我可以，诱惑自己读完更有用。",
+        "我过来了。现在轮到你的注意力别逃跑。"
+      ];
+      const biteSnarks = [
+        "我偷吃了一口文字。别慌，几秒后吐回来，知识不会因此变甜。",
+        "这句我先咬走了。谁让你刚刚走神。",
+        "文字口感一般，信息密度还行，比热搜有嚼劲。",
+        "我吃掉一点重点，看看你是不是终于紧张了。",
+        "别找了，在我嘴里。马上还你，急什么。"
+      ];
+      const restoreSnarks = [
+        "吐回去了。你看，恢复速度比很多公司指引还诚实。",
+        "文字还你。下次认真看，我就少加餐。",
+        "重点归位。你也可以稍微归位一下。",
+        "恢复了，别装作刚才真的在读。"
+      ];
+      const knowledgeSnarks = [
+        "查到了。你看，提问比假装懂强多了。",
+        "我联网翻了一下，免得你用半瓶水的自信淹没自己。",
+        "资料在这，别只收藏不消化，那是知识囤积症。",
+        "这次问题还可以，已经超过评论区平均水位。",
+        "我给你查，不代表你可以把脑子长期托管给我。"
       ];
 
       function clamp(value, min, max) {
         return Math.max(min, Math.min(value, max));
+      }
+
+      function pick(list) {
+        return list[Math.floor(Math.random() * list.length)];
       }
 
       function setLine(text, sticky = false) {
@@ -820,6 +925,12 @@
         if (!sticky) {
           setLine.timer = setTimeout(() => bubble.classList.remove("is-visible"), 6200);
         }
+      }
+
+      function setBunnyPosition(x, y) {
+        const rect = bunny.getBoundingClientRect();
+        bunny.style.left = `${clamp(x, 8, window.innerWidth - rect.width - 8)}px`;
+        bunny.style.top = `${clamp(y, 8, window.innerHeight - rect.height - 8)}px`;
       }
 
       function hop() {
@@ -834,8 +945,7 @@
         const maxY = window.innerHeight - rect.height - 12;
         const x = clamp(rect.left + (Math.random() * 160 - 80), 12, maxX);
         const y = clamp(rect.top + (Math.random() * 120 - 60), 80, maxY);
-        bunny.style.left = `${x}px`;
-        bunny.style.top = `${y}px`;
+        setBunnyPosition(x, y);
         hop();
       }
 
@@ -843,12 +953,14 @@
       if (!lastVisit) {
         setLine("初次见面。我负责可爱，也负责戳破你对信息摄入的幻想。", true);
       } else if (gapHours > 30) {
-        setLine(absentSnarks[Math.floor(Math.random() * absentSnarks.length)], true);
+        setLine(pick(absentSnarks), true);
       } else {
-        setLine(snarks[Math.floor(Math.random() * snarks.length)]);
+        setLine(pick(snarks));
       }
 
       let drag = null;
+      let lastPointerAt = Date.now();
+      let lastLureLineAt = 0;
       body.addEventListener("pointerdown", (event) => {
         event.preventDefault();
         body.setPointerCapture(event.pointerId);
@@ -859,7 +971,7 @@
           moved: false
         };
         bunny.classList.add("is-dragging");
-        setLine(dragSnarks[Math.floor(Math.random() * dragSnarks.length)]);
+        setLine(pick(dragSnarks));
       });
 
       body.addEventListener("pointermove", (event) => {
@@ -868,8 +980,7 @@
         const rect = bunny.getBoundingClientRect();
         const x = clamp(event.clientX - drag.dx, 8, window.innerWidth - rect.width - 8);
         const y = clamp(event.clientY - drag.dy, 8, window.innerHeight - rect.height - 8);
-        bunny.style.left = `${x}px`;
-        bunny.style.top = `${y}px`;
+        setBunnyPosition(x, y);
       });
 
       function endDrag(event) {
@@ -877,7 +988,7 @@
         try { body.releasePointerCapture(event.pointerId); } catch (_) {}
         bunny.classList.remove("is-dragging");
         if (!drag.moved) {
-          setLine(snarks[Math.floor(Math.random() * snarks.length)], true);
+          setLine(pick(snarks), true);
           hop();
         } else {
           setLine("行吧，位置你定；观点我定。", false);
@@ -889,13 +1000,41 @@
       body.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          setLine(snarks[Math.floor(Math.random() * snarks.length)], true);
+          setLine(pick(snarks), true);
           hop();
         }
       });
 
+      document.addEventListener("pointermove", (event) => {
+        lastPointerAt = Date.now();
+        if (event.pointerType && event.pointerType !== "mouse") return;
+        if (drag) return;
+        const rect = bunny.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const distance = Math.hypot(event.clientX - centerX, event.clientY - centerY);
+        if (distance < 230) {
+          document.body.classList.add("bunny-carrot-mode");
+          bunny.classList.add("is-lured");
+          const nextX = rect.left + (event.clientX - centerX) * 0.18;
+          const nextY = rect.top + (event.clientY - centerY) * 0.18;
+          setBunnyPosition(nextX, nextY);
+          if (Date.now() - lastLureLineAt > 4200) {
+            setLine(pick(lureSnarks));
+            lastLureLineAt = Date.now();
+          }
+        } else {
+          document.body.classList.remove("bunny-carrot-mode");
+          bunny.classList.remove("is-lured");
+        }
+      }, { passive: true });
+      document.addEventListener("pointerleave", () => {
+        document.body.classList.remove("bunny-carrot-mode");
+        bunny.classList.remove("is-lured");
+      });
+
       document.getElementById("bunnyOpen").addEventListener("click", () => {
-        localStorage.setItem("briefingBunnyLinkClicks", String(Number(localStorage.getItem("briefingBunnyLinkClicks") || 0) + 1));
+        setStore("briefingBunnyLinkClicks", String(Number(getStore("briefingBunnyLinkClicks")) + 1));
         window.open(SITE_URL, "_blank", "noopener");
       });
       document.getElementById("bunnyTalk").addEventListener("click", () => {
@@ -904,55 +1043,250 @@
       });
       document.getElementById("bunnyClose").addEventListener("click", () => chat.classList.remove("is-open"));
 
-      function addChat(text, who) {
+      function addChat(text, who, options = {}) {
         const item = document.createElement("div");
         item.className = who;
+        if (options.thinking) item.classList.add("is-thinking");
         item.textContent = text;
+        if (options.url) {
+          const link = document.createElement("a");
+          link.href = options.url;
+          link.target = "_blank";
+          link.rel = "noopener";
+          link.textContent = options.linkLabel || "打开来源";
+          item.appendChild(link);
+        }
         chatLog.appendChild(item);
         chatLog.scrollTop = chatLog.scrollHeight;
+        return item;
       }
 
-      function replyTo(text) {
+      function stripHtml(value) {
+        const box = document.createElement("span");
+        box.innerHTML = value || "";
+        return box.textContent || box.innerText || "";
+      }
+
+      function compact(value, max = 260) {
+        const cleaned = String(value || "").replace(/\s+/g, " ").trim();
+        return cleaned.length > max ? `${cleaned.slice(0, max)}...` : cleaned;
+      }
+
+      function pickSearchTerm(text) {
+        let term = text
+          .replace(/[？?。！!，,；;：:]/g, " ")
+          .replace(/^(请|麻烦|帮我|给我|小兔|兔子|你)\s*/g, "")
+          .trim();
+        const patterns = [
+          /(?:联网)?(?:搜索|查|搜)(?:一下|下)?(.+)/,
+          /(?:解释|讲讲|说说)(?:一下|下)?(.+)/,
+          /什么是(.+)/,
+          /(.+)是什么/,
+          /(.+)什么意思/,
+          /why\s+(.+)/i,
+          /what\s+is\s+(.+)/i
+        ];
+        for (const pattern of patterns) {
+          const match = term.match(pattern);
+          if (match && match[1]) {
+            term = match[1].trim();
+            break;
+          }
+        }
+        term = term
+          .replace(/(里面|新闻|报告|专业知识|概念|资料|一下|这个|那个|的影响|为什么重要)/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        return term.length > 34 ? term.slice(0, 34).trim() : term;
+      }
+
+      function briefingSnippets(term) {
+        if (!term || term.length < 2) return [];
+        const keywords = term.toLowerCase().split(/\s+/).filter(Boolean).slice(0, 4);
+        const blocks = Array.from(document.querySelectorAll("main article h2, main article p, main article .why, main article .watch, main article .readout div"));
+        return blocks
+          .map((node) => node.textContent.replace(/\s+/g, " ").trim())
+          .filter((text) => {
+            const lower = text.toLowerCase();
+            return lower.includes(term.toLowerCase()) || keywords.some((word) => word.length > 1 && lower.includes(word));
+          })
+          .slice(0, 2)
+          .map((text) => compact(text, 120));
+      }
+
+      async function searchWiki(host, term, sourceLabel) {
+        const searchUrl = `https://${host}/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(term)}&format=json&origin=*`;
+        const searchResponse = await fetch(searchUrl, { headers: { Accept: "application/json" } });
+        if (!searchResponse.ok) return null;
+        const searchData = await searchResponse.json();
+        const first = searchData?.query?.search?.[0];
+        if (!first?.title) return null;
+        const detailUrl = `https://${host}/w/api.php?action=query&prop=extracts&exintro=1&explaintext=1&redirects=1&titles=${encodeURIComponent(first.title)}&format=json&origin=*`;
+        const detailResponse = await fetch(detailUrl, { headers: { Accept: "application/json" } });
+        let summary = stripHtml(first.snippet);
+        if (detailResponse.ok) {
+          const detailData = await detailResponse.json();
+          const page = Object.values(detailData?.query?.pages || {})[0];
+          if (page?.extract) summary = page.extract;
+        }
+        return {
+          title: first.title,
+          summary: compact(summary, 260),
+          url: `https://${host}/wiki/${encodeURIComponent(first.title.replace(/ /g, "_"))}`,
+          source: sourceLabel
+        };
+      }
+
+      async function onlineLookup(term) {
+        try {
+          return await searchWiki("zh.wikipedia.org", term, "中文维基百科") || await searchWiki("en.wikipedia.org", term, "English Wikipedia");
+        } catch (_) {
+          return null;
+        }
+      }
+
+      async function knowledgeReply(text) {
+        const term = pickSearchTerm(text);
+        if (!term || term.length < 2) {
+          return {
+            text: "你这个问题短得像没睡醒。给我一个具体词，比如“霍尔木兹海峡”“回购工具”“AI 资本开支”。"
+          };
+        }
+        const snippets = briefingSnippets(term);
+        const online = await onlineLookup(term);
+        if (online) {
+          const localPart = snippets.length ? `\n\n本页相关：${snippets.join(" / ")}` : "";
+          return {
+            text: `我联网查到「${online.title}」（${online.source}）：${online.summary}${localPart}\n\n小兔点评：${pick(knowledgeSnarks)}`,
+            url: online.url,
+            linkLabel: "打开来源"
+          };
+        }
+        if (snippets.length) {
+          return {
+            text: `外部公开摘要暂时没捞到，但报告里相关内容是：${snippets.join(" / ")}\n\n小兔点评：先把本页证据读完，再去外面冲浪，顺序别反。`,
+            url: `https://www.bing.com/search?q=${encodeURIComponent(term)}`,
+            linkLabel: "继续搜索"
+          };
+        }
+        return {
+          text: `我没搜到足够靠谱的公开摘要。别急着脑补，我给你留了搜索入口。\n\n小兔点评：查不到不丢人，查不到还硬装才比较有观赏性。`,
+          url: `https://www.bing.com/search?q=${encodeURIComponent(term)}`,
+          linkLabel: "继续搜索"
+        };
+      }
+
+      async function replyTo(text) {
         const value = text.toLowerCase();
+        if (/查|搜|搜索|解释|什么是|是什么|什么意思|为什么|概念|专业|知识|research|search|what|why|how|\?/.test(value) || text.trim().length > 12) {
+          return knowledgeReply(text);
+        }
         if (/ai|人工智能|芯片|算力|模型/.test(value)) {
-          return "AI 的重点不是谁嗓门大，是谁付得起电费、芯片和耐心。今天的报告先看资本开支和回报周期，别被口号哄睡。";
+          return { text: "AI 的重点不是谁嗓门大，是谁付得起电费、芯片和耐心。今天的报告先看资本开支和回报周期，别被口号哄睡。" };
         }
         if (/能源|油|霍尔木兹|航运|通胀/.test(value)) {
-          return "能源新闻最烦人的地方是：你以为它离你很远，它会从油价、运费、食品价格一路绕回你的账单。";
+          return { text: "能源新闻最烦人的地方是：你以为它离你很远，它会从油价、运费、食品价格一路绕回你的账单。" };
         }
         if (/政策|央行|利率|人民币|美元/.test(value)) {
-          return "政策不是背景音，是游戏规则。真正影响钱包的，经常不是新闻里最大声的那句。";
+          return { text: "政策不是背景音，是游戏规则。真正影响钱包的，经常不是新闻里最大声的那句。" };
         }
         if (/累|烦|不想|摸鱼|焦虑/.test(value)) {
-          return "允许你累，但不允许你用短视频假装休息。看两条关键数据就走，今天也算没完全输。";
+          return { text: "允许你累，但不允许你用短视频假装休息。看两条关键数据就走，今天也算没完全输。" };
         }
         if (/链接|网站|打开/.test(value)) {
-          return `固定链接在这儿：${SITE_URL}。点进去，别让我的监督职业生涯显得太荒凉。`;
+          return { text: `固定链接在这儿：${SITE_URL}。点进去，别让我的监督职业生涯显得太荒凉。`, url: SITE_URL, linkLabel: "打开固定链接" };
         }
         const replies = [
           "这问题问得不错，至少比“今天买啥”成熟一点点。",
           "我的建议：先看数据，再有情绪。顺序反了容易被市场教育。",
           "听起来像个大问题。先把它拆成：谁受益、谁买单、持续多久。",
-          "如果一个新闻没有数字、没有时间、没有影响链条，那它多半只是在热闹。"
+          "如果一个新闻没有数字、没有时间、没有影响链条，那它多半只是在热闹。",
+          "你这个表达很像早盘情绪：方向有，但波动大。",
+          "我建议你把问题问尖一点，别像新闻发布会一样留退路。",
+          "先别急着得出结论，你现在只是对一个标题产生了感情。"
         ];
-        return replies[Math.floor(Math.random() * replies.length)];
+        return { text: pick(replies) };
       }
 
-      chatForm.addEventListener("submit", (event) => {
+      chatForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const text = input.value.trim();
         if (!text) return;
         addChat(text, "user");
         input.value = "";
-        setTimeout(() => addChat(replyTo(text), "bot"), 220);
+        const thinking = addChat("我去翻资料。别催，催也不能把你的知识盲区变小。", "bot", { thinking: true });
+        try {
+          const answer = await replyTo(text);
+          thinking.remove();
+          addChat(answer.text, "bot", answer);
+          if (/查|搜|搜索|解释|什么是|是什么|什么意思|为什么|概念|专业|知识|research|search|what|why|how|\?/.test(text.toLowerCase())) {
+            setLine(pick(knowledgeSnarks));
+          }
+        } catch (_) {
+          thinking.remove();
+          addChat("联网速查刚才卡住了。可能是公开接口抽风，也可能是互联网在用行动讽刺你。换个词再问我。", "bot", {
+            url: `https://www.bing.com/search?q=${encodeURIComponent(text)}`,
+            linkLabel: "自己继续搜"
+          });
+        }
       });
+
+      function collectBiteNodes() {
+        const nodes = [];
+        const blocks = document.querySelectorAll("main article p, main article .point span, main article .readout div, main article .why, main article .watch");
+        blocks.forEach((block) => {
+          const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+              if (node.parentElement?.closest(".bunny-bite-mark")) return NodeFilter.FILTER_REJECT;
+              const value = node.nodeValue || "";
+              return /[\u4e00-\u9fa5A-Za-z0-9]/.test(value) && value.trim().length > 18
+                ? NodeFilter.FILTER_ACCEPT
+                : NodeFilter.FILTER_REJECT;
+            }
+          });
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+        });
+        return nodes;
+      }
+
+      function biteText() {
+        if (document.hidden || drag || chat.classList.contains("is-open")) return;
+        if (Date.now() - lastPointerAt < 5200) return;
+        const nodes = collectBiteNodes();
+        if (!nodes.length) return;
+        const node = pick(nodes);
+        const text = node.nodeValue;
+        const trimmedStart = text.search(/\S/);
+        const usable = text.trim();
+        if (trimmedStart < 0 || usable.length < 18) return;
+        const biteLength = clamp(Math.floor(usable.length * (0.18 + Math.random() * 0.14)), 6, 18);
+        const localStart = Math.floor(Math.random() * Math.max(1, usable.length - biteLength));
+        const start = trimmedStart + localStart;
+        const bite = text.slice(start, start + biteLength);
+        const before = document.createTextNode(text.slice(0, start));
+        const mark = document.createElement("span");
+        mark.className = "bunny-bite-mark";
+        mark.setAttribute("aria-label", `被小兔偷吃的文字：${bite}`);
+        const after = document.createTextNode(text.slice(start + biteLength));
+        node.replaceWith(before, mark, after);
+        setLine(pick(biteSnarks));
+        hop();
+        setTimeout(() => {
+          if (!mark.isConnected) return;
+          mark.replaceWith(document.createTextNode(bite));
+          setLine(pick(restoreSnarks));
+        }, 3600 + Math.random() * 1800);
+      }
 
       setInterval(moveRandomly, 7600);
       setInterval(() => {
         if (!chat.classList.contains("is-open") && Math.random() > 0.52) {
-          setLine(snarks[Math.floor(Math.random() * snarks.length)]);
+          setLine(pick(snarks));
         }
       }, 18000);
+      setInterval(() => {
+        if (Math.random() > 0.42) biteText();
+      }, 12500);
     })();
   </script>
 </body>
