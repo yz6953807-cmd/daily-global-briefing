@@ -530,6 +530,116 @@
       padding: 8px 10px;
       font: inherit;
     }
+    .bunny-basket {
+      position: fixed;
+      right: 18px;
+      bottom: 146px;
+      width: 184px;
+      padding: 10px;
+      z-index: 79;
+      border: 1px solid rgba(72, 50, 25, 0.22);
+      border-radius: 14px 14px 18px 18px;
+      background:
+        linear-gradient(145deg, rgba(142, 96, 47, 0.88), rgba(101, 67, 35, 0.92)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0 8px, transparent 8px 16px);
+      color: #fffaf0;
+      box-shadow: 0 14px 32px rgba(36, 25, 17, 0.25);
+      user-select: none;
+    }
+    .bunny-basket-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .bunny-basket-progress {
+      height: 6px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 247, 218, 0.28);
+      margin-bottom: 8px;
+    }
+    .bunny-basket-progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #f9d35d, #7fd17a);
+      transition: width 0.3s ease;
+    }
+    .bunny-basket.is-rewarded {
+      animation: basket-pop 0.8s ease;
+    }
+    .bunny-food-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .bunny-food {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      align-items: center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 6px 7px;
+      border: 1px solid rgba(255, 248, 224, 0.34);
+      border-radius: 10px;
+      background: rgba(255, 249, 230, 0.18);
+      color: #fffbe7;
+      cursor: grab;
+      touch-action: none;
+    }
+    .bunny-food[aria-disabled="true"] {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .bunny-food.is-dragging {
+      opacity: 0.35;
+    }
+    .food-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: inset 0 0 0 1px rgba(51, 35, 18, 0.10);
+    }
+    .food-meta {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+      font-size: 12px;
+      line-height: 1.1;
+    }
+    .food-meta b {
+      font-size: 13px;
+    }
+    .bunny-food-ghost {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 120;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 12px 26px rgba(21, 28, 33, 0.24);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+    }
+    .briefing-bunny.is-fed .bunny-body {
+      animation: bunny-hop 0.62s ease-in-out 2;
+    }
+    .briefing-bunny.is-hungry .bunny-body {
+      animation: bunny-struggle 0.18s linear infinite;
+    }
     .bunny-bite-word {
       display: inline-block;
       position: relative;
@@ -594,6 +704,10 @@
       from { transform: rotate(-1.2deg) translateY(0); }
       to { transform: rotate(1.5deg) translateY(-1px); }
     }
+    @keyframes basket-pop {
+      0%, 100% { transform: translateY(0) scale(1); }
+      45% { transform: translateY(-8px) scale(1.04); }
+    }
     @media (max-width: 860px) {
       .dashboard { grid-template-columns: repeat(2, 1fr); }
       .points { grid-template-columns: 1fr; }
@@ -610,6 +724,12 @@
         bottom: 74px;
         width: 220px;
       }
+      .bunny-basket {
+        right: 12px;
+        bottom: 126px;
+        transform: scale(0.94);
+        transform-origin: bottom right;
+      }
     }
     @media (max-width: 620px) {
       .wrap { width: min(100% - 24px, 1060px); }
@@ -621,6 +741,14 @@
       .briefing-bunny {
         transform: scale(0.88);
         transform-origin: bottom right;
+      }
+      .bunny-basket {
+        width: 164px;
+        bottom: 112px;
+      }
+      .bunny-basket-title {
+        display: grid;
+        gap: 2px;
       }
     }
   </style>
@@ -846,6 +974,23 @@
     </div>
     <div class="bunny-shadow"></div>
   </div>
+  <aside class="bunny-basket" id="bunnyBasket" aria-label="小兔食物草框">
+    <div class="bunny-basket-title">
+      <span>草框</span>
+      <span id="basketStatus">浏览 0/5 分钟</span>
+    </div>
+    <div class="bunny-basket-progress" aria-hidden="true"><span id="basketProgress"></span></div>
+    <div class="bunny-food-list">
+      <div class="bunny-food" data-food="carrot" role="button" tabindex="0" aria-label="拖动胡萝卜喂小兔">
+        <span class="food-icon" aria-hidden="true">🥕</span>
+        <span class="food-meta"><b>胡萝卜</b><span id="carrotCount">x0</span></span>
+      </div>
+      <div class="bunny-food" data-food="alfalfa" role="button" tabindex="0" aria-label="拖动苜蓿草喂小兔">
+        <span class="food-icon" aria-hidden="true">🌿</span>
+        <span class="food-meta"><b>苜蓿草</b><span id="alfalfaCount">x0</span></span>
+      </div>
+    </div>
+  </aside>
   <section class="bunny-chat" id="bunnyChat" aria-label="和毒舌小兔聊天">
     <div class="bunny-chat-header">
       <span>小兔监督员</span>
@@ -870,6 +1015,11 @@
       const chatLog = document.getElementById("bunnyChatLog");
       const chatForm = document.getElementById("bunnyChatForm");
       const input = document.getElementById("bunnyInput");
+      const basket = document.getElementById("bunnyBasket");
+      const basketStatus = document.getElementById("basketStatus");
+      const basketProgress = document.getElementById("basketProgress");
+      const carrotCount = document.getElementById("carrotCount");
+      const alfalfaCount = document.getElementById("alfalfaCount");
       const now = Date.now();
       const getStore = (key, fallback = "0") => {
         try { return localStorage.getItem(key) || fallback; } catch (_) { return fallback; }
@@ -882,6 +1032,8 @@
       };
       const DOUBAO_PROXY_URL = "";
       const llmHistory = [];
+      const FIVE_MINUTES = 5 * 60;
+      const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
       const lastVisit = Number(getStore("briefingBunnyLastVisit"));
       const visits = Number(getStore("briefingBunnyVisits")) + 1;
       setStore("briefingBunnyVisits", String(visits));
@@ -964,6 +1116,23 @@
         "这次问题还可以，已经超过评论区平均水位。",
         "我给你查，不代表你可以把脑子长期托管给我。"
       ];
+      const rewardSnarks = [
+        "停留满 5 分钟，草框进货。你终于不是只路过标题的人了。",
+        "奖励到手。胡萝卜或苜蓿草，比空洞自律更实在。",
+        "五分钟达标。小兔记账了，你的注意力今天暂时没有破产。"
+      ];
+      const feedSnarks = [
+        "喂得不错。总算有人记得监督员也要能量守恒。",
+        "啊呜。这个比你刚才的注意力更有营养。",
+        "收到投喂。今天先少吃两口字，算你会做人。",
+        "食物到账。别得意，你只是达到了基础饲养标准。"
+      ];
+      const hungrySnarks = [
+        "一周没喂我？很好，我现在要把文字当自助餐。",
+        "草框空得像你的长期计划。我开吃了。",
+        "七天不投喂，监督员进入暴走模式。知识先替你受苦。",
+        "我饿到能听见数据在喊救命。开饭。"
+      ];
 
       function clamp(value, min, max) {
         return Math.max(min, Math.min(value, max));
@@ -971,6 +1140,68 @@
 
       function pick(list) {
         return list[Math.floor(Math.random() * list.length)];
+      }
+
+      function readFoodStore() {
+        try {
+          const saved = JSON.parse(getStore("bunnyFoodStore", "{}"));
+          return {
+            carrot: Math.max(0, Number(saved.carrot || 0)),
+            alfalfa: Math.max(0, Number(saved.alfalfa || 0))
+          };
+        } catch (_) {
+          return { carrot: 0, alfalfa: 0 };
+        }
+      }
+
+      function saveFoodStore(store) {
+        setStore("bunnyFoodStore", JSON.stringify({
+          carrot: Math.max(0, Number(store.carrot || 0)),
+          alfalfa: Math.max(0, Number(store.alfalfa || 0))
+        }));
+      }
+
+      let foodStore = readFoodStore();
+
+      function updateBasket() {
+        carrotCount.textContent = `x${foodStore.carrot}`;
+        alfalfaCount.textContent = `x${foodStore.alfalfa}`;
+        document.querySelectorAll(".bunny-food").forEach((item) => {
+          const food = item.dataset.food;
+          item.setAttribute("aria-disabled", foodStore[food] > 0 ? "false" : "true");
+        });
+      }
+
+      function awardFood(reason = "session") {
+        const food = Math.random() > 0.48 ? "carrot" : "alfalfa";
+        foodStore[food] += 1;
+        saveFoodStore(foodStore);
+        updateBasket();
+        setLine(`${food === "carrot" ? "胡萝卜" : "苜蓿草"} +1。${pick(rewardSnarks)}`);
+        basket.classList.add("is-rewarded");
+        setTimeout(() => basket.classList.remove("is-rewarded"), 900);
+        setStore("bunnyLastRewardReason", reason);
+      }
+
+      function markFed(food) {
+        setStore("bunnyLastFedAt", String(Date.now()));
+        hungryMode = false;
+        bunny.classList.remove("is-hungry");
+        bunny.classList.add("is-fed", "is-eating");
+        setLine(`${food === "carrot" ? "胡萝卜" : "苜蓿草"}已投喂。${pick(feedSnarks)}`);
+        setTimeout(() => bunny.classList.remove("is-fed", "is-eating"), 1100);
+      }
+
+      function feedBunny(food) {
+        if (!foodStore[food]) {
+          setLine("草框是空的。你拖空气喂我，想象力倒是挺饱。");
+          return false;
+        }
+        foodStore[food] -= 1;
+        saveFoodStore(foodStore);
+        updateBasket();
+        markFed(food);
+        return true;
       }
 
       function setLine(text, sticky = false) {
@@ -986,6 +1217,16 @@
         const rect = bunny.getBoundingClientRect();
         bunny.style.left = `${clamp(x, 8, window.innerWidth - rect.width - 8)}px`;
         bunny.style.top = `${clamp(y, 8, window.innerHeight - rect.height - 8)}px`;
+      }
+
+      function moveBunnyNearRect(targetRect, direction = "left") {
+        const bunnyRect = bunny.getBoundingClientRect();
+        const preferLeft = targetRect.left > bunnyRect.width + 34;
+        const x = direction === "right" || !preferLeft
+          ? targetRect.right - 10
+          : targetRect.left - bunnyRect.width + 18;
+        const y = targetRect.top - 88;
+        setBunnyPosition(x, y);
       }
 
       function hop() {
@@ -1005,6 +1246,12 @@
       }
 
       const gapHours = lastVisit ? (now - lastVisit) / 36e5 : 0;
+      const firstSeenAt = Number(getStore("bunnyFirstSeenAt", String(now)));
+      setStore("bunnyFirstSeenAt", String(firstSeenAt || now));
+      if (!Number(getStore("bunnyLastFedAt"))) {
+        setStore("bunnyLastFedAt", String(now));
+      }
+      updateBasket();
       if (!lastVisit) {
         setLine("初次见面。我负责可爱，也负责戳破你对信息摄入的幻想。", true);
       } else if (gapHours > 30) {
@@ -1012,6 +1259,39 @@
       } else {
         setLine(pick(snarks));
       }
+
+      let activeSeconds = Number(sessionStorage.getItem("bunnyActiveSeconds") || 0);
+      function updateRewardProgress() {
+        const minutes = Math.min(5, Math.floor(activeSeconds / 60));
+        basketStatus.textContent = sessionStorage.getItem("bunnySessionRewarded") === "1"
+          ? "本次已进货"
+          : `浏览 ${minutes}/5 分钟`;
+        basketProgress.style.width = `${Math.min(100, (activeSeconds / FIVE_MINUTES) * 100)}%`;
+      }
+      updateRewardProgress();
+      setInterval(() => {
+        if (document.hidden || sessionStorage.getItem("bunnySessionRewarded") === "1") return;
+        activeSeconds += 1;
+        sessionStorage.setItem("bunnyActiveSeconds", String(activeSeconds));
+        updateRewardProgress();
+        if (activeSeconds >= FIVE_MINUTES) {
+          sessionStorage.setItem("bunnySessionRewarded", "1");
+          awardFood("five-minute-session");
+          updateRewardProgress();
+        }
+      }, 1000);
+
+      let hungryMode = false;
+      function checkHunger() {
+        const lastFedAt = Number(getStore("bunnyLastFedAt", String(now)));
+        hungryMode = Date.now() - lastFedAt > WEEK_MS;
+        bunny.classList.toggle("is-hungry", hungryMode);
+        if (hungryMode && !sessionStorage.getItem("bunnyHungryWarned")) {
+          sessionStorage.setItem("bunnyHungryWarned", "1");
+          setLine(pick(hungrySnarks), true);
+        }
+      }
+      checkHunger();
 
       let drag = null;
       let lastPointerAt = Date.now();
@@ -1131,6 +1411,62 @@
         input.focus();
       });
       document.getElementById("bunnyClose").addEventListener("click", () => chat.classList.remove("is-open"));
+
+      function beginFoodDrag(event) {
+        const item = event.currentTarget;
+        const food = item.dataset.food;
+        if (!foodStore[food]) {
+          setLine("草框是空的。你拖空气喂我，想象力倒是挺饱。");
+          return;
+        }
+        event.preventDefault();
+        item.setPointerCapture?.(event.pointerId);
+        item.classList.add("is-dragging");
+        const ghost = document.createElement("div");
+        ghost.className = "bunny-food-ghost";
+        ghost.textContent = food === "carrot" ? "🥕" : "🌿";
+        document.body.appendChild(ghost);
+        const dragFood = { item, food, ghost, pointerId: event.pointerId };
+        function moveGhost(clientX, clientY) {
+          ghost.style.transform = `translate(${clientX - 21}px, ${clientY - 21}px)`;
+        }
+        moveGhost(event.clientX, event.clientY);
+        function onMove(moveEvent) {
+          moveGhost(moveEvent.clientX, moveEvent.clientY);
+          const bunnyRect = bunny.getBoundingClientRect();
+          const overBunny = moveEvent.clientX >= bunnyRect.left && moveEvent.clientX <= bunnyRect.right && moveEvent.clientY >= bunnyRect.top && moveEvent.clientY <= bunnyRect.bottom;
+          bunny.classList.toggle("is-eating", overBunny);
+        }
+        function onUp(upEvent) {
+          document.removeEventListener("pointermove", onMove);
+          document.removeEventListener("pointerup", onUp);
+          document.removeEventListener("pointercancel", onUp);
+          try { dragFood.item.releasePointerCapture?.(dragFood.pointerId); } catch (_) {}
+          dragFood.item.classList.remove("is-dragging");
+          dragFood.ghost.remove();
+          bunny.classList.remove("is-eating");
+          const bunnyRect = bunny.getBoundingClientRect();
+          const overBunny = upEvent.clientX >= bunnyRect.left && upEvent.clientX <= bunnyRect.right && upEvent.clientY >= bunnyRect.top && upEvent.clientY <= bunnyRect.bottom;
+          if (overBunny) {
+            feedBunny(dragFood.food);
+          } else {
+            setLine("食物没送到嘴边。投喂失败，动作像没保存的草稿。");
+          }
+        }
+        document.addEventListener("pointermove", onMove);
+        document.addEventListener("pointerup", onUp);
+        document.addEventListener("pointercancel", onUp);
+      }
+
+      document.querySelectorAll(".bunny-food").forEach((item) => {
+        item.addEventListener("pointerdown", beginFoodDrag);
+        item.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            feedBunny(item.dataset.food);
+          }
+        });
+      });
 
       function addChat(text, who, options = {}) {
         const item = document.createElement("div");
@@ -1415,6 +1751,8 @@
         const nodes = [];
         const blocks = document.querySelectorAll("main article p, main article .point span, main article .readout div, main article .why, main article .watch");
         blocks.forEach((block) => {
+          const blockRect = block.getBoundingClientRect();
+          if (blockRect.bottom < 90 || blockRect.top > window.innerHeight - 60) return;
           const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
             acceptNode(node) {
               if (node.parentElement?.closest(".bunny-bite-word")) return NodeFilter.FILTER_REJECT;
@@ -1429,10 +1767,11 @@
         return nodes;
       }
 
-      function biteText() {
+      function biteText(options = {}) {
+        const force = Boolean(options.force);
         if (document.hidden || drag || chat.classList.contains("is-open")) return;
-        if (Date.now() - lastPointerAt < 5200) return;
-        if (activeBites.length >= 3) return;
+        if (!force && Date.now() - lastPointerAt < 5200) return;
+        if (activeBites.length >= (force ? 8 : 3)) return;
         if (bunny.classList.contains("is-eating")) return;
         const nodes = collectBiteNodes();
         if (!nodes.length) return;
@@ -1461,6 +1800,7 @@
         activeBites.push(record);
         setLine(pick(biteSnarks));
         bunny.classList.add("is-eating");
+        moveBunnyNearRect(wrapper.getBoundingClientRect());
         hop();
         const chars = Array.from(wrapper.querySelectorAll(".bunny-food-char"));
         let index = 0;
@@ -1471,6 +1811,8 @@
             return;
           }
           if (index < chars.length) {
+            const charRect = chars[index].getBoundingClientRect();
+            moveBunnyNearRect(charRect);
             chars[index].classList.add("is-chomped");
             index += 1;
             return;
@@ -1508,6 +1850,10 @@
       setInterval(() => {
         if (Math.random() > 0.42) biteText();
       }, 12500);
+      setInterval(checkHunger, 60000);
+      setInterval(() => {
+        if (hungryMode && Math.random() > 0.18) biteText({ force: true });
+      }, 2800);
     })();
   </script>
 </body>
