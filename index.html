@@ -13,19 +13,36 @@
       --panel: rgba(255, 255, 252, 0.92);
       --line: rgba(21, 42, 56, 0.14);
       --accent: #0b6b58;
+      --accent-blue: #2f6d8c;
       --accent-2: #b54232;
       --gold: #b27a23;
       --shadow: 0 18px 60px rgba(9, 24, 38, 0.18);
+      --raised-shadow: 0 22px 46px rgba(19, 32, 42, 0.16), 0 4px 10px rgba(19, 32, 42, 0.08);
+      --water-blue: rgba(95, 152, 183, 0.18);
+      --water-rose: rgba(189, 87, 96, 0.13);
+      --water-sage: rgba(86, 149, 113, 0.15);
+      --water-gold: rgba(213, 169, 82, 0.18);
+      --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-display: "Songti SC", "STSong", "Georgia", "Times New Roman", serif;
     }
     * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       margin: 0;
       color: var(--ink);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-family: var(--font-body);
       line-height: 1.72;
       background:
-        linear-gradient(180deg, rgba(255,255,251,0.52), rgba(246,248,245,0.92) 44%, rgba(246,248,245,0.98)),
+        linear-gradient(180deg, rgba(255,255,251,0.54), rgba(247,249,246,0.88) 42%, rgba(247,249,246,0.98)),
+        linear-gradient(118deg, rgba(86,149,113,0.20), transparent 32%, rgba(189,87,96,0.12) 68%, transparent),
+        linear-gradient(238deg, rgba(95,152,183,0.18), transparent 38%, rgba(213,169,82,0.14) 78%, transparent),
         url("images/today-bg.png") center top / cover fixed no-repeat;
+    }
+    body[data-font-mode="en"] {
+      --font-body: "Avenir Next", "Inter", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-display: "Georgia", "Times New Roman", "Songti SC", "STSong", serif;
     }
     body::before {
       content: "";
@@ -34,6 +51,18 @@
       backdrop-filter: blur(4px) saturate(1.04);
       pointer-events: none;
       z-index: -1;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.18;
+      background:
+        repeating-linear-gradient(0deg, rgba(48, 60, 70, 0.07) 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0 1px, transparent 1px 7px);
+      mix-blend-mode: multiply;
     }
     .wrap {
       width: min(1060px, calc(100% - 36px));
@@ -47,14 +76,33 @@
       display: flex;
       align-items: flex-end;
       padding: 34px;
-      border: 1px solid rgba(255,255,255,0.5);
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.80), rgba(255,255,255,0.36));
-      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.62);
+      border-radius: 10px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.84), rgba(255,255,255,0.42)),
+        linear-gradient(118deg, var(--water-blue), transparent 34%, var(--water-rose)),
+        linear-gradient(238deg, transparent, var(--water-sage) 62%, var(--water-gold));
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.76);
       overflow: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -18%;
+      z-index: -1;
+      background:
+        linear-gradient(70deg, rgba(47,109,140,0.18), transparent 46%),
+        linear-gradient(150deg, transparent 12%, rgba(181,66,50,0.12) 52%, transparent 82%),
+        repeating-linear-gradient(112deg, rgba(255,255,255,0.18) 0 12px, transparent 12px 26px);
+      filter: blur(12px);
+      transform: rotate(-2deg);
     }
     .hero-inner {
       max-width: 860px;
+      position: relative;
+      z-index: 1;
     }
     .eyebrow {
       display: inline-flex;
@@ -72,6 +120,7 @@
       font-size: clamp(30px, 5vw, 56px);
       line-height: 1.05;
       letter-spacing: 0;
+      font-family: var(--font-display);
     }
     .meta {
       color: #46545f;
@@ -94,9 +143,18 @@
       min-height: 96px;
       padding: 14px 16px;
       border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--paper);
-      box-shadow: 0 8px 28px rgba(7, 24, 34, 0.08);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255,255,252,0.88), rgba(250,253,255,0.72)),
+        linear-gradient(118deg, rgba(95,152,183,0.12), transparent 56%, rgba(213,169,82,0.13));
+      box-shadow: 0 13px 28px rgba(7, 24, 34, 0.10), inset 0 1px 0 rgba(255,255,255,0.82);
+      transform: translateZ(0);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .metric:hover {
+      transform: translateY(-3px);
+      border-color: rgba(47, 109, 140, 0.30);
+      box-shadow: 0 18px 34px rgba(7, 24, 34, 0.14), inset 0 1px 0 rgba(255,255,255,0.88);
     }
     .metric strong {
       display: block;
@@ -104,6 +162,7 @@
       line-height: 1.2;
       color: var(--accent);
       letter-spacing: 0;
+      font-family: var(--font-display);
     }
     .metric span {
       display: block;
@@ -115,13 +174,152 @@
     main {
       padding: 8px 0 44px;
     }
+    .briefing-tools {
+      position: sticky;
+      top: 10px;
+      z-index: 32;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto auto auto;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0 10px;
+      padding: 12px;
+      border: 1px solid rgba(21, 42, 56, 0.14);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255,255,252,0.86), rgba(247,251,252,0.74)),
+        linear-gradient(118deg, rgba(95,152,183,0.16), transparent 46%, rgba(189,87,96,0.10)),
+        linear-gradient(240deg, transparent, rgba(86,149,113,0.13));
+      box-shadow: 0 18px 38px rgba(9, 24, 38, 0.14), inset 0 1px 0 rgba(255,255,255,0.80);
+      backdrop-filter: blur(16px) saturate(1.04);
+    }
+    .search-field {
+      position: relative;
+      min-width: 0;
+    }
+    .search-field span {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent-blue);
+      font-weight: 800;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .search-field input {
+      width: 100%;
+      height: 42px;
+      border: 1px solid rgba(21, 42, 56, 0.15);
+      border-radius: 8px;
+      background: rgba(255, 255, 253, 0.86);
+      box-shadow: inset 0 1px 4px rgba(16, 28, 34, 0.06);
+      color: var(--ink);
+      font: inherit;
+      padding: 0 12px 0 38px;
+      outline: none;
+    }
+    .search-field input:focus {
+      border-color: rgba(47, 109, 140, 0.54);
+      box-shadow: 0 0 0 3px rgba(47, 109, 140, 0.12), inset 0 1px 4px rgba(16, 28, 34, 0.06);
+    }
+    .tool-filter,
+    .font-switch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .briefing-tools button,
+    .article-toggle {
+      border: 1px solid rgba(21, 42, 56, 0.14);
+      border-radius: 8px;
+      background: rgba(255,255,253,0.78);
+      color: #253643;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 9px 10px;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(19, 32, 42, 0.07), inset 0 1px 0 rgba(255,255,255,0.72);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+    .briefing-tools button:hover,
+    .article-toggle:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(19, 32, 42, 0.11), inset 0 1px 0 rgba(255,255,255,0.78);
+    }
+    .briefing-tools button.is-active {
+      border-color: rgba(11, 107, 88, 0.36);
+      background: linear-gradient(145deg, rgba(11,107,88,0.95), rgba(47,109,140,0.88));
+      color: #fff;
+    }
+    .briefing-count {
+      min-width: 68px;
+      color: #38505d;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: right;
+    }
+    .no-results {
+      margin: 16px auto 8px;
+      padding: 16px 18px;
+      border: 1px solid rgba(21, 42, 56, 0.12);
+      border-radius: 8px;
+      background: rgba(255, 255, 252, 0.86);
+      box-shadow: 0 12px 26px rgba(9, 24, 38, 0.10);
+      color: #42515c;
+      font-weight: 700;
+    }
     article {
       margin: 18px 0;
       padding: 24px 26px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--panel);
-      box-shadow: 0 10px 34px rgba(11, 25, 34, 0.10);
+      border: 1px solid rgba(21, 42, 56, 0.13);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255,255,252,0.92), rgba(250,253,255,0.82)),
+        linear-gradient(120deg, rgba(95,152,183,0.14), transparent 46%, rgba(189,87,96,0.10)),
+        linear-gradient(245deg, transparent 20%, rgba(86,149,113,0.12), rgba(213,169,82,0.10));
+      box-shadow: var(--raised-shadow), inset 0 1px 0 rgba(255,255,255,0.78);
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    article::before {
+      content: "";
+      position: absolute;
+      inset: -24px;
+      background:
+        repeating-linear-gradient(102deg, rgba(255,255,255,0.22) 0 10px, transparent 10px 22px),
+        linear-gradient(118deg, rgba(47,109,140,0.13), transparent 40%, rgba(181,66,50,0.09) 72%, transparent);
+      opacity: 0.72;
+      filter: blur(8px);
+      pointer-events: none;
+    }
+    article::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55), inset 0 -18px 32px rgba(47,109,140,0.04);
+    }
+    article > * {
+      position: relative;
+      z-index: 1;
+    }
+    article:hover {
+      transform: translateY(-4px);
+      border-color: rgba(47, 109, 140, 0.28);
+      box-shadow: 0 28px 56px rgba(19, 32, 42, 0.17), 0 8px 16px rgba(19, 32, 42, 0.08), inset 0 1px 0 rgba(255,255,255,0.82);
+    }
+    article.is-search-match {
+      border-color: rgba(181, 66, 50, 0.34);
+    }
+    article.is-collapsed > :not(.article-top):not(.points) {
+      display: none;
     }
     .article-top {
       display: flex;
@@ -135,15 +333,30 @@
       font-size: 22px;
       line-height: 1.38;
       letter-spacing: 0;
+      font-family: var(--font-display);
+    }
+    .article-tools {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
     .tag {
       flex: 0 0 auto;
       padding: 4px 9px;
+      border: 1px solid rgba(11, 107, 88, 0.12);
       border-radius: 999px;
-      background: rgba(11, 107, 88, 0.10);
+      background: rgba(232, 246, 240, 0.72);
       color: #0b5b4b;
       font-size: 13px;
       font-weight: 650;
+    }
+    .article-toggle {
+      padding: 7px 9px;
+      color: #2c4654;
+      background: rgba(255,255,253,0.66);
     }
     .points {
       display: grid;
@@ -153,9 +366,17 @@
     }
     .point {
       padding: 10px 12px;
-      border-radius: 9px;
-      background: rgba(240, 244, 241, 0.82);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255,255,252,0.72), rgba(240,248,247,0.66)),
+        linear-gradient(120deg, rgba(213,169,82,0.12), transparent 56%, rgba(95,152,183,0.10));
       border: 1px solid rgba(19, 32, 42, 0.08);
+      box-shadow: 0 7px 14px rgba(19, 32, 42, 0.07), inset 0 1px 0 rgba(255,255,255,0.72);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .point:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 11px 18px rgba(19, 32, 42, 0.10), inset 0 1px 0 rgba(255,255,255,0.78);
     }
     .point b {
       display: block;
@@ -179,7 +400,11 @@
       margin-top: 12px;
       padding: 12px 14px;
       border-left: 4px solid var(--gold);
-      background: rgba(255, 247, 230, 0.72);
+      border-radius: 0 8px 8px 0;
+      background:
+        linear-gradient(105deg, rgba(255, 247, 230, 0.82), rgba(255,255,250,0.62)),
+        linear-gradient(220deg, rgba(213,169,82,0.18), transparent 52%);
+      box-shadow: 0 8px 16px rgba(82, 56, 34, 0.08);
       color: #3b3428;
       font-size: 15px;
     }
@@ -191,11 +416,14 @@
     }
     .readout div {
       border: 1px solid rgba(19, 32, 42, 0.08);
-      border-radius: 9px;
-      background: rgba(255,255,255,0.58);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.70), rgba(241,248,250,0.58)),
+        linear-gradient(118deg, rgba(95,152,183,0.12), transparent 62%);
       padding: 10px 12px;
       font-size: 14px;
       color: #38464f;
+      box-shadow: 0 8px 15px rgba(19, 32, 42, 0.06), inset 0 1px 0 rgba(255,255,255,0.70);
     }
     .readout b {
       display: block;
@@ -206,8 +434,11 @@
     .watch {
       margin-top: 10px;
       padding: 10px 12px;
-      border-radius: 9px;
-      background: rgba(236, 243, 248, 0.78);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(236, 243, 248, 0.82), rgba(255,255,253,0.64)),
+        linear-gradient(240deg, rgba(47,109,140,0.13), transparent 58%);
+      border: 1px solid rgba(47, 109, 140, 0.10);
       color: #2d4658;
       font-size: 15px;
     }
@@ -229,8 +460,11 @@
     .footnote {
       padding: 16px 18px;
       border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(255,255,255,0.72);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255,255,252,0.82), rgba(245,250,249,0.72)),
+        linear-gradient(110deg, rgba(86,149,113,0.10), transparent 52%, rgba(95,152,183,0.10));
+      box-shadow: 0 12px 26px rgba(9, 24, 38, 0.08);
     }
     .briefing-bunny {
       position: fixed;
@@ -708,11 +942,43 @@
       0%, 100% { transform: translateY(0) scale(1); }
       45% { transform: translateY(-8px) scale(1.04); }
     }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      article,
+      .metric,
+      .point,
+      .briefing-tools button,
+      .article-toggle {
+        transition: none;
+      }
+      article:hover,
+      .metric:hover,
+      .point:hover {
+        transform: none;
+      }
+    }
     @media (max-width: 860px) {
       .dashboard { grid-template-columns: repeat(2, 1fr); }
+      .briefing-tools {
+        position: static;
+        grid-template-columns: 1fr;
+      }
+      .tool-filter,
+      .font-switch {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 2px;
+      }
+      .briefing-count {
+        text-align: left;
+      }
       .points { grid-template-columns: 1fr; }
       .readout { grid-template-columns: 1fr; }
       .article-top { display: block; }
+      .article-tools {
+        justify-content: flex-start;
+        margin-top: 10px;
+      }
       .tag { display: inline-flex; margin-top: 10px; }
       .briefing-bunny {
         width: 110px;
@@ -734,8 +1000,14 @@
     @media (max-width: 620px) {
       .wrap { width: min(100% - 24px, 1060px); }
       header { padding-top: 18px; }
-      .hero { min-height: 260px; padding: 22px; border-radius: 14px; }
+      .hero { min-height: 260px; padding: 22px; border-radius: 8px; }
       .dashboard { grid-template-columns: 1fr; }
+      .briefing-tools {
+        padding: 10px;
+      }
+      .search-field input {
+        font-size: 16px;
+      }
       article { padding: 18px; }
       h2 { font-size: 19px; }
       .briefing-bunny {
@@ -753,7 +1025,7 @@
     }
   </style>
 </head>
-<body>
+<body data-font-mode="cn">
   <header class="wrap">
     <section class="hero">
       <div class="hero-inner">
@@ -769,7 +1041,28 @@
       <div class="metric"><strong>$1 万亿+</strong><span>AI 科技股盘中估算市值蒸发，市场开始审查回报周期</span></div>
       <div class="metric"><strong>3 倍</strong><span>欧盟计划 5-7 年内扩充数据中心容量，支撑 AI 主权</span></div>
     </section>
+    <section class="briefing-tools" aria-label="简报阅读工具">
+      <label class="search-field">
+        <span aria-hidden="true">⌕</span>
+        <input id="briefingSearch" type="search" autocomplete="off" placeholder="搜索新闻、数据、机构..." aria-label="搜索简报内容">
+      </label>
+      <div class="tool-filter" id="briefingFilters" aria-label="按主题筛选">
+        <button type="button" class="is-active" data-filter="all" aria-pressed="true">全部</button>
+        <button type="button" data-filter="财经" aria-pressed="false">财经</button>
+        <button type="button" data-filter="科技" aria-pressed="false">科技</button>
+        <button type="button" data-filter="政策" aria-pressed="false">政策</button>
+        <button type="button" data-filter="能源" aria-pressed="false">能源</button>
+        <button type="button" data-filter="ai" aria-pressed="false">AI</button>
+      </div>
+      <div class="font-switch" aria-label="字体模式">
+        <button type="button" class="is-active" data-font="cn" aria-pressed="true">中文</button>
+        <button type="button" data-font="en" aria-pressed="false">EN</button>
+      </div>
+      <div class="briefing-count" id="briefingCount" aria-live="polite">8 条</div>
+    </section>
   </header>
+
+  <div class="wrap no-results" id="noResults" hidden>没有匹配的简报。换个关键词，小兔暂时没法嘲笑你的检索能力。</div>
 
   <main class="wrap">
     <article>
@@ -1015,6 +1308,12 @@
       const chatLog = document.getElementById("bunnyChatLog");
       const chatForm = document.getElementById("bunnyChatForm");
       const input = document.getElementById("bunnyInput");
+      const briefingSearch = document.getElementById("briefingSearch");
+      const briefingCount = document.getElementById("briefingCount");
+      const noResults = document.getElementById("noResults");
+      const filterButtons = Array.from(document.querySelectorAll("#briefingFilters button"));
+      const fontButtons = Array.from(document.querySelectorAll(".font-switch button"));
+      const briefingArticles = Array.from(document.querySelectorAll("main article"));
       const basket = document.getElementById("bunnyBasket");
       const basketStatus = document.getElementById("basketStatus");
       const basketProgress = document.getElementById("basketProgress");
@@ -1038,6 +1337,91 @@
       const visits = Number(getStore("briefingBunnyVisits")) + 1;
       setStore("briefingBunnyVisits", String(visits));
       setStore("briefingBunnyLastVisit", String(now));
+
+      let activeBriefingFilter = "all";
+
+      function normalizeBriefingText(value) {
+        return String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
+      }
+
+      function setBriefingFont(mode) {
+        const nextMode = mode === "en" ? "en" : "cn";
+        document.body.dataset.fontMode = nextMode;
+        setStore("briefingFontMode", nextMode);
+        fontButtons.forEach((button) => {
+          const active = button.dataset.font === nextMode;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+      }
+
+      function applyBriefingFilters() {
+        const query = normalizeBriefingText(briefingSearch?.value || "");
+        let visibleCount = 0;
+        briefingArticles.forEach((article) => {
+          const haystack = article.dataset.searchText || "";
+          const tags = article.dataset.tags || "";
+          const matchesQuery = !query || haystack.includes(query);
+          const matchesFilter = activeBriefingFilter === "all" || haystack.includes(activeBriefingFilter) || tags.includes(activeBriefingFilter);
+          const visible = matchesQuery && matchesFilter;
+          article.hidden = !visible;
+          article.classList.toggle("is-search-match", visible && query.length > 0);
+          if (visible) visibleCount += 1;
+        });
+        if (briefingCount) briefingCount.textContent = `${visibleCount}/${briefingArticles.length} 条`;
+        if (noResults) noResults.hidden = visibleCount > 0;
+      }
+
+      function setupBriefingInterface() {
+        briefingArticles.forEach((article, index) => {
+          const tag = article.querySelector(".tag");
+          article.dataset.tags = normalizeBriefingText(tag?.textContent || "");
+          article.dataset.searchText = normalizeBriefingText(article.textContent || "");
+          article.style.setProperty("--card-index", String(index));
+          const top = article.querySelector(".article-top");
+          if (!top || article.querySelector(".article-toggle")) return;
+          const toggle = document.createElement("button");
+          toggle.type = "button";
+          toggle.className = "article-toggle";
+          toggle.textContent = "收起";
+          toggle.setAttribute("aria-expanded", "true");
+          toggle.addEventListener("click", () => {
+            const collapsed = !article.classList.contains("is-collapsed");
+            article.classList.toggle("is-collapsed", collapsed);
+            toggle.textContent = collapsed ? "展开" : "收起";
+            toggle.setAttribute("aria-expanded", String(!collapsed));
+          });
+          const tools = document.createElement("div");
+          tools.className = "article-tools";
+          if (tag) {
+            tag.replaceWith(tools);
+            tools.appendChild(tag);
+          } else {
+            top.appendChild(tools);
+          }
+          tools.appendChild(toggle);
+        });
+
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            activeBriefingFilter = normalizeBriefingText(button.dataset.filter || "all");
+            filterButtons.forEach((item) => {
+              const active = item === button;
+              item.classList.toggle("is-active", active);
+              item.setAttribute("aria-pressed", String(active));
+            });
+            applyBriefingFilters();
+          });
+        });
+        briefingSearch?.addEventListener("input", applyBriefingFilters);
+        fontButtons.forEach((button) => {
+          button.addEventListener("click", () => setBriefingFont(button.dataset.font));
+        });
+        setBriefingFont(getStore("briefingFontMode", "cn"));
+        applyBriefingFilters();
+      }
+
+      setupBriefingInterface();
 
       const snarks = [
         "别只看标题，标题负责诱惑你，数据负责打脸。",
