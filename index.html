@@ -839,6 +839,11 @@
       const setStore = (key, value) => {
         try { localStorage.setItem(key, value); } catch (_) {}
       };
+      const removeStore = (key) => {
+        try { localStorage.removeItem(key); } catch (_) {}
+      };
+      const DOUBAO_PROXY_URL = "";
+      const llmHistory = [];
       const lastVisit = Number(getStore("briefingBunnyLastVisit"));
       const visits = Number(getStore("briefingBunnyVisits")) + 1;
       setStore("briefingBunnyVisits", String(visits));
@@ -1138,6 +1143,73 @@
           .map((text) => compact(text, 120));
       }
 
+      function getDoubaoProxyUrl() {
+        return (getStore("bunnyDoubaoProxyUrl", "").trim() || DOUBAO_PROXY_URL).trim();
+      }
+
+      function setDoubaoProxyFromText(text) {
+        const match = text.match(/(?:设置|配置|连接|接入)?(?:豆包|doubao|大模型|llm)?(?:代理|接口|endpoint|url)?\s*(https?:\/\/\S+)/i);
+        if (!match) return null;
+        const url = match[1].replace(/[，。；;,.]$/, "");
+        setStore("bunnyDoubaoProxyUrl", url);
+        return {
+          text: `豆包代理接口已记住：${url}\n\n以后你问专业问题，我会优先叫大模型来答。别高兴太早，它负责聪明，我负责提醒你别偷懒。`,
+          url,
+          linkLabel: "打开代理地址"
+        };
+      }
+
+      function pageContextForLLM() {
+        const headline = document.querySelector("h1")?.textContent?.trim() || document.title;
+        const overview = document.querySelector(".subtitle, .lead, .summary")?.textContent?.trim() || "";
+        const keyNumbers = Array.from(document.querySelectorAll(".metric, .stat, .dashboard div, .point"))
+          .slice(0, 8)
+          .map((node) => compact(node.textContent, 80))
+          .filter(Boolean);
+        const articles = Array.from(document.querySelectorAll("main article"))
+          .slice(0, 8)
+          .map((article, index) => {
+            const title = article.querySelector("h2")?.textContent?.trim() || `新闻 ${index + 1}`;
+            const why = article.querySelector(".why")?.textContent?.trim() || "";
+            const watch = article.querySelector(".watch")?.textContent?.trim() || "";
+            const bodyText = Array.from(article.querySelectorAll("p"))
+              .slice(0, 2)
+              .map((node) => compact(node.textContent, 180))
+              .join(" ");
+            return compact(`${index + 1}. ${title} ${bodyText} ${why} ${watch}`, 420);
+          });
+        return compact([
+          `页面标题：${headline}`,
+          overview ? `总览：${overview}` : "",
+          keyNumbers.length ? `关键数字：${keyNumbers.join("；")}` : "",
+          articles.length ? `新闻上下文：${articles.join("\n")}` : ""
+        ].filter(Boolean).join("\n"), 4200);
+      }
+
+      async function askDoubao(text) {
+        const proxyUrl = getDoubaoProxyUrl();
+        if (!proxyUrl) return null;
+        const response = await fetch(proxyUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: text,
+            context: pageContextForLLM(),
+            history: llmHistory.slice(-6)
+          })
+        });
+        if (!response.ok) throw new Error("doubao proxy failed");
+        const data = await response.json();
+        const reply = compact(data.reply || data.text || "", 900);
+        if (!reply) throw new Error("empty doubao reply");
+        llmHistory.push({ role: "user", content: text }, { role: "assistant", content: reply });
+        return {
+          text: `${reply}\n\n小兔点评：${pick(knowledgeSnarks)}`,
+          url: data.source || proxyUrl,
+          linkLabel: data.source ? "查看来源" : "豆包代理"
+        };
+      }
+
       async function searchWiki(host, term, sourceLabel) {
         const searchUrl = `https://${host}/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(term)}&format=json&origin=*`;
         const searchResponse = await fetch(searchUrl, { headers: { Accept: "application/json" } });
@@ -1202,6 +1274,30 @@
 
       async function replyTo(text) {
         const value = text.toLowerCase();
+        const setup = setDoubaoProxyFromText(text);
+        if (setup) return setup;
+        if (/关闭|取消|不用|清除/.test(value) && /(豆包|doubao|大模型|llm|代理|接口)/i.test(value)) {
+          removeStore("bunnyDoubaoProxyUrl");
+          return { text: "豆包代理接口已清除。现在我会退回本页搜索和公开知识源。大模型下班了，你的大脑最好不要也跟着下班。" };
+        }
+        if (/豆包|doubao|大模型|llm/i.test(value) && !getDoubaoProxyUrl()) {
+          return {
+            text: "豆包还没真正接上。GitHub Pages 是公开静态网页，不能把 API Key 直接塞进页面里，不然等于把钱包钥匙挂门口。先部署我给你的 doubao-worker 代理，再把代理地址告诉我：设置豆包接口 https://你的代理地址/chat"
+          };
+        }
+        try {
+          const doubaoAnswer = await askDoubao(text);
+          if (doubaoAnswer) return doubaoAnswer;
+        } catch (_) {
+          if (/查|搜|搜索|解释|什么是|是什么|什么意思|为什么|概念|专业|知识|research|search|what|why|how|\?/.test(value) || text.trim().length > 12) {
+            const fallback = await knowledgeReply(text);
+            return {
+              ...fallback,
+              text: `豆包代理刚才掉链子了，我先用公开知识源兜底。\n\n${fallback.text}`
+            };
+          }
+          return { text: "豆包代理刚才没接住。先别急着怪 AI，很多时候是人类配置比较有创造力。你可以稍后再问，或者输入“关闭豆包接口”退回普通模式。" };
+        }
         if (/查|搜|搜索|解释|什么是|是什么|什么意思|为什么|概念|专业|知识|research|search|what|why|how|\?/.test(value) || text.trim().length > 12) {
           return knowledgeReply(text);
         }

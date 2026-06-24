@@ -1,0 +1,14 @@
+name = "daily-briefing-doubao"
+main = "worker.js"
+compatibility_date = "2026-06-24"
+
+[vars]
+ALLOWED_ORIGIN = "https://yz6953807-cmd.github.io"
+# Fill this with your Volcengine Ark / Doubao model or endpoint id.
+# Example values depend on your Ark console setup.
+ARK_MODEL = "your-doubao-model-or-endpoint-id"
+ARK_TEMPERATURE = "0.65"
+ARK_MAX_TOKENS = "900"
+
+# Add ARK_API_KEY as a secret, not in this file:
+# wrangler secret put ARK_API_KEY
