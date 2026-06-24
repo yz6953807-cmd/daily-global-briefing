@@ -775,6 +775,7 @@
       color: #fffaf0;
       box-shadow: 0 14px 32px rgba(36, 25, 17, 0.25);
       user-select: none;
+      transition: width 0.22s ease, padding 0.22s ease, bottom 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
     }
     .bunny-basket-title {
       display: flex;
@@ -784,6 +785,22 @@
       font-size: 13px;
       font-weight: 800;
       margin-bottom: 8px;
+    }
+    .bunny-panel-toggle {
+      border: 1px solid rgba(255, 248, 224, 0.34);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1;
+      padding: 5px 7px;
+      white-space: nowrap;
+    }
+    .bunny-panel-toggle:hover {
+      background: rgba(255, 255, 255, 0.28);
     }
     .bunny-basket-progress {
       height: 6px;
@@ -802,6 +819,20 @@
     }
     .bunny-basket.is-rewarded {
       animation: basket-pop 0.8s ease;
+    }
+    .bunny-basket.is-collapsed {
+      bottom: 90px;
+      width: 92px;
+      padding: 8px;
+      box-shadow: 0 10px 22px rgba(36, 25, 17, 0.20);
+    }
+    .bunny-basket.is-collapsed .bunny-basket-title {
+      margin-bottom: 0;
+    }
+    .bunny-basket.is-collapsed #basketStatus,
+    .bunny-basket.is-collapsed .bunny-basket-progress,
+    .bunny-basket.is-collapsed .bunny-food-list {
+      display: none;
     }
     .bunny-food-list {
       display: grid;
@@ -899,6 +930,7 @@
       box-shadow: 0 18px 34px rgba(31, 26, 18, 0.16), inset 0 1px 0 rgba(255,255,255,0.82);
       color: #2f3d32;
       user-select: none;
+      transition: width 0.22s ease, padding 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
     }
     .bunny-house::before {
       content: "";
@@ -957,6 +989,24 @@
       font-weight: 700;
       line-height: 1.35;
       margin-bottom: 9px;
+    }
+    .bunny-house .bunny-panel-toggle {
+      border-color: rgba(83, 61, 37, 0.18);
+      background: rgba(255, 255, 255, 0.58);
+      color: #415245;
+    }
+    .bunny-house.is-collapsed {
+      width: 106px;
+      padding: 10px;
+    }
+    .bunny-house.is-collapsed::before,
+    .bunny-house.is-collapsed::after,
+    .bunny-house.is-collapsed .house-subtitle,
+    .bunny-house.is-collapsed .bunny-house-status {
+      display: none;
+    }
+    .bunny-house.is-collapsed .bunny-house-title {
+      margin-bottom: 0;
     }
     .bunny-bite-word {
       display: inline-block;
@@ -1357,6 +1407,7 @@
     <div class="bunny-basket-title">
       <span>草框</span>
       <span id="basketStatus">浏览 0/5 分钟</span>
+      <button class="bunny-panel-toggle" id="basketToggle" type="button" aria-expanded="true">收起</button>
     </div>
     <div class="bunny-basket-progress" aria-hidden="true"><span id="basketProgress"></span></div>
     <div class="bunny-food-list">
@@ -1373,7 +1424,8 @@
   <aside class="bunny-house" id="bunnyHouse" aria-label="小兔安静小屋">
     <div class="bunny-house-title">
       <span>小房子</span>
-      <span>安静区</span>
+      <span class="house-subtitle">安静区</span>
+      <button class="bunny-panel-toggle" id="houseToggle" type="button" aria-expanded="true">收起</button>
     </div>
     <div class="bunny-house-status" id="bunnyHouseStatus">拖她进来，安静 2 分钟</div>
   </aside>
@@ -1406,11 +1458,13 @@
       const fontButtons = Array.from(document.querySelectorAll(".font-switch button"));
       const briefingArticles = Array.from(document.querySelectorAll("main article"));
       const basket = document.getElementById("bunnyBasket");
+      const basketToggle = document.getElementById("basketToggle");
       const basketStatus = document.getElementById("basketStatus");
       const basketProgress = document.getElementById("basketProgress");
       const carrotCount = document.getElementById("carrotCount");
       const alfalfaCount = document.getElementById("alfalfaCount");
       const bunnyHouse = document.getElementById("bunnyHouse");
+      const houseToggle = document.getElementById("houseToggle");
       const bunnyHouseStatus = document.getElementById("bunnyHouseStatus");
       const now = Date.now();
       const getStore = (key, fallback = "0") => {
@@ -1427,9 +1481,9 @@
       const FIVE_MINUTES = 5 * 60;
       const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
       const HOUSE_QUIET_MS = 2 * 60 * 1000;
-      const BITE_IDLE_MS = 12000;
-      const BITE_CHANCE = 0.18;
-      const MAX_ACTIVE_BITES = 2;
+      const BITE_IDLE_MS = 6500;
+      const BITE_CHANCE = 0.42;
+      const MAX_ACTIVE_BITES = 3;
       const lastVisit = Number(getStore("briefingBunnyLastVisit"));
       const visits = Number(getStore("briefingBunnyVisits")) + 1;
       setStore("briefingBunnyVisits", String(visits));
@@ -1961,6 +2015,33 @@
         }
       }
 
+      function setUtilityCollapsed(panel, button, storageKey, collapsed, quiet = false) {
+        panel.classList.toggle("is-collapsed", collapsed);
+        button.textContent = collapsed ? "展开" : "收起";
+        button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        setStore(storageKey, collapsed ? "1" : "0");
+        if (!quiet) {
+          setLine(collapsed ? "好，给界面留点呼吸空间。别以为我也会闭嘴。" : "展开了。你终于想起这些功能不是摆设。");
+        }
+      }
+
+      setUtilityCollapsed(basket, basketToggle, "bunnyBasketCollapsed", getStore("bunnyBasketCollapsed") === "1", true);
+      setUtilityCollapsed(bunnyHouse, houseToggle, "bunnyHouseCollapsed", getStore("bunnyHouseCollapsed") === "1", true);
+
+      basketToggle.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setUtilityCollapsed(basket, basketToggle, "bunnyBasketCollapsed", !basket.classList.contains("is-collapsed"));
+      });
+
+      houseToggle.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (bunnyInHouse) {
+          setLine("我在屋里呢。你现在收房子，多少有点拆迁队气质。");
+          return;
+        }
+        setUtilityCollapsed(bunnyHouse, houseToggle, "bunnyHouseCollapsed", !bunnyHouse.classList.contains("is-collapsed"));
+      });
+
       function setBunnyPosition(x, y) {
         const rect = bunny.getBoundingClientRect();
         bunny.style.left = `${clamp(x, 8, window.innerWidth - rect.width - 8)}px`;
@@ -1972,6 +2053,7 @@
       const houseTimers = { release: null, countdown: null };
 
       function isPointInHouse(x, y) {
+        if (bunnyHouse.classList.contains("is-collapsed")) return false;
         const rect = bunnyHouse.getBoundingClientRect();
         return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
       }
@@ -2027,6 +2109,7 @@
 
       function tuckBunnyInHouse(remainingMs = HOUSE_QUIET_MS, resumed = false) {
         clearHouseTimers();
+        setUtilityCollapsed(bunnyHouse, houseToggle, "bunnyHouseCollapsed", false, true);
         bunnyInHouse = true;
         houseUntil = Date.now() + remainingMs;
         setStore("bunnyHouseUntil", String(houseUntil));
@@ -2691,7 +2774,7 @@
       }, 18000);
       setInterval(() => {
         if (Math.random() < BITE_CHANCE) biteText();
-      }, 18000);
+      }, 10000);
       setInterval(checkHunger, 60000);
       setInterval(() => {
         if (!bunnyInHouse && hungryMode && Math.random() > 0.34) biteText({ force: true });
