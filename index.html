@@ -1481,9 +1481,8 @@
       const FIVE_MINUTES = 5 * 60;
       const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
       const HOUSE_QUIET_MS = 2 * 60 * 1000;
-      const BITE_IDLE_MS = 5000;
-      const BITE_MIN_MS = 35000;
-      const BITE_MAX_MS = 40000;
+      const BITE_MIN_MS = 20000;
+      const BITE_MAX_MS = 30000;
       const MAX_ACTIVE_BITES = 3;
       const lastVisit = Number(getStore("briefingBunnyLastVisit"));
       const visits = Number(getStore("briefingBunnyVisits")) + 1;
@@ -2693,7 +2692,6 @@
         const force = Boolean(options.force);
         if (bunnyInHouse) return;
         if (document.hidden || drag || chat.classList.contains("is-open")) return;
-        if (!force && Date.now() - lastPointerAt < BITE_IDLE_MS) return;
         if (activeBites.length >= (force ? 8 : MAX_ACTIVE_BITES)) return;
         if (bunny.classList.contains("is-eating")) return;
         const nodes = collectBiteNodes();
