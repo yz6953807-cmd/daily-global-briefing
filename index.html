@@ -870,6 +870,121 @@
     .briefing-bunny.is-hungry .bunny-body {
       animation: bunny-struggle 0.18s linear infinite;
     }
+    .briefing-bunny.is-in-house {
+      filter: drop-shadow(0 8px 12px rgba(16, 28, 34, 0.16));
+    }
+    .briefing-bunny.is-in-house .bunny-body {
+      animation: none;
+      transform: scale(0.82);
+    }
+    .briefing-bunny.is-in-house .bunny-ear,
+    .briefing-bunny.is-in-house .bunny-paw,
+    .briefing-bunny.is-in-house .bunny-tie,
+    .briefing-bunny.is-in-house .bunny-shadow {
+      opacity: 0.72;
+    }
+    .bunny-house {
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      width: 212px;
+      z-index: 78;
+      padding: 40px 12px 12px;
+      border: 1px solid rgba(83, 61, 37, 0.18);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255, 250, 240, 0.92), rgba(241, 249, 243, 0.82)),
+        radial-gradient(circle at 15% 20%, rgba(189, 87, 96, 0.18), transparent 28%),
+        radial-gradient(circle at 88% 82%, rgba(86, 149, 113, 0.18), transparent 32%);
+      box-shadow: 0 18px 34px rgba(31, 26, 18, 0.16), inset 0 1px 0 rgba(255,255,255,0.82);
+      color: #2f3d32;
+      user-select: none;
+    }
+    .bunny-house::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: -28px;
+      height: 58px;
+      border: 1px solid rgba(83, 61, 37, 0.18);
+      border-radius: 8px 8px 3px 3px;
+      background:
+        linear-gradient(135deg, rgba(180, 77, 58, 0.84), rgba(223, 151, 91, 0.78)),
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.32), transparent 24%);
+      transform: perspective(120px) rotateX(20deg);
+      box-shadow: 0 12px 18px rgba(63, 37, 24, 0.15);
+    }
+    .bunny-house::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 34px;
+      width: 54px;
+      height: 48px;
+      transform: translateX(-50%);
+      border-radius: 26px 26px 7px 7px;
+      background: rgba(80, 56, 37, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(80, 56, 37, 0.12);
+      pointer-events: none;
+    }
+    .bunny-house.is-hovering {
+      border-color: rgba(11, 107, 88, 0.38);
+      box-shadow: 0 20px 38px rgba(31, 26, 18, 0.20), 0 0 0 4px rgba(86,149,113,0.13), inset 0 1px 0 rgba(255,255,255,0.88);
+    }
+    .bunny-house.is-active {
+      background:
+        linear-gradient(145deg, rgba(239, 250, 240, 0.94), rgba(255, 250, 238, 0.88)),
+        radial-gradient(circle at 15% 20%, rgba(86, 149, 113, 0.20), transparent 30%),
+        radial-gradient(circle at 88% 82%, rgba(213, 169, 82, 0.22), transparent 32%);
+    }
+    .bunny-house.is-restless::before {
+      animation: house-rattle 0.24s linear infinite;
+    }
+    .bunny-house-title {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 850;
+      margin-bottom: 8px;
+    }
+    .bunny-house-status {
+      position: relative;
+      z-index: 1;
+      min-height: 18px;
+      color: #58705e;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 9px;
+    }
+    .obedience-control {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .obedience-control button {
+      border: 1px solid rgba(45, 64, 51, 0.16);
+      border-radius: 8px;
+      background: rgba(255,255,252,0.74);
+      color: #33453b;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 7px 4px;
+      cursor: pointer;
+      box-shadow: 0 5px 10px rgba(31, 26, 18, 0.07), inset 0 1px 0 rgba(255,255,255,0.76);
+    }
+    .obedience-control button.is-active {
+      border-color: rgba(11, 107, 88, 0.42);
+      background: linear-gradient(145deg, rgba(11,107,88,0.92), rgba(47,109,140,0.82));
+      color: #fff;
+    }
     .bunny-bite-word {
       display: inline-block;
       position: relative;
@@ -938,6 +1053,11 @@
       0%, 100% { transform: translateY(0) scale(1); }
       45% { transform: translateY(-8px) scale(1.04); }
     }
+    @keyframes house-rattle {
+      0%, 100% { transform: perspective(120px) rotateX(20deg) translateX(0); }
+      25% { transform: perspective(120px) rotateX(20deg) translateX(-2px); }
+      75% { transform: perspective(120px) rotateX(20deg) translateX(2px); }
+    }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       article,
@@ -992,6 +1112,12 @@
         transform: scale(0.94);
         transform-origin: bottom right;
       }
+      .bunny-house {
+        left: 12px;
+        bottom: 12px;
+        transform: scale(0.94);
+        transform-origin: bottom left;
+      }
     }
     @media (max-width: 620px) {
       .wrap { width: min(100% - 24px, 1060px); }
@@ -1010,6 +1136,11 @@
       .bunny-basket {
         width: 164px;
         bottom: 112px;
+      }
+      .bunny-house {
+        width: 178px;
+        padding-left: 10px;
+        padding-right: 10px;
       }
       .bunny-basket-title {
         display: grid;
@@ -1271,6 +1402,18 @@
       </div>
     </div>
   </aside>
+  <aside class="bunny-house" id="bunnyHouse" aria-label="小兔安静小屋">
+    <div class="bunny-house-title">
+      <span>小房子</span>
+      <span>乖巧</span>
+    </div>
+    <div class="bunny-house-status" id="bunnyHouseStatus">拖她进来，安静 3 分钟</div>
+    <div class="obedience-control" aria-label="调节小兔乖巧程度">
+      <button type="button" data-obedience="angel" aria-pressed="true">安静</button>
+      <button type="button" data-obedience="gentle" aria-pressed="false">正常</button>
+      <button type="button" data-obedience="spicy" aria-pressed="false">淘气</button>
+    </div>
+  </aside>
   <section class="bunny-chat" id="bunnyChat" aria-label="和毒舌小兔聊天">
     <div class="bunny-chat-header">
       <span>小兔监督员</span>
@@ -1304,6 +1447,9 @@
       const basketProgress = document.getElementById("basketProgress");
       const carrotCount = document.getElementById("carrotCount");
       const alfalfaCount = document.getElementById("alfalfaCount");
+      const bunnyHouse = document.getElementById("bunnyHouse");
+      const bunnyHouseStatus = document.getElementById("bunnyHouseStatus");
+      const obedienceButtons = Array.from(document.querySelectorAll(".obedience-control button"));
       const now = Date.now();
       const getStore = (key, fallback = "0") => {
         try { return localStorage.getItem(key) || fallback; } catch (_) { return fallback; }
@@ -1318,6 +1464,13 @@
       const llmHistory = [];
       const FIVE_MINUTES = 5 * 60;
       const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+      const HOUSE_QUIET_MS = 3 * 60 * 1000;
+      const HOUSE_RESTLESS_MS = 2 * 60 * 1000;
+      const obedienceProfiles = {
+        angel: { label: "安静", chance: 0.08, idleMs: 17000, maxBites: 1 },
+        gentle: { label: "正常", chance: 0.16, idleMs: 12000, maxBites: 2 },
+        spicy: { label: "淘气", chance: 0.34, idleMs: 7600, maxBites: 3 }
+      };
       const lastVisit = Number(getStore("briefingBunnyLastVisit"));
       const visits = Number(getStore("briefingBunnyVisits")) + 1;
       setStore("briefingBunnyVisits", String(visits));
@@ -1855,6 +2008,114 @@
         bunny.style.top = `${clamp(y, 8, window.innerHeight - rect.height - 8)}px`;
       }
 
+      let obedienceMode = getStore("bunnyObedienceMode", "angel");
+      let bunnyInHouse = false;
+      let houseUntil = 0;
+      const houseTimers = { restless: null, release: null, countdown: null };
+
+      function currentObedience() {
+        return obedienceProfiles[obedienceMode] || obedienceProfiles.angel;
+      }
+
+      function updateObedienceButtons() {
+        obedienceButtons.forEach((button) => {
+          const active = button.dataset.obedience === obedienceMode;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+      }
+
+      function setObedience(mode) {
+        obedienceMode = obedienceProfiles[mode] ? mode : "angel";
+        setStore("bunnyObedienceMode", obedienceMode);
+        updateObedienceButtons();
+        setLine(`乖巧程度：${currentObedience().label}。我会少啃点字，暂时装得像受过教育。`);
+      }
+
+      function isPointInHouse(x, y) {
+        const rect = bunnyHouse.getBoundingClientRect();
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      }
+
+      function setHouseHover(x, y) {
+        bunnyHouse.classList.toggle("is-hovering", isPointInHouse(x, y));
+      }
+
+      function clearHouseTimers() {
+        Object.keys(houseTimers).forEach((key) => {
+          clearTimeout(houseTimers[key]);
+          clearInterval(houseTimers[key]);
+          houseTimers[key] = null;
+        });
+      }
+
+      function updateHouseCountdown() {
+        if (!bunnyInHouse) {
+          bunnyHouseStatus.textContent = "拖她进来，安静 3 分钟";
+          return;
+        }
+        const remaining = Math.max(0, houseUntil - Date.now());
+        const seconds = Math.ceil(remaining / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const rest = String(seconds % 60).padStart(2, "0");
+        bunnyHouseStatus.textContent = `安静中 ${minutes}:${rest}`;
+      }
+
+      function positionBunnyInHouse() {
+        const houseRect = bunnyHouse.getBoundingClientRect();
+        const bunnyRect = bunny.getBoundingClientRect();
+        setBunnyPosition(houseRect.left + houseRect.width / 2 - bunnyRect.width / 2, houseRect.top + 22);
+      }
+
+      function releaseBunnyFromHouse(reason = "timeout") {
+        if (!bunnyInHouse) return;
+        clearHouseTimers();
+        bunnyInHouse = false;
+        houseUntil = 0;
+        removeStore("bunnyHouseUntil");
+        bunny.classList.remove("is-in-house");
+        bunnyHouse.classList.remove("is-active", "is-restless", "is-hovering");
+        bunnyHouseStatus.textContent = "拖她进来，安静 3 分钟";
+        const houseRect = bunnyHouse.getBoundingClientRect();
+        setBunnyPosition(houseRect.right + 12, Math.max(92, houseRect.top - 24));
+        if (reason === "timeout") {
+          setLine("三分钟到，我出狱。你不会真以为一间小屋能关住我的嘴吧。");
+        } else if (reason === "drag") {
+          setLine("提前放风？很好，我会把这理解成你同意我继续监督。");
+        }
+        hop();
+      }
+
+      function tuckBunnyInHouse(remainingMs = HOUSE_QUIET_MS, resumed = false) {
+        clearHouseTimers();
+        bunnyInHouse = true;
+        houseUntil = Date.now() + remainingMs;
+        setStore("bunnyHouseUntil", String(houseUntil));
+        bunny.classList.add("is-in-house");
+        bunny.classList.remove("is-eating", "is-lured");
+        bunnyHouse.classList.add("is-active");
+        bunnyHouse.classList.remove("is-hovering", "is-restless");
+        setCarrotMode(false, true);
+        positionBunnyInHouse();
+        updateHouseCountdown();
+        houseTimers.countdown = setInterval(updateHouseCountdown, 1000);
+        const restlessIn = Math.max(0, remainingMs - (HOUSE_QUIET_MS - HOUSE_RESTLESS_MS));
+        houseTimers.restless = setTimeout(() => {
+          if (!bunnyInHouse) return;
+          bunnyHouse.classList.add("is-restless");
+          setLine("已经两分钟了。我在门口练习越狱，主要是为了提醒你别太得意。");
+        }, restlessIn);
+        houseTimers.release = setTimeout(() => releaseBunnyFromHouse("timeout"), remainingMs);
+        if (!resumed) {
+          setLine("好，我进小屋。三分钟内不乱啃字，算我今天职业素养上线。");
+        }
+      }
+
+      obedienceButtons.forEach((button) => {
+        button.addEventListener("click", () => setObedience(button.dataset.obedience));
+      });
+      updateObedienceButtons();
+
       function moveBunnyNearRect(targetRect, direction = "left") {
         const bunnyRect = bunny.getBoundingClientRect();
         const preferLeft = targetRect.left > bunnyRect.width + 34;
@@ -1871,7 +2132,7 @@
       }
 
       function moveRandomly() {
-        if (bunny.classList.contains("is-dragging") || chat.classList.contains("is-open") || carrotMode) return;
+        if (bunnyInHouse || bunny.classList.contains("is-dragging") || chat.classList.contains("is-open") || carrotMode) return;
         const rect = bunny.getBoundingClientRect();
         const maxX = window.innerWidth - rect.width - 12;
         const maxY = window.innerHeight - rect.height - 12;
@@ -1928,6 +2189,12 @@
         }
       }
       checkHunger();
+      const savedHouseUntil = Number(getStore("bunnyHouseUntil", "0"));
+      if (savedHouseUntil > Date.now()) {
+        tuckBunnyInHouse(savedHouseUntil - Date.now(), true);
+      } else {
+        removeStore("bunnyHouseUntil");
+      }
 
       let drag = null;
       let lastPointerAt = Date.now();
@@ -1936,6 +2203,9 @@
       const activeBites = [];
       body.addEventListener("pointerdown", (event) => {
         event.preventDefault();
+        if (bunnyInHouse) {
+          releaseBunnyFromHouse("drag");
+        }
         body.setPointerCapture(event.pointerId);
         const rect = bunny.getBoundingClientRect();
         drag = {
@@ -1954,13 +2224,17 @@
         const x = clamp(event.clientX - drag.dx, 8, window.innerWidth - rect.width - 8);
         const y = clamp(event.clientY - drag.dy, 8, window.innerHeight - rect.height - 8);
         setBunnyPosition(x, y);
+        setHouseHover(event.clientX, event.clientY);
       });
 
       function endDrag(event) {
         if (!drag) return;
         try { body.releasePointerCapture(event.pointerId); } catch (_) {}
         bunny.classList.remove("is-dragging");
-        if (!drag.moved) {
+        bunnyHouse.classList.remove("is-hovering");
+        if (drag.moved && isPointInHouse(event.clientX, event.clientY)) {
+          tuckBunnyInHouse();
+        } else if (!drag.moved) {
           setLine(activeBites.length ? "双击我才吐字。单击只会显得你很急。" : pick(snarks), true);
           hop();
         } else {
@@ -1992,11 +2266,13 @@
         }
       });
 
-      function setCarrotMode(enabled) {
+      function setCarrotMode(enabled, quiet = false) {
         carrotMode = enabled;
         document.body.classList.toggle("bunny-carrot-mode", carrotMode);
         bunny.classList.toggle("is-lured", carrotMode);
-        setLine(pick(carrotMode ? carrotModeSnarks : carrotOffSnarks));
+        if (!quiet) {
+          setLine(pick(carrotMode ? carrotModeSnarks : carrotOffSnarks));
+        }
       }
 
       document.addEventListener("dblclick", (event) => {
@@ -2014,6 +2290,7 @@
       document.addEventListener("pointermove", (event) => {
         lastPointerAt = Date.now();
         if (!carrotMode) return;
+        if (bunnyInHouse) return;
         if (event.pointerType && event.pointerType !== "mouse") return;
         if (drag || chat.classList.contains("is-open")) return;
         const rect = bunny.getBoundingClientRect();
@@ -2405,9 +2682,11 @@
 
       function biteText(options = {}) {
         const force = Boolean(options.force);
+        const profile = currentObedience();
+        if (bunnyInHouse) return;
         if (document.hidden || drag || chat.classList.contains("is-open")) return;
-        if (!force && Date.now() - lastPointerAt < 5200) return;
-        if (activeBites.length >= (force ? 8 : 3)) return;
+        if (!force && Date.now() - lastPointerAt < profile.idleMs) return;
+        if (activeBites.length >= (force ? 8 : profile.maxBites)) return;
         if (bunny.classList.contains("is-eating")) return;
         const nodes = collectBiteNodes();
         if (!nodes.length) return;
@@ -2479,16 +2758,16 @@
 
       setInterval(moveRandomly, 7600);
       setInterval(() => {
-        if (!chat.classList.contains("is-open") && Math.random() > 0.52) {
+        if (!bunnyInHouse && !chat.classList.contains("is-open") && Math.random() > 0.62) {
           setLine(pick(snarks));
         }
       }, 18000);
       setInterval(() => {
-        if (Math.random() > 0.42) biteText();
-      }, 12500);
+        if (Math.random() < currentObedience().chance) biteText();
+      }, 18000);
       setInterval(checkHunger, 60000);
       setInterval(() => {
-        if (hungryMode && Math.random() > 0.18) biteText({ force: true });
+        if (!bunnyInHouse && hungryMode && Math.random() > 0.34) biteText({ force: true });
       }, 2800);
     })();
   </script>
