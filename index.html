@@ -43,6 +43,18 @@
     body[data-font-mode="en"] {
       --font-body: "Avenir Next", "Inter", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
       --font-display: "Georgia", "Times New Roman", "Songti SC", "STSong", serif;
+      --ink: #102535;
+      --muted: #526678;
+      line-height: 1.64;
+    }
+    body[data-font-mode="en"] .summary,
+    body[data-font-mode="en"] article p {
+      letter-spacing: 0.01em;
+    }
+    body[data-font-mode="en"] h1,
+    body[data-font-mode="en"] h2,
+    body[data-font-mode="en"] .metric strong {
+      font-weight: 700;
     }
     body::before {
       content: "";
@@ -179,7 +191,7 @@
       top: 10px;
       z-index: 32;
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) auto auto auto;
+      grid-template-columns: minmax(0, 1fr) auto auto;
       align-items: center;
       gap: 10px;
       margin: 18px 0 10px;
@@ -192,36 +204,6 @@
         linear-gradient(240deg, transparent, rgba(86,149,113,0.13));
       box-shadow: 0 18px 38px rgba(9, 24, 38, 0.14), inset 0 1px 0 rgba(255,255,255,0.80);
       backdrop-filter: blur(16px) saturate(1.04);
-    }
-    .search-field {
-      position: relative;
-      min-width: 0;
-    }
-    .search-field span {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--accent-blue);
-      font-weight: 800;
-      line-height: 1;
-      pointer-events: none;
-    }
-    .search-field input {
-      width: 100%;
-      height: 42px;
-      border: 1px solid rgba(21, 42, 56, 0.15);
-      border-radius: 8px;
-      background: rgba(255, 255, 253, 0.86);
-      box-shadow: inset 0 1px 4px rgba(16, 28, 34, 0.06);
-      color: var(--ink);
-      font: inherit;
-      padding: 0 12px 0 38px;
-      outline: none;
-    }
-    .search-field input:focus {
-      border-color: rgba(47, 109, 140, 0.54);
-      box-shadow: 0 0 0 3px rgba(47, 109, 140, 0.12), inset 0 1px 4px rgba(16, 28, 34, 0.06);
     }
     .tool-filter,
     .font-switch {
@@ -275,7 +257,7 @@
     article {
       margin: 18px 0;
       padding: 24px 26px;
-      border: 1px solid rgba(21, 42, 56, 0.13);
+      border: 1px solid rgba(21, 42, 56, 0.08);
       border-radius: 8px;
       background:
         linear-gradient(145deg, rgba(255,255,252,0.92), rgba(250,253,255,0.82)),
@@ -290,21 +272,35 @@
     article::before {
       content: "";
       position: absolute;
-      inset: -24px;
+      inset: -18px;
       background:
-        repeating-linear-gradient(102deg, rgba(255,255,255,0.22) 0 10px, transparent 10px 22px),
-        linear-gradient(118deg, rgba(47,109,140,0.13), transparent 40%, rgba(181,66,50,0.09) 72%, transparent);
-      opacity: 0.72;
-      filter: blur(8px);
+        radial-gradient(circle at 8% 8%, rgba(95,152,183,0.24), transparent 28%),
+        radial-gradient(circle at 96% 12%, rgba(189,87,96,0.20), transparent 24%),
+        radial-gradient(circle at 4% 88%, rgba(86,149,113,0.21), transparent 24%),
+        radial-gradient(circle at 92% 92%, rgba(213,169,82,0.24), transparent 26%),
+        repeating-linear-gradient(102deg, rgba(255,255,255,0.20) 0 10px, transparent 10px 22px),
+        linear-gradient(118deg, rgba(47,109,140,0.11), transparent 40%, rgba(181,66,50,0.08) 72%, transparent);
+      opacity: 0.92;
+      filter: blur(7px) saturate(1.05);
       pointer-events: none;
     }
     article::after {
       content: "";
       position: absolute;
-      inset: 0;
+      inset: -1px;
       border-radius: inherit;
       pointer-events: none;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55), inset 0 -18px 32px rgba(47,109,140,0.04);
+      background:
+        linear-gradient(90deg, rgba(47,109,140,0.28), transparent 12%, transparent 88%, rgba(181,66,50,0.20)),
+        linear-gradient(180deg, rgba(213,169,82,0.18), transparent 14%, transparent 84%, rgba(86,149,113,0.22)),
+        radial-gradient(circle at 12% 0%, rgba(47,109,140,0.30), transparent 15%),
+        radial-gradient(circle at 102% 24%, rgba(181,66,50,0.24), transparent 16%),
+        radial-gradient(circle at -2% 70%, rgba(86,149,113,0.22), transparent 15%),
+        radial-gradient(circle at 82% 102%, rgba(213,169,82,0.28), transparent 18%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.42), inset 0 -18px 32px rgba(47,109,140,0.04);
+      opacity: 0.82;
+      filter: blur(0.2px);
+      mix-blend-mode: multiply;
     }
     article > * {
       position: relative;
@@ -1005,9 +1001,6 @@
       .briefing-tools {
         padding: 10px;
       }
-      .search-field input {
-        font-size: 16px;
-      }
       article { padding: 18px; }
       h2 { font-size: 19px; }
       .briefing-bunny {
@@ -1042,10 +1035,6 @@
       <div class="metric"><strong>3 倍</strong><span>欧盟计划 5-7 年内扩充数据中心容量，支撑 AI 主权</span></div>
     </section>
     <section class="briefing-tools" aria-label="简报阅读工具">
-      <label class="search-field">
-        <span aria-hidden="true">⌕</span>
-        <input id="briefingSearch" type="search" autocomplete="off" placeholder="搜索新闻、数据、机构..." aria-label="搜索简报内容">
-      </label>
       <div class="tool-filter" id="briefingFilters" aria-label="按主题筛选">
         <button type="button" class="is-active" data-filter="all" aria-pressed="true">全部</button>
         <button type="button" data-filter="财经" aria-pressed="false">财经</button>
@@ -1061,8 +1050,6 @@
       <div class="briefing-count" id="briefingCount" aria-live="polite">8 条</div>
     </section>
   </header>
-
-  <div class="wrap no-results" id="noResults" hidden>没有匹配的简报。换个关键词，小兔暂时没法嘲笑你的检索能力。</div>
 
   <main class="wrap">
     <article>
@@ -1308,9 +1295,7 @@
       const chatLog = document.getElementById("bunnyChatLog");
       const chatForm = document.getElementById("bunnyChatForm");
       const input = document.getElementById("bunnyInput");
-      const briefingSearch = document.getElementById("briefingSearch");
       const briefingCount = document.getElementById("briefingCount");
-      const noResults = document.getElementById("noResults");
       const filterButtons = Array.from(document.querySelectorAll("#briefingFilters button"));
       const fontButtons = Array.from(document.querySelectorAll(".font-switch button"));
       const briefingArticles = Array.from(document.querySelectorAll("main article"));
@@ -1344,32 +1329,300 @@
         return String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
       }
 
+      const briefingCopy = {
+        en: {
+          hero: {
+            eyebrow: "GLOBAL BRIEFING · DAILY INTELLIGENCE",
+            h1: "Daily Global Briefing",
+            meta: "Generated: June 24, 2026 · Coverage: public information from June 22 to June 24, 2026",
+            summary: "Today’s main theme is the repricing of a high-capex era: AI, energy chokepoints, technology sovereignty, and financial infrastructure are all being revalued. The point is not only what happened, but how these developments affect rates, inflation, supply chains, compute investment, and policy choices."
+          },
+          metrics: [
+            ["2.5%", "World Bank 2026 global growth forecast, down from 2.7% in 2025."],
+            ["4.0%", "Estimated global inflation, up from 3.3% in 2025, with energy and food as key pressure points."],
+            ["$1T+", "Estimated intraday market value erased from AI-linked technology shares as investors scrutinize payback cycles."],
+            ["3x", "EU plan to expand data-center capacity over 5 to 7 years to support AI sovereignty."]
+          ],
+          filters: {
+            all: "All",
+            "财经": "Markets",
+            "科技": "Tech",
+            "政策": "Policy",
+            "能源": "Energy",
+            ai: "AI"
+          },
+          toggle: { collapse: "Collapse", expand: "Expand" },
+          articles: [
+            {
+              title: "1. AI Tech Sell-Off Spreads: Markets Shift From Vision Valuations to Payback Audits",
+              tag: "Markets · Technology",
+              points: [
+                ["-2.2%", "Nasdaq decline on June 23"],
+                ["$1T+", "Estimated intraday market value erased"],
+                ["$500B+", "Estimated scale of AI-related borrowing"]
+              ],
+              readouts: [
+                ["Valuation signal", "The retreat in AI heavyweights shows that markets are no longer rewarding compute expansion alone; revenue, margins, and free cash flow now matter more."],
+                ["Transmission path", "Pressure on U.S. mega-cap technology stocks can spill into Asian semiconductors, memory, servers, data-center power, and private financing expectations."]
+              ],
+              paragraphs: [
+                "The correction in U.S. AI and semiconductor shares is no longer a single-company move. It is a broader reassessment of the AI capital-expenditure cycle. Public market reports show the Nasdaq fell about 2.2% on June 23, while the S&P 500 declined about 1.43%; intraday estimates put the technology sector’s market-value loss above $1 trillion. Asian markets then came under pressure, with Korean semiconductor and memory chains hit more visibly, indicating that investors are transmitting U.S. AI valuation stress into global hardware supply chains.",
+                "The professional meaning of this adjustment is that AI remains a long-term productivity variable, but capital markets are breaking the “long revolution” story into concrete financial questions. Hyperscale data centers require chips, servers, land, power, and cooling systems, so capex is highly front-loaded. Some AI infrastructure financing increasingly relies on debt and long-term contracts; the higher rates are, the more distant returns get discounted. If enterprise AI adoption remains stuck in pilots, it will be hard to justify sustained high growth in hardware orders."
+              ],
+              why: "Why it matters: The core risk in the AI trade is shifting from whether the technology works to when commercial returns arrive. That affects Nvidia, cloud providers, memory makers, data-center power investment, and venture exit timing.",
+              watch: "Watch: cloud capex guidance, GPU and memory order visibility, AI application conversion, data-center electricity prices, and debt-financing costs."
+            },
+            {
+              title: "2. Hormuz Shipping Recovers, but Passage Rights, Insurance, and Oil Risks Remain",
+              tag: "Energy · Geopolitics",
+              points: [
+                ["131 ships", "Kpler count from Friday through Monday"],
+                ["39 ships", "Monday traffic, still below pre-conflict daily levels"],
+                ["100-130 ships", "Pre-conflict daily passage range"]
+              ],
+              readouts: [
+                ["Supply-chain meaning", "The strait is not only an energy route; it also affects LNG, fertilizer, insurance, shipping schedules, and Asian import costs."],
+                ["Price meaning", "Even without a blockade, higher insurance and waiting costs can revive oil-price risk premia."]
+              ],
+              paragraphs: [
+                "AP reported that after a temporary U.S.-Iran arrangement, shipping through the Strait of Hormuz is recovering, but more slowly than the market’s assumption that the route has normalized. Kpler tracking showed 131 vessels passed through from Friday to Monday, including 39 on Monday, while the pre-conflict daily average was roughly 100 to 130. The central issue is that the main channel is still affected by mines and military obstacles, forcing ships to use alternative routes through Iranian waters to the north and Omani waters to the south. Capacity, safety, and insurance costs remain different from normal conditions.",
+                "More sensitive questions involve tolls, registration, and management rights. Iran said it would clear mines and remove technical and military obstacles within 30 days, while also proposing vessel registration management. U.S. officials have also mentioned that transit fees could be discussed if a final agreement is not reached. For global energy markets, the risk is not simply blockade versus no blockade. Even an open channel can carry higher insurance, rerouting costs, and compliance uncertainty. Oil, LNG, fertilizer, and freight rates can all feel second-order effects."
+              ],
+              why: "Why it matters: Hormuz is a risk amplifier for global energy prices. As long as passage costs and legal status remain unclear, global inflation expectations will struggle to cool fully.",
+              watch: "Watch: daily passages returning above 100, insurance rates, the Brent-WTI spread, Asian LNG spot prices, and Gulf military deployments."
+            },
+            {
+              title: "3. World Bank Cuts Global Growth Outlook as Developing Economies Enter a High-Debt, Low-Buffer Phase",
+              tag: "Macro · Debt",
+              points: [
+                ["2.5%", "2026 global growth forecast"],
+                ["4.0%", "2026 global inflation forecast"],
+                ["70% of GDP", "Approximate public-debt ratio in developing economies"]
+              ],
+              readouts: [
+                ["Macro judgment", "The world is not entering a synchronized recession; it is entering a period of low growth, high divergence, and elevated financing costs."],
+                ["Fragile links", "Energy importers, food importers, high external-debt countries, and economies with large fiscal deficits face sharper pressure."]
+              ],
+              paragraphs: [
+                "The World Bank’s June Global Economic Prospects report is back in focus because it places energy, food, debt, and high rates in the same frame. The report expects global growth to slow to 2.5% in 2026, down from 2.7% in 2025 and near a post-pandemic low. Global inflation is expected to rise from 3.3% in 2025 to 4.0% in 2026. If Middle East tensions escalate again or commodity flows remain disrupted, global growth could fall to 1.3% in a downside scenario.",
+                "Developing economies face more concentrated shocks. Excluding China and India, many economies may experience a lost decade. Public debt has risen from about 40% of GDP in 2010 to roughly 70% of GDP; the higher debt is, the higher borrowing rates tend to be, and the harder it becomes for governments to cushion food, energy, and employment shocks. The report also warns fertilizer prices could rise by as much as 38%, feeding into food prices and social stability. The World Bank plans to provide up to $100 billion in support over the next 15 months, but that is a buffer, not a cure."
+              ],
+              why: "Why it matters: Global slowing is uneven. Countries with high debt, heavy energy and food imports, and thin reserves are likely to become the weak points of the next financial-stress cycle.",
+              watch: "Watch: the dollar index, U.S. real rates, sovereign spreads, food prices, fertilizer prices, and IMF/World Bank rescue demand."
+            },
+            {
+              title: "4. China Counters U.S. Technology and Defense Restrictions as Rare Earths and Dual-Use Items Gain Weight",
+              tag: "Policy · Supply Chain",
+              points: [
+                ["10 firms", "U.S. defense-linked companies placed under Chinese export restrictions"],
+                ["46 firms", "U.S. companies barred from Chinese government procurement"],
+                ["Dual use", "Items with both civilian and military applications become the focus"]
+              ],
+              readouts: [
+                ["Policy tools", "Export restrictions, procurement bans, entity lists, and dual-use reviews are being combined."],
+                ["Corporate impact", "The largest pressure may not be direct revenue loss, but compliance, replacement supply, and third-country transshipment risk."]
+              ],
+              paragraphs: [
+                "On June 22, China announced export restrictions on 10 U.S. defense-related companies involving military drones, rare-earth mining, and dual-use items. The finance ministry also barred government procurement from 46 U.S. companies, including Lockheed Martin, Raytheon, and General Dynamics. The move responded to the U.S. expansion of its list of Chinese military companies, which brought several large Chinese technology firms under restrictions and limited their participation in U.S. defense contracts.",
+                "In the short run, direct revenue damage may be limited because many affected U.S. companies have modest China exposure. But the medium-term signal is stronger: rare earths, unmanned systems, AI, cloud computing, and advanced manufacturing equipment are being pulled into stricter national-security review. Companies can no longer treat supply chains purely as cost-optimization systems. They must also manage export controls, procurement rules, dual-use attributes, and alternative sourcing. For investors, the policy premium on critical minerals and advanced manufacturing will keep rising."
+              ],
+              why: "Why it matters: Supply-chain competition is expanding from chips to materials, unmanned systems, and procurement rules. Future valuations will depend more on compliance resilience and non-single-source capability.",
+              watch: "Watch: rare-earth export-license approvals, further U.S. entity-list moves, third-country transshipment rules, and defense electronics and drone-component prices."
+            },
+            {
+              title: "5. EU Pushes Technology Sovereignty as Chips, Cloud, and Data Centers Become Hard Infrastructure",
+              tag: "Technology · Europe",
+              points: [
+                ["27 states", "EU-level technology-sovereignty agenda"],
+                ["3x", "Planned data-center capacity expansion over 5 to 7 years"],
+                ["Chips + cloud + AI", "New industrial-policy package"]
+              ],
+              readouts: [
+                ["Infrastructure gap", "Europe has strong regulation and high-end manufacturing, but relies externally on cloud, hyperscale compute, and platform ecosystems."],
+                ["Fiscal constraint", "Technology sovereignty requires data centers, power, and chip investment; the hard part is cross-border coordination and sustained capital."]
+              ],
+              paragraphs: [
+                "The EU is advancing a technology-sovereignty initiative aimed at reducing dependence on U.S. AI and cloud services and Asian chip manufacturing. AP reported that the EU plans to promote local alternatives, extend the direction of the 2023 Chips Act, simplify semiconductor-production regulation, support European manufacturing, and triple data-center capacity over 5 to 7 years to meet AI training and inference needs.",
+                "This is not traditional technology subsidy. It is a policy response to the idea that digital infrastructure can be weaponized. One trigger was the cancellation of Microsoft email access for people linked to the International Criminal Court after U.S. sanctions, which intensified European concern over key cloud-service “switch risk.” Europe’s challenge is that it is strong in regulation but more fragmented in compute, chips, and platform companies. Without alignment among policy, capital, energy, and demand, technology sovereignty can remain a slogan."
+              ],
+              why: "Why it matters: In the AI era, sovereignty is not only written in laws. It also lives in data centers, electricity, chip capacity, and controllable cloud platforms. Europe is trying to fill the hardware gap.",
+              watch: "Watch: EU budget allocations, member-state approvals, data-center electricity policy, European cloud procurement rules, and chip-project execution."
+            },
+            {
+              title: "6. G7 AI Governance Split Emerges: Safety Standards Are Also About Technology Control",
+              tag: "AI · Governance",
+              points: [
+                ["G7", "Wealthy democracies seek AI coordination mechanisms"],
+                ["Frontier models", "Access restrictions become a core dispute"],
+                ["Safety standards", "The debate moves from self-regulation to international coordination"]
+              ],
+              readouts: [
+                ["Governance focus", "Frontier-model access, red-teaming, safety standards, cross-border deployment, and government procurement are entering one framework."],
+                ["Industry focus", "U.S. firms control models and cloud platforms, while Europe is stronger at regulation; their interests do not fully align."]
+              ],
+              paragraphs: [
+                "During the G7, French President Emmanuel Macron urged the U.S. to share frontier AI capabilities and called for democratic countries to jointly design advanced AI regulatory frameworks. He criticized U.S. restrictions on foreign access to Anthropic’s new model as overly nationalist and argued that they could harm long-term U.S. corporate interests. OpenAI CEO Sam Altman also supported creating an international forum to set AI safety standards and strengthen democratic oversight.",
+                "The substance of the debate is that whoever owns models, compute, and deployment channels will hold institutional influence in the AI era. Europe wants to become a rule-maker through regulation, but if the most advanced models, GPU clusters, and cloud platforms are concentrated in the United States, rule-making power and technical execution power may separate. AI governance may evolve from “is it safe?” to “who can access it, who audits it, who can shut it down, and who is liable?” That will affect cross-border model services, government procurement, and compliance costs."
+              ],
+              why: "Why it matters: AI governance is no longer only a technology-ethics issue. It is becoming infrastructure governance, closer to financial clearing and energy chokepoints.",
+              watch: "Watch: whether the G7 creates a standing AI forum, cross-border access rules for frontier models, EU AI Act implementation, and the scope of U.S. export controls."
+            },
+            {
+              title: "7. China Promotes Wider RMB Use as Financial-Infrastructure Competition Moves Into Liquidity",
+              tag: "Finance · China",
+              points: [
+                ["Repo tools", "RMB liquidity for foreign monetary authorities"],
+                ["Shanghai FTZ", "Pilot offshore RMB foreign-exchange trading"],
+                ["Rate corridor", "Policy framework pays more attention to overnight market rates"]
+              ],
+              readouts: [
+                ["Core shift", "RMB internationalization is moving from trade settlement into repos, collateral, offshore trading, and short-end rate frameworks."],
+                ["Comparison point", "The dollar’s advantage comes from Treasury markets, repo markets, swap networks, and crisis-time liquidity supply."]
+              ],
+              paragraphs: [
+                "China’s central bank recently proposed measures to raise international use of the renminbi, including allowing foreign monetary authorities to obtain RMB liquidity using bonds as collateral and piloting offshore RMB foreign-exchange trading in the Shanghai Free Trade Zone. The central bank also plans to narrow the temporary overnight repo and reverse-repo rate corridor and increase use of overnight reverse repos, suggesting that policy operations may place greater weight on overnight rates and short-end funding-market signals.",
+                "The focus is not merely to make more trade settle in RMB. It is to build liquidity support, collateral management, and hedging systems around RMB assets. The dollar system is powerful not only because trade is priced in dollars, but because Treasury markets, repo markets, central-bank swap networks, and crisis liquidity provision reinforce it. If China wants to raise the RMB’s international status, it must fill these financial-infrastructure gaps. Short-term effects may be limited, but the direction deserves long-term tracking."
+              ],
+              why: "Why it matters: Currency internationalization is moving from payments into collateral and liquidity networks. The currency that can provide credible liquidity under stress is easier to hold.",
+              watch: "Watch: offshore RMB turnover, foreign central-bank and institutional use of repo tools, RMB asset-holding structures, and U.S.-China rate differentials."
+            },
+            {
+              title: "8. Open AI Ecosystems Become a Geopolitical Side Effect as U.S. Restrictions May Push China Toward Openness",
+              tag: "AI · Open Source",
+              points: [
+                ["10 years", "Research review of U.S. AI policy and China’s open-source response"],
+                ["Chip limits", "Higher Chinese development costs, but also higher value for open ecosystems"],
+                ["Diffusion effect", "Chinese open models enter global research and application communities"]
+              ],
+              readouts: [
+                ["Technical route", "Closed models pursue frontier capability, while open ecosystems emphasize diffusion speed, local deployment, and developer adoption."],
+                ["Policy paradox", "Chip restrictions can raise development costs, but also increase the strategic value of low-cost open alternatives."]
+              ],
+              paragraphs: [
+                "A June study argues that the U.S. has tried to preserve AI leadership through control over advanced chips and compute infrastructure, but the policy may also generate counter-effects. As external constraints increase, China may be more inclined to embed open-source AI into national technology strategy, using standards coordination, local adaptation, and ecosystem building to reduce reliance on closed supply chains. The study observes that after export-control shocks, Chinese developers became more visibly active in open large-model communities, and China-origin models spread through research and open-source ecosystems.",
+                "The important trend is that technology containment does not only compress an opponent’s capabilities. It can also change how the opponent organizes innovation. Closed leaders rely on capital, compute, and platform advantages; challengers may use open ecosystems, low-cost deployment, and rapid iteration to expand influence. For companies, open models are not merely a cost option. They can also become a supply-chain substitute under geopolitical risk."
+              ],
+              why: "Why it matters: AI competition is not only about whose model is strongest. It also includes ecosystem diffusion, developer adoption, and local deployment capability. Open source is becoming a strategic variable.",
+              watch: "Watch: open-model downloads, enterprise local-deployment shares, inference-cost declines, the scope of U.S. chip restrictions, and China’s alternative-chip ecosystem."
+            }
+          ],
+          footnote: "Sources and caveats: This sample briefing references AP News, The Guardian, World Bank report summaries, arXiv research, China central bank information, and public financial reporting. Market prices, vessel traffic, and policy details can change quickly; the formal daily version should continue checking publication dates, event dates, and primary sources to avoid repeated retelling."
+        }
+      };
+
+      function rememberHtml(element) {
+        if (element && !element.dataset.cnHtml) element.dataset.cnHtml = element.innerHTML;
+      }
+
+      function setElementText(element, text) {
+        if (!element || text === undefined) return;
+        rememberHtml(element);
+        element.textContent = text;
+      }
+
+      function setElementHtml(element, html) {
+        if (!element || html === undefined) return;
+        rememberHtml(element);
+        element.innerHTML = html;
+      }
+
+      function restoreChineseCopy() {
+        document.querySelectorAll("[data-cn-html]").forEach((element) => {
+          element.innerHTML = element.dataset.cnHtml;
+        });
+      }
+
+      function updateToggleLabels() {
+        const en = document.body.dataset.fontMode === "en";
+        document.querySelectorAll(".article-toggle").forEach((button) => {
+          const collapsed = button.closest("article")?.classList.contains("is-collapsed");
+          button.textContent = en
+            ? (collapsed ? briefingCopy.en.toggle.expand : briefingCopy.en.toggle.collapse)
+            : (collapsed ? "展开" : "收起");
+        });
+      }
+
+      function setBriefingCount(visibleCount) {
+        if (!briefingCount) return;
+        briefingCount.textContent = document.body.dataset.fontMode === "en"
+          ? `${visibleCount}/${briefingArticles.length} items`
+          : `${visibleCount}/${briefingArticles.length} 条`;
+      }
+
+      function applyBriefingLanguage(mode) {
+        const en = mode === "en";
+        document.documentElement.lang = en ? "en" : "zh-CN";
+        if (!en) {
+          restoreChineseCopy();
+          updateToggleLabels();
+          return;
+        }
+        const copy = briefingCopy.en;
+        setElementText(document.querySelector(".eyebrow"), copy.hero.eyebrow);
+        setElementText(document.querySelector("h1"), copy.hero.h1);
+        setElementText(document.querySelector(".meta"), copy.hero.meta);
+        setElementText(document.querySelector(".summary"), copy.hero.summary);
+        document.querySelectorAll(".metric").forEach((metric, index) => {
+          const item = copy.metrics[index];
+          if (!item) return;
+          setElementText(metric.querySelector("strong"), item[0]);
+          setElementText(metric.querySelector("span"), item[1]);
+        });
+        filterButtons.forEach((button) => {
+          const label = copy.filters[button.dataset.filter || ""];
+          if (label) setElementText(button, label);
+        });
+        briefingArticles.forEach((article, index) => {
+          const item = copy.articles[index];
+          if (!item) return;
+          setElementText(article.querySelector("h2"), item.title);
+          setElementText(article.querySelector(".tag"), item.tag);
+          article.querySelectorAll(".point").forEach((point, pointIndex) => {
+            const pointCopy = item.points[pointIndex];
+            if (!pointCopy) return;
+            setElementText(point.querySelector("b"), pointCopy[0]);
+            setElementText(point.querySelector("span"), pointCopy[1]);
+          });
+          article.querySelectorAll(".readout div").forEach((readout, readoutIndex) => {
+            const readoutCopy = item.readouts[readoutIndex];
+            if (!readoutCopy) return;
+            setElementHtml(readout, `<b>${readoutCopy[0]}</b>${readoutCopy[1]}`);
+          });
+          article.querySelectorAll("p").forEach((paragraph, paragraphIndex) => {
+            setElementText(paragraph, item.paragraphs[paragraphIndex]);
+          });
+          setElementText(article.querySelector(".why"), item.why);
+          setElementHtml(article.querySelector(".watch"), `<b>Watch: </b>${item.watch.replace(/^Watch:\s*/i, "")}`);
+        });
+        setElementText(document.querySelector(".footnote"), copy.footnote);
+        updateToggleLabels();
+      }
+
       function setBriefingFont(mode) {
         const nextMode = mode === "en" ? "en" : "cn";
         document.body.dataset.fontMode = nextMode;
         setStore("briefingFontMode", nextMode);
+        applyBriefingLanguage(nextMode);
         fontButtons.forEach((button) => {
           const active = button.dataset.font === nextMode;
           button.classList.toggle("is-active", active);
           button.setAttribute("aria-pressed", String(active));
         });
+        applyBriefingFilters();
       }
 
       function applyBriefingFilters() {
-        const query = normalizeBriefingText(briefingSearch?.value || "");
         let visibleCount = 0;
         briefingArticles.forEach((article) => {
           const haystack = article.dataset.searchText || "";
           const tags = article.dataset.tags || "";
-          const matchesQuery = !query || haystack.includes(query);
           const matchesFilter = activeBriefingFilter === "all" || haystack.includes(activeBriefingFilter) || tags.includes(activeBriefingFilter);
-          const visible = matchesQuery && matchesFilter;
+          const visible = matchesFilter;
           article.hidden = !visible;
-          article.classList.toggle("is-search-match", visible && query.length > 0);
+          article.classList.remove("is-search-match");
           if (visible) visibleCount += 1;
         });
-        if (briefingCount) briefingCount.textContent = `${visibleCount}/${briefingArticles.length} 条`;
-        if (noResults) noResults.hidden = visibleCount > 0;
+        setBriefingCount(visibleCount);
       }
 
       function setupBriefingInterface() {
@@ -1388,8 +1641,8 @@
           toggle.addEventListener("click", () => {
             const collapsed = !article.classList.contains("is-collapsed");
             article.classList.toggle("is-collapsed", collapsed);
-            toggle.textContent = collapsed ? "展开" : "收起";
             toggle.setAttribute("aria-expanded", String(!collapsed));
+            updateToggleLabels();
           });
           const tools = document.createElement("div");
           tools.className = "article-tools";
@@ -1413,7 +1666,6 @@
             applyBriefingFilters();
           });
         });
-        briefingSearch?.addEventListener("input", applyBriefingFilters);
         fontButtons.forEach((button) => {
           button.addEventListener("click", () => setBriefingFont(button.dataset.font));
         });
