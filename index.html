@@ -232,12 +232,295 @@
       border-radius: 12px;
       background: rgba(255,255,255,0.72);
     }
+    .briefing-bunny {
+      position: fixed;
+      left: calc(100vw - 176px);
+      top: calc(100vh - 190px);
+      width: 128px;
+      z-index: 80;
+      user-select: none;
+      touch-action: none;
+      filter: drop-shadow(0 16px 24px rgba(16, 28, 34, 0.24));
+    }
+    .briefing-bunny.is-hopping .bunny-body {
+      animation: bunny-hop 1.2s ease-in-out;
+    }
+    .briefing-bunny.is-dragging .bunny-body {
+      animation: bunny-struggle 0.28s linear infinite;
+      cursor: grabbing;
+    }
+    .bunny-body {
+      position: relative;
+      width: 96px;
+      height: 112px;
+      margin: 30px auto 0;
+      cursor: grab;
+    }
+    .bunny-ear {
+      position: absolute;
+      width: 24px;
+      height: 58px;
+      top: -26px;
+      background: #fff9f0;
+      border: 3px solid #2d2a2a;
+      border-radius: 50% 50% 44% 44%;
+      transform-origin: bottom center;
+    }
+    .bunny-ear::after {
+      content: "";
+      position: absolute;
+      inset: 8px 6px 10px;
+      background: #f6b6bd;
+      border-radius: 999px;
+    }
+    .bunny-ear.left {
+      left: 18px;
+      transform: rotate(-14deg);
+    }
+    .bunny-ear.right {
+      right: 18px;
+      transform: rotate(14deg);
+    }
+    .bunny-head {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      width: 80px;
+      height: 76px;
+      background: #fffaf2;
+      border: 3px solid #2d2a2a;
+      border-radius: 48% 48% 44% 44%;
+    }
+    .bunny-face {
+      position: absolute;
+      inset: 0;
+    }
+    .bunny-eye {
+      position: absolute;
+      top: 28px;
+      width: 8px;
+      height: 12px;
+      background: #221d1b;
+      border-radius: 999px;
+    }
+    .bunny-eye.left { left: 23px; }
+    .bunny-eye.right { right: 23px; }
+    .bunny-brow {
+      position: absolute;
+      top: 22px;
+      width: 17px;
+      height: 3px;
+      background: #221d1b;
+      border-radius: 999px;
+    }
+    .bunny-brow.left {
+      left: 18px;
+      transform: rotate(16deg);
+    }
+    .bunny-brow.right {
+      right: 18px;
+      transform: rotate(-16deg);
+    }
+    .bunny-cheek {
+      position: absolute;
+      top: 43px;
+      width: 14px;
+      height: 8px;
+      background: rgba(240, 126, 137, 0.55);
+      border-radius: 999px;
+    }
+    .bunny-cheek.left { left: 13px; }
+    .bunny-cheek.right { right: 13px; }
+    .bunny-mouth {
+      position: absolute;
+      left: 36px;
+      top: 43px;
+      width: 12px;
+      height: 7px;
+      border-bottom: 3px solid #221d1b;
+      border-radius: 0 0 999px 999px;
+      transform: rotate(-7deg);
+    }
+    .bunny-tie {
+      position: absolute;
+      left: 36px;
+      top: 77px;
+      width: 24px;
+      height: 18px;
+      background: #b54232;
+      border: 2px solid #2d2a2a;
+      border-radius: 7px 7px 10px 10px;
+      transform: rotate(4deg);
+    }
+    .bunny-paw {
+      position: absolute;
+      top: 78px;
+      width: 20px;
+      height: 18px;
+      background: #fffaf2;
+      border: 3px solid #2d2a2a;
+      border-radius: 999px;
+    }
+    .bunny-paw.left {
+      left: 12px;
+      transform: rotate(24deg);
+    }
+    .bunny-paw.right {
+      right: 12px;
+      transform: rotate(-24deg);
+    }
+    .bunny-shadow {
+      width: 74px;
+      height: 15px;
+      margin: -4px auto 0;
+      background: rgba(17, 31, 44, 0.18);
+      border-radius: 999px;
+      filter: blur(2px);
+    }
+    .bunny-bubble {
+      position: absolute;
+      right: 88px;
+      bottom: 86px;
+      width: 250px;
+      max-width: min(250px, calc(100vw - 28px));
+      padding: 12px 14px;
+      border: 1px solid rgba(16, 28, 34, 0.16);
+      border-radius: 12px;
+      background: rgba(255, 255, 252, 0.94);
+      color: #17212b;
+      font-size: 14px;
+      line-height: 1.48;
+      box-shadow: 0 12px 34px rgba(9, 24, 38, 0.18);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .bunny-bubble.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .bunny-bubble::after {
+      content: "";
+      position: absolute;
+      right: -9px;
+      bottom: 20px;
+      width: 16px;
+      height: 16px;
+      background: rgba(255, 255, 252, 0.94);
+      border-top: 1px solid rgba(16, 28, 34, 0.16);
+      border-right: 1px solid rgba(16, 28, 34, 0.16);
+      transform: rotate(45deg);
+    }
+    .bunny-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .bunny-actions button,
+    .bunny-chat button {
+      border: 1px solid rgba(19, 32, 42, 0.14);
+      border-radius: 8px;
+      background: #fff;
+      color: #19372f;
+      font: inherit;
+      font-size: 13px;
+      padding: 6px 9px;
+      cursor: pointer;
+    }
+    .bunny-actions button:hover,
+    .bunny-chat button:hover {
+      background: #eef6f2;
+    }
+    .bunny-chat {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: min(340px, calc(100vw - 24px));
+      border: 1px solid rgba(16, 28, 34, 0.16);
+      border-radius: 14px;
+      background: rgba(255, 255, 252, 0.96);
+      box-shadow: 0 18px 48px rgba(9, 24, 38, 0.20);
+      z-index: 81;
+      overflow: hidden;
+      display: none;
+    }
+    .bunny-chat.is-open {
+      display: block;
+    }
+    .bunny-chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: #f0f6f2;
+      border-bottom: 1px solid rgba(19, 32, 42, 0.10);
+      font-weight: 700;
+      color: #14362d;
+    }
+    .bunny-chat-log {
+      max-height: 220px;
+      overflow: auto;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .bunny-chat-log div {
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .bunny-chat-log .bot {
+      background: #eef6f2;
+      color: #18372f;
+    }
+    .bunny-chat-log .user {
+      background: #f7efe7;
+      color: #3b2d24;
+      justify-self: end;
+    }
+    .bunny-chat-form {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      border-top: 1px solid rgba(19, 32, 42, 0.10);
+    }
+    .bunny-chat-form input {
+      min-width: 0;
+      flex: 1;
+      border: 1px solid rgba(19, 32, 42, 0.16);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    @keyframes bunny-hop {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      35% { transform: translateY(-14px) rotate(-4deg); }
+      68% { transform: translateY(-6px) rotate(4deg); }
+    }
+    @keyframes bunny-struggle {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      25% { transform: rotate(-7deg) translateY(-2px); }
+      75% { transform: rotate(7deg) translateY(2px); }
+    }
     @media (max-width: 860px) {
       .dashboard { grid-template-columns: repeat(2, 1fr); }
       .points { grid-template-columns: 1fr; }
       .readout { grid-template-columns: 1fr; }
       .article-top { display: block; }
       .tag { display: inline-flex; margin-top: 10px; }
+      .briefing-bunny {
+        width: 110px;
+        left: calc(100vw - 138px);
+        top: calc(100vh - 164px);
+      }
+      .bunny-bubble {
+        right: 56px;
+        bottom: 74px;
+        width: 220px;
+      }
     }
     @media (max-width: 620px) {
       .wrap { width: min(100% - 24px, 1060px); }
@@ -246,6 +529,10 @@
       .dashboard { grid-template-columns: 1fr; }
       article { padding: 18px; }
       h2 { font-size: 19px; }
+      .briefing-bunny {
+        transform: scale(0.88);
+        transform-origin: bottom right;
+      }
     }
   </style>
 </head>
@@ -442,5 +729,231 @@
       来源与不确定性：本样稿参考 AP News、The Guardian、World Bank 相关报告摘要、arXiv 研究、中国央行及财经媒体公开信息。市场价格、船舶通行、政策执行细则会随时间变化；正式每日版会继续核对发布日期、事件日期和一手来源，避免重复转述。
     </div>
   </footer>
+  <div class="briefing-bunny" id="briefingBunny" aria-label="毒舌小兔监督员">
+    <div class="bunny-bubble" id="bunnyBubble">
+      <div id="bunnyLine">来了？今天终于想起世界还在转了。</div>
+      <div class="bunny-actions">
+        <button type="button" id="bunnyTalk">聊两句</button>
+        <button type="button" id="bunnyOpen">打开链接</button>
+      </div>
+    </div>
+    <div class="bunny-body" id="bunnyBody" role="button" tabindex="0" aria-label="点我听吐槽，拖我会反抗">
+      <div class="bunny-ear left"></div>
+      <div class="bunny-ear right"></div>
+      <div class="bunny-head">
+        <div class="bunny-face">
+          <div class="bunny-brow left"></div>
+          <div class="bunny-brow right"></div>
+          <div class="bunny-eye left"></div>
+          <div class="bunny-eye right"></div>
+          <div class="bunny-cheek left"></div>
+          <div class="bunny-cheek right"></div>
+          <div class="bunny-mouth"></div>
+        </div>
+      </div>
+      <div class="bunny-paw left"></div>
+      <div class="bunny-paw right"></div>
+      <div class="bunny-tie"></div>
+    </div>
+    <div class="bunny-shadow"></div>
+  </div>
+  <section class="bunny-chat" id="bunnyChat" aria-label="和毒舌小兔聊天">
+    <div class="bunny-chat-header">
+      <span>小兔监督员</span>
+      <button type="button" id="bunnyClose">收起</button>
+    </div>
+    <div class="bunny-chat-log" id="bunnyChatLog">
+      <div class="bot">别紧张，我只是负责把你从信息茧房里拎出来。问我市场、AI、政策，或者直接承认你今天只想摸鱼。</div>
+    </div>
+    <form class="bunny-chat-form" id="bunnyChatForm">
+      <input id="bunnyInput" autocomplete="off" placeholder="跟她说点什么..." aria-label="输入聊天内容">
+      <button type="submit">发送</button>
+    </form>
+  </section>
+  <script>
+    (() => {
+      const SITE_URL = "https://yz6953807-cmd.github.io/daily-global-briefing/";
+      const bunny = document.getElementById("briefingBunny");
+      const body = document.getElementById("bunnyBody");
+      const bubble = document.getElementById("bunnyBubble");
+      const line = document.getElementById("bunnyLine");
+      const chat = document.getElementById("bunnyChat");
+      const chatLog = document.getElementById("bunnyChatLog");
+      const chatForm = document.getElementById("bunnyChatForm");
+      const input = document.getElementById("bunnyInput");
+      const now = Date.now();
+      const lastVisit = Number(localStorage.getItem("briefingBunnyLastVisit") || 0);
+      const visits = Number(localStorage.getItem("briefingBunnyVisits") || 0) + 1;
+      localStorage.setItem("briefingBunnyVisits", String(visits));
+      localStorage.setItem("briefingBunnyLastVisit", String(now));
+
+      const snarks = [
+        "别只看标题，标题负责诱惑你，数据负责打脸。",
+        "今天也要读完再焦虑，先后顺序很重要。",
+        "市场不是情绪垃圾桶，虽然很多人确实这么用。",
+        "你以为你在看新闻，其实是在查自己钱包的天气预报。",
+        "AI 很厉害，但别把所有 PPT 都叫生产力革命。",
+        "能源通道一紧张，通胀就开始在门口换鞋。",
+        "政策新闻别跳过，钱经常就是从规则缝里流走的。",
+        "看三分钟不亏，看三十秒也行，至少比刷玄学建议强。"
+      ];
+      const dragSnarks = [
+        "放手！我不是你拖延症的进度条。",
+        "你拖我干嘛，拖项目了吗？",
+        "轻点，我还要监督你明天继续看。",
+        "别拽了，K 线都没你这么曲折。"
+      ];
+      const absentSnarks = [
+        "你可算来了。我还以为你把世界经济外包给玄学了。",
+        "超过一天没来，信息素养已经开始打哈欠了。",
+        "昨天没看？没事，世界没有等你，挺残酷但很公平。"
+      ];
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(value, max));
+      }
+
+      function setLine(text, sticky = false) {
+        line.textContent = text;
+        bubble.classList.add("is-visible");
+        clearTimeout(setLine.timer);
+        if (!sticky) {
+          setLine.timer = setTimeout(() => bubble.classList.remove("is-visible"), 6200);
+        }
+      }
+
+      function hop() {
+        bunny.classList.add("is-hopping");
+        setTimeout(() => bunny.classList.remove("is-hopping"), 1300);
+      }
+
+      function moveRandomly() {
+        if (bunny.classList.contains("is-dragging") || chat.classList.contains("is-open")) return;
+        const rect = bunny.getBoundingClientRect();
+        const maxX = window.innerWidth - rect.width - 12;
+        const maxY = window.innerHeight - rect.height - 12;
+        const x = clamp(rect.left + (Math.random() * 160 - 80), 12, maxX);
+        const y = clamp(rect.top + (Math.random() * 120 - 60), 80, maxY);
+        bunny.style.left = `${x}px`;
+        bunny.style.top = `${y}px`;
+        hop();
+      }
+
+      const gapHours = lastVisit ? (now - lastVisit) / 36e5 : 0;
+      if (!lastVisit) {
+        setLine("初次见面。我负责可爱，也负责戳破你对信息摄入的幻想。", true);
+      } else if (gapHours > 30) {
+        setLine(absentSnarks[Math.floor(Math.random() * absentSnarks.length)], true);
+      } else {
+        setLine(snarks[Math.floor(Math.random() * snarks.length)]);
+      }
+
+      let drag = null;
+      body.addEventListener("pointerdown", (event) => {
+        event.preventDefault();
+        body.setPointerCapture(event.pointerId);
+        const rect = bunny.getBoundingClientRect();
+        drag = {
+          dx: event.clientX - rect.left,
+          dy: event.clientY - rect.top,
+          moved: false
+        };
+        bunny.classList.add("is-dragging");
+        setLine(dragSnarks[Math.floor(Math.random() * dragSnarks.length)]);
+      });
+
+      body.addEventListener("pointermove", (event) => {
+        if (!drag) return;
+        drag.moved = true;
+        const rect = bunny.getBoundingClientRect();
+        const x = clamp(event.clientX - drag.dx, 8, window.innerWidth - rect.width - 8);
+        const y = clamp(event.clientY - drag.dy, 8, window.innerHeight - rect.height - 8);
+        bunny.style.left = `${x}px`;
+        bunny.style.top = `${y}px`;
+      });
+
+      function endDrag(event) {
+        if (!drag) return;
+        try { body.releasePointerCapture(event.pointerId); } catch (_) {}
+        bunny.classList.remove("is-dragging");
+        if (!drag.moved) {
+          setLine(snarks[Math.floor(Math.random() * snarks.length)], true);
+          hop();
+        } else {
+          setLine("行吧，位置你定；观点我定。", false);
+        }
+        drag = null;
+      }
+      body.addEventListener("pointerup", endDrag);
+      body.addEventListener("pointercancel", endDrag);
+      body.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          setLine(snarks[Math.floor(Math.random() * snarks.length)], true);
+          hop();
+        }
+      });
+
+      document.getElementById("bunnyOpen").addEventListener("click", () => {
+        localStorage.setItem("briefingBunnyLinkClicks", String(Number(localStorage.getItem("briefingBunnyLinkClicks") || 0) + 1));
+        window.open(SITE_URL, "_blank", "noopener");
+      });
+      document.getElementById("bunnyTalk").addEventListener("click", () => {
+        chat.classList.add("is-open");
+        input.focus();
+      });
+      document.getElementById("bunnyClose").addEventListener("click", () => chat.classList.remove("is-open"));
+
+      function addChat(text, who) {
+        const item = document.createElement("div");
+        item.className = who;
+        item.textContent = text;
+        chatLog.appendChild(item);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
+
+      function replyTo(text) {
+        const value = text.toLowerCase();
+        if (/ai|人工智能|芯片|算力|模型/.test(value)) {
+          return "AI 的重点不是谁嗓门大，是谁付得起电费、芯片和耐心。今天的报告先看资本开支和回报周期，别被口号哄睡。";
+        }
+        if (/能源|油|霍尔木兹|航运|通胀/.test(value)) {
+          return "能源新闻最烦人的地方是：你以为它离你很远，它会从油价、运费、食品价格一路绕回你的账单。";
+        }
+        if (/政策|央行|利率|人民币|美元/.test(value)) {
+          return "政策不是背景音，是游戏规则。真正影响钱包的，经常不是新闻里最大声的那句。";
+        }
+        if (/累|烦|不想|摸鱼|焦虑/.test(value)) {
+          return "允许你累，但不允许你用短视频假装休息。看两条关键数据就走，今天也算没完全输。";
+        }
+        if (/链接|网站|打开/.test(value)) {
+          return `固定链接在这儿：${SITE_URL}。点进去，别让我的监督职业生涯显得太荒凉。`;
+        }
+        const replies = [
+          "这问题问得不错，至少比“今天买啥”成熟一点点。",
+          "我的建议：先看数据，再有情绪。顺序反了容易被市场教育。",
+          "听起来像个大问题。先把它拆成：谁受益、谁买单、持续多久。",
+          "如果一个新闻没有数字、没有时间、没有影响链条，那它多半只是在热闹。"
+        ];
+        return replies[Math.floor(Math.random() * replies.length)];
+      }
+
+      chatForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        addChat(text, "user");
+        input.value = "";
+        setTimeout(() => addChat(replyTo(text), "bot"), 220);
+      });
+
+      setInterval(moveRandomly, 7600);
+      setInterval(() => {
+        if (!chat.classList.contains("is-open") && Math.random() > 0.52) {
+          setLine(snarks[Math.floor(Math.random() * snarks.length)]);
+        }
+      }, 18000);
+    })();
+  </script>
 </body>
 </html>
