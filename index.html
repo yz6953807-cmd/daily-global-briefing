@@ -890,17 +890,29 @@
         "我过来了。现在轮到你的注意力别逃跑。"
       ];
       const biteSnarks = [
-        "我偷吃了一口文字。别慌，几秒后吐回来，知识不会因此变甜。",
+        "我偷吃了一口文字。想要回来？点我，别只会瞪屏幕。",
         "这句我先咬走了。谁让你刚刚走神。",
         "文字口感一般，信息密度还行，比热搜有嚼劲。",
         "我吃掉一点重点，看看你是不是终于紧张了。",
-        "别找了，在我嘴里。马上还你，急什么。"
+        "别找了，在我嘴里。点我才还，阅读也要有点互动成本。"
       ];
       const restoreSnarks = [
         "吐回去了。你看，恢复速度比很多公司指引还诚实。",
         "文字还你。下次认真看，我就少加餐。",
         "重点归位。你也可以稍微归位一下。",
         "恢复了，别装作刚才真的在读。"
+      ];
+      const carrotModeSnarks = [
+        "胡萝卜模式开启。你负责晃，我负责判断你是不是在摸鱼。",
+        "行，胡萝卜上桌。我会跟着，但不会因此尊重你的拖延。",
+        "诱饵生效。现在你有一只会追着胡萝卜骂人的小兔。",
+        "胡萝卜模式开了，别把这当生产力工具，虽然它已经比你很多会议有效。"
+      ];
+      const carrotOffSnarks = [
+        "胡萝卜收走。终于不用被你的鼠标牵着走了。",
+        "正常鼠标恢复。阅读秩序短暂回归，值得纪念。",
+        "诱饵撤下。现在请把注意力放回文字，别放回虚空。",
+        "胡萝卜下线。你也可以顺便让拖延症下线。"
       ];
       const knowledgeSnarks = [
         "查到了。你看，提问比假装懂强多了。",
@@ -939,7 +951,7 @@
       }
 
       function moveRandomly() {
-        if (bunny.classList.contains("is-dragging") || chat.classList.contains("is-open")) return;
+        if (bunny.classList.contains("is-dragging") || chat.classList.contains("is-open") || carrotMode) return;
         const rect = bunny.getBoundingClientRect();
         const maxX = window.innerWidth - rect.width - 12;
         const maxY = window.innerHeight - rect.height - 12;
@@ -961,6 +973,8 @@
       let drag = null;
       let lastPointerAt = Date.now();
       let lastLureLineAt = 0;
+      let carrotMode = false;
+      const activeBites = [];
       body.addEventListener("pointerdown", (event) => {
         event.preventDefault();
         body.setPointerCapture(event.pointerId);
@@ -988,7 +1002,11 @@
         try { body.releasePointerCapture(event.pointerId); } catch (_) {}
         bunny.classList.remove("is-dragging");
         if (!drag.moved) {
-          setLine(pick(snarks), true);
+          if (activeBites.length) {
+            restoreBites();
+          } else {
+            setLine(pick(snarks), true);
+          }
           hop();
         } else {
           setLine("行吧，位置你定；观点我定。", false);
@@ -1005,32 +1023,38 @@
         }
       });
 
+      function setCarrotMode(enabled) {
+        carrotMode = enabled;
+        document.body.classList.toggle("bunny-carrot-mode", carrotMode);
+        bunny.classList.toggle("is-lured", carrotMode);
+        setLine(pick(carrotMode ? carrotModeSnarks : carrotOffSnarks));
+      }
+
+      document.addEventListener("dblclick", (event) => {
+        if (event.target.closest("button, input, a, .bunny-chat")) return;
+        setCarrotMode(!carrotMode);
+      });
+
       document.addEventListener("pointermove", (event) => {
         lastPointerAt = Date.now();
+        if (!carrotMode) return;
         if (event.pointerType && event.pointerType !== "mouse") return;
-        if (drag) return;
+        if (drag || chat.classList.contains("is-open")) return;
         const rect = bunny.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         const distance = Math.hypot(event.clientX - centerX, event.clientY - centerY);
-        if (distance < 230) {
-          document.body.classList.add("bunny-carrot-mode");
-          bunny.classList.add("is-lured");
-          const nextX = rect.left + (event.clientX - centerX) * 0.18;
-          const nextY = rect.top + (event.clientY - centerY) * 0.18;
-          setBunnyPosition(nextX, nextY);
-          if (Date.now() - lastLureLineAt > 4200) {
-            setLine(pick(lureSnarks));
-            lastLureLineAt = Date.now();
-          }
-        } else {
-          document.body.classList.remove("bunny-carrot-mode");
-          bunny.classList.remove("is-lured");
+        const pull = distance > 340 ? 0.10 : 0.18;
+        const nextX = rect.left + (event.clientX - centerX) * pull;
+        const nextY = rect.top + (event.clientY - centerY) * pull;
+        setBunnyPosition(nextX, nextY);
+        if (Date.now() - lastLureLineAt > 4200) {
+          setLine(pick(lureSnarks));
+          lastLureLineAt = Date.now();
         }
       }, { passive: true });
       document.addEventListener("pointerleave", () => {
-        document.body.classList.remove("bunny-carrot-mode");
-        bunny.classList.remove("is-lured");
+        if (!carrotMode) bunny.classList.remove("is-lured");
       });
 
       document.getElementById("bunnyOpen").addEventListener("click", () => {
@@ -1252,6 +1276,7 @@
       function biteText() {
         if (document.hidden || drag || chat.classList.contains("is-open")) return;
         if (Date.now() - lastPointerAt < 5200) return;
+        if (activeBites.length >= 3) return;
         const nodes = collectBiteNodes();
         if (!nodes.length) return;
         const node = pick(nodes);
@@ -1269,13 +1294,21 @@
         mark.setAttribute("aria-label", `被小兔偷吃的文字：${bite}`);
         const after = document.createTextNode(text.slice(start + biteLength));
         node.replaceWith(before, mark, after);
+        activeBites.push({ mark, text: bite });
         setLine(pick(biteSnarks));
         hop();
-        setTimeout(() => {
-          if (!mark.isConnected) return;
-          mark.replaceWith(document.createTextNode(bite));
-          setLine(pick(restoreSnarks));
-        }, 3600 + Math.random() * 1800);
+      }
+
+      function restoreBites() {
+        let restored = 0;
+        while (activeBites.length) {
+          const bite = activeBites.shift();
+          if (bite.mark.isConnected) {
+            bite.mark.replaceWith(document.createTextNode(bite.text));
+            restored += 1;
+          }
+        }
+        setLine(restored ? pick(restoreSnarks) : pick(snarks), true);
       }
 
       setInterval(moveRandomly, 7600);
