@@ -1057,6 +1057,10 @@
       body.addEventListener("dblclick", (event) => {
         event.preventDefault();
         event.stopPropagation();
+        if (carrotMode) {
+          setCarrotMode(false);
+          return;
+        }
         restoreBites();
         hop();
       });
@@ -1080,9 +1084,16 @@
       }
 
       document.addEventListener("dblclick", (event) => {
-        if (event.target.closest("button, input, a, .bunny-chat, .briefing-bunny")) return;
-        setCarrotMode(!carrotMode);
-      });
+        if (event.target.closest("button, input, a, .bunny-chat")) return;
+        if (carrotMode) {
+          event.preventDefault();
+          event.stopPropagation();
+          setCarrotMode(false);
+          return;
+        }
+        if (event.target.closest(".briefing-bunny")) return;
+        setCarrotMode(true);
+      }, true);
 
       document.addEventListener("pointermove", (event) => {
         lastPointerAt = Date.now();
@@ -1104,6 +1115,11 @@
       }, { passive: true });
       document.addEventListener("pointerleave", () => {
         if (!carrotMode) bunny.classList.remove("is-lured");
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && carrotMode) {
+          setCarrotMode(false);
+        }
       });
 
       document.getElementById("bunnyOpen").addEventListener("click", () => {
