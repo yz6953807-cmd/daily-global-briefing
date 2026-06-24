@@ -256,6 +256,9 @@
       animation: bunny-struggle 0.28s linear infinite;
       cursor: grabbing;
     }
+    .briefing-bunny.is-eating .bunny-body {
+      animation: bunny-chew-body 0.34s ease-in-out infinite;
+    }
     .bunny-body {
       position: relative;
       width: 96px;
@@ -347,6 +350,18 @@
       border-bottom: 3px solid #221d1b;
       border-radius: 0 0 999px 999px;
       transform: rotate(-7deg);
+    }
+    .briefing-bunny.is-eating .bunny-mouth {
+      left: 32px;
+      top: 40px;
+      width: 20px;
+      height: 17px;
+      border: 3px solid #221d1b;
+      border-top: 0;
+      border-radius: 0 0 999px 999px;
+      background: #221d1b;
+      transform: rotate(0deg) scaleY(1);
+      animation: bunny-mouth-chomp 0.18s steps(2, end) infinite;
     }
     .bunny-tie {
       position: absolute;
@@ -515,22 +530,36 @@
       padding: 8px 10px;
       font: inherit;
     }
-    .bunny-bite-mark {
+    .bunny-bite-word {
       display: inline-block;
       position: relative;
+      margin: 0 0.12em;
+      min-width: 0.6em;
+      vertical-align: baseline;
+      white-space: nowrap;
+    }
+    .bunny-food-char {
+      display: inline-block;
+      transform-origin: center bottom;
+      transition: opacity 0.16s ease, transform 0.16s ease, width 0.16s ease;
+    }
+    .bunny-food-char.is-chomped {
+      width: 0;
+      opacity: 0;
+      transform: translateY(-0.35em) scale(0.18) rotate(-24deg);
+    }
+    .bunny-bite-word.is-eaten {
       min-width: 3.4em;
       height: 1.05em;
-      margin: 0 0.12em;
       border-radius: 999px;
       vertical-align: -0.12em;
       background:
         radial-gradient(circle at 16% 35%, transparent 0 5px, rgba(255, 244, 218, 0.9) 5.5px 100%),
         linear-gradient(120deg, rgba(255, 218, 154, 0.92), rgba(255, 248, 231, 0.98));
       box-shadow: inset 0 0 0 1px rgba(91, 60, 29, 0.16), 0 2px 7px rgba(82, 56, 34, 0.12);
-      transform: rotate(-1.2deg);
       animation: bite-wiggle 0.5s ease-in-out infinite alternate;
     }
-    .bunny-bite-mark::after {
+    .bunny-bite-word.is-eaten::after {
       content: "被吃掉";
       position: absolute;
       left: 50%;
@@ -551,6 +580,15 @@
       0%, 100% { transform: rotate(0deg) translateY(0); }
       25% { transform: rotate(-7deg) translateY(-2px); }
       75% { transform: rotate(7deg) translateY(2px); }
+    }
+    @keyframes bunny-chew-body {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      45% { transform: translateY(2px) rotate(-2deg); }
+      70% { transform: translateY(-1px) rotate(2deg); }
+    }
+    @keyframes bunny-mouth-chomp {
+      0% { transform: scaleY(1) translateY(0); }
+      100% { transform: scaleY(0.48) translateY(3px); }
     }
     @keyframes bite-wiggle {
       from { transform: rotate(-1.2deg) translateY(0); }
@@ -895,11 +933,11 @@
         "我过来了。现在轮到你的注意力别逃跑。"
       ];
       const biteSnarks = [
-        "我偷吃了一口文字。想要回来？点我，别只会瞪屏幕。",
+        "我张嘴了，吧唧吧唧。想要回来？双击我，别只会瞪屏幕。",
         "这句我先咬走了。谁让你刚刚走神。",
         "文字口感一般，信息密度还行，比热搜有嚼劲。",
-        "我吃掉一点重点，看看你是不是终于紧张了。",
-        "别找了，在我嘴里。点我才还，阅读也要有点互动成本。"
+        "我一个字一个字吃，看看你是不是终于紧张了。",
+        "别找了，在我嘴里。双击我才还，阅读也要有点互动成本。"
       ];
       const restoreSnarks = [
         "吐回去了。你看，恢复速度比很多公司指引还诚实。",
@@ -1007,11 +1045,7 @@
         try { body.releasePointerCapture(event.pointerId); } catch (_) {}
         bunny.classList.remove("is-dragging");
         if (!drag.moved) {
-          if (activeBites.length) {
-            restoreBites();
-          } else {
-            setLine(pick(snarks), true);
-          }
+          setLine(activeBites.length ? "双击我才吐字。单击只会显得你很急。" : pick(snarks), true);
           hop();
         } else {
           setLine("行吧，位置你定；观点我定。", false);
@@ -1020,10 +1054,20 @@
       }
       body.addEventListener("pointerup", endDrag);
       body.addEventListener("pointercancel", endDrag);
+      body.addEventListener("dblclick", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        restoreBites();
+        hop();
+      });
       body.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          setLine(pick(snarks), true);
+          if (activeBites.length) {
+            restoreBites();
+          } else {
+            setLine(pick(snarks), true);
+          }
           hop();
         }
       });
@@ -1036,7 +1080,7 @@
       }
 
       document.addEventListener("dblclick", (event) => {
-        if (event.target.closest("button, input, a, .bunny-chat")) return;
+        if (event.target.closest("button, input, a, .bunny-chat, .briefing-bunny")) return;
         setCarrotMode(!carrotMode);
       });
 
@@ -1357,7 +1401,7 @@
         blocks.forEach((block) => {
           const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
             acceptNode(node) {
-              if (node.parentElement?.closest(".bunny-bite-mark")) return NodeFilter.FILTER_REJECT;
+              if (node.parentElement?.closest(".bunny-bite-word")) return NodeFilter.FILTER_REJECT;
               const value = node.nodeValue || "";
               return /[\u4e00-\u9fa5A-Za-z0-9]/.test(value) && value.trim().length > 18
                 ? NodeFilter.FILTER_ACCEPT
@@ -1373,6 +1417,7 @@
         if (document.hidden || drag || chat.classList.contains("is-open")) return;
         if (Date.now() - lastPointerAt < 5200) return;
         if (activeBites.length >= 3) return;
+        if (bunny.classList.contains("is-eating")) return;
         const nodes = collectBiteNodes();
         if (!nodes.length) return;
         const node = pick(nodes);
@@ -1385,25 +1430,56 @@
         const start = trimmedStart + localStart;
         const bite = text.slice(start, start + biteLength);
         const before = document.createTextNode(text.slice(0, start));
-        const mark = document.createElement("span");
-        mark.className = "bunny-bite-mark";
-        mark.setAttribute("aria-label", `被小兔偷吃的文字：${bite}`);
+        const wrapper = document.createElement("span");
+        wrapper.className = "bunny-bite-word";
+        wrapper.setAttribute("aria-label", `正在被小兔偷吃的文字：${bite}`);
+        Array.from(bite).forEach((char) => {
+          const item = document.createElement("span");
+          item.className = "bunny-food-char";
+          item.textContent = char;
+          wrapper.appendChild(item);
+        });
         const after = document.createTextNode(text.slice(start + biteLength));
-        node.replaceWith(before, mark, after);
-        activeBites.push({ mark, text: bite });
+        node.replaceWith(before, wrapper, after);
+        const record = { wrapper, text: bite, timer: null };
+        activeBites.push(record);
         setLine(pick(biteSnarks));
+        bunny.classList.add("is-eating");
         hop();
+        const chars = Array.from(wrapper.querySelectorAll(".bunny-food-char"));
+        let index = 0;
+        record.timer = setInterval(() => {
+          if (!wrapper.isConnected) {
+            clearInterval(record.timer);
+            bunny.classList.remove("is-eating");
+            return;
+          }
+          if (index < chars.length) {
+            chars[index].classList.add("is-chomped");
+            index += 1;
+            return;
+          }
+          clearInterval(record.timer);
+          record.timer = null;
+          wrapper.textContent = "";
+          wrapper.classList.add("is-eaten");
+          wrapper.setAttribute("aria-label", `被小兔偷吃的文字：${bite}`);
+          bunny.classList.remove("is-eating");
+          setLine("咽下去了。双击我，我再考虑吐回来。");
+        }, 120);
       }
 
       function restoreBites() {
         let restored = 0;
         while (activeBites.length) {
           const bite = activeBites.shift();
-          if (bite.mark.isConnected) {
-            bite.mark.replaceWith(document.createTextNode(bite.text));
+          if (bite.timer) clearInterval(bite.timer);
+          if (bite.wrapper.isConnected) {
+            bite.wrapper.replaceWith(document.createTextNode(bite.text));
             restored += 1;
           }
         }
+        bunny.classList.remove("is-eating");
         setLine(restored ? pick(restoreSnarks) : pick(snarks), true);
       }
 
