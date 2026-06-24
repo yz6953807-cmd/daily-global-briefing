@@ -938,9 +938,6 @@
         radial-gradient(circle at 15% 20%, rgba(86, 149, 113, 0.20), transparent 30%),
         radial-gradient(circle at 88% 82%, rgba(213, 169, 82, 0.22), transparent 32%);
     }
-    .bunny-house.is-restless::before {
-      animation: house-rattle 0.24s linear infinite;
-    }
     .bunny-house-title {
       position: relative;
       z-index: 1;
@@ -960,30 +957,6 @@
       font-weight: 700;
       line-height: 1.35;
       margin-bottom: 9px;
-    }
-    .obedience-control {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-    .obedience-control button {
-      border: 1px solid rgba(45, 64, 51, 0.16);
-      border-radius: 8px;
-      background: rgba(255,255,252,0.74);
-      color: #33453b;
-      font: inherit;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 7px 4px;
-      cursor: pointer;
-      box-shadow: 0 5px 10px rgba(31, 26, 18, 0.07), inset 0 1px 0 rgba(255,255,255,0.76);
-    }
-    .obedience-control button.is-active {
-      border-color: rgba(11, 107, 88, 0.42);
-      background: linear-gradient(145deg, rgba(11,107,88,0.92), rgba(47,109,140,0.82));
-      color: #fff;
     }
     .bunny-bite-word {
       display: inline-block;
@@ -1052,11 +1025,6 @@
     @keyframes basket-pop {
       0%, 100% { transform: translateY(0) scale(1); }
       45% { transform: translateY(-8px) scale(1.04); }
-    }
-    @keyframes house-rattle {
-      0%, 100% { transform: perspective(120px) rotateX(20deg) translateX(0); }
-      25% { transform: perspective(120px) rotateX(20deg) translateX(-2px); }
-      75% { transform: perspective(120px) rotateX(20deg) translateX(2px); }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -1405,14 +1373,9 @@
   <aside class="bunny-house" id="bunnyHouse" aria-label="小兔安静小屋">
     <div class="bunny-house-title">
       <span>小房子</span>
-      <span>乖巧</span>
+      <span>安静区</span>
     </div>
-    <div class="bunny-house-status" id="bunnyHouseStatus">拖她进来，安静 3 分钟</div>
-    <div class="obedience-control" aria-label="调节小兔乖巧程度">
-      <button type="button" data-obedience="angel" aria-pressed="true">安静</button>
-      <button type="button" data-obedience="gentle" aria-pressed="false">正常</button>
-      <button type="button" data-obedience="spicy" aria-pressed="false">淘气</button>
-    </div>
+    <div class="bunny-house-status" id="bunnyHouseStatus">拖她进来，安静 2 分钟</div>
   </aside>
   <section class="bunny-chat" id="bunnyChat" aria-label="和毒舌小兔聊天">
     <div class="bunny-chat-header">
@@ -1449,7 +1412,6 @@
       const alfalfaCount = document.getElementById("alfalfaCount");
       const bunnyHouse = document.getElementById("bunnyHouse");
       const bunnyHouseStatus = document.getElementById("bunnyHouseStatus");
-      const obedienceButtons = Array.from(document.querySelectorAll(".obedience-control button"));
       const now = Date.now();
       const getStore = (key, fallback = "0") => {
         try { return localStorage.getItem(key) || fallback; } catch (_) { return fallback; }
@@ -1464,13 +1426,10 @@
       const llmHistory = [];
       const FIVE_MINUTES = 5 * 60;
       const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-      const HOUSE_QUIET_MS = 3 * 60 * 1000;
-      const HOUSE_RESTLESS_MS = 2 * 60 * 1000;
-      const obedienceProfiles = {
-        angel: { label: "安静", chance: 0.08, idleMs: 17000, maxBites: 1 },
-        gentle: { label: "正常", chance: 0.16, idleMs: 12000, maxBites: 2 },
-        spicy: { label: "淘气", chance: 0.34, idleMs: 7600, maxBites: 3 }
-      };
+      const HOUSE_QUIET_MS = 2 * 60 * 1000;
+      const BITE_IDLE_MS = 12000;
+      const BITE_CHANCE = 0.18;
+      const MAX_ACTIVE_BITES = 2;
       const lastVisit = Number(getStore("briefingBunnyLastVisit"));
       const visits = Number(getStore("briefingBunnyVisits")) + 1;
       setStore("briefingBunnyVisits", String(visits));
@@ -2008,29 +1967,9 @@
         bunny.style.top = `${clamp(y, 8, window.innerHeight - rect.height - 8)}px`;
       }
 
-      let obedienceMode = getStore("bunnyObedienceMode", "angel");
       let bunnyInHouse = false;
       let houseUntil = 0;
-      const houseTimers = { restless: null, release: null, countdown: null };
-
-      function currentObedience() {
-        return obedienceProfiles[obedienceMode] || obedienceProfiles.angel;
-      }
-
-      function updateObedienceButtons() {
-        obedienceButtons.forEach((button) => {
-          const active = button.dataset.obedience === obedienceMode;
-          button.classList.toggle("is-active", active);
-          button.setAttribute("aria-pressed", String(active));
-        });
-      }
-
-      function setObedience(mode) {
-        obedienceMode = obedienceProfiles[mode] ? mode : "angel";
-        setStore("bunnyObedienceMode", obedienceMode);
-        updateObedienceButtons();
-        setLine(`乖巧程度：${currentObedience().label}。我会少啃点字，暂时装得像受过教育。`);
-      }
+      const houseTimers = { release: null, countdown: null };
 
       function isPointInHouse(x, y) {
         const rect = bunnyHouse.getBoundingClientRect();
@@ -2051,7 +1990,7 @@
 
       function updateHouseCountdown() {
         if (!bunnyInHouse) {
-          bunnyHouseStatus.textContent = "拖她进来，安静 3 分钟";
+          bunnyHouseStatus.textContent = "拖她进来，安静 2 分钟";
           return;
         }
         const remaining = Math.max(0, houseUntil - Date.now());
@@ -2074,12 +2013,12 @@
         houseUntil = 0;
         removeStore("bunnyHouseUntil");
         bunny.classList.remove("is-in-house");
-        bunnyHouse.classList.remove("is-active", "is-restless", "is-hovering");
-        bunnyHouseStatus.textContent = "拖她进来，安静 3 分钟";
+        bunnyHouse.classList.remove("is-active", "is-hovering");
+        bunnyHouseStatus.textContent = "拖她进来，安静 2 分钟";
         const houseRect = bunnyHouse.getBoundingClientRect();
         setBunnyPosition(houseRect.right + 12, Math.max(92, houseRect.top - 24));
         if (reason === "timeout") {
-          setLine("三分钟到，我出狱。你不会真以为一间小屋能关住我的嘴吧。");
+          setLine("两分钟到，我出门放风。文字们最好开始做心理建设。");
         } else if (reason === "drag") {
           setLine("提前放风？很好，我会把这理解成你同意我继续监督。");
         }
@@ -2094,27 +2033,16 @@
         bunny.classList.add("is-in-house");
         bunny.classList.remove("is-eating", "is-lured");
         bunnyHouse.classList.add("is-active");
-        bunnyHouse.classList.remove("is-hovering", "is-restless");
+        bunnyHouse.classList.remove("is-hovering");
         setCarrotMode(false, true);
         positionBunnyInHouse();
         updateHouseCountdown();
         houseTimers.countdown = setInterval(updateHouseCountdown, 1000);
-        const restlessIn = Math.max(0, remainingMs - (HOUSE_QUIET_MS - HOUSE_RESTLESS_MS));
-        houseTimers.restless = setTimeout(() => {
-          if (!bunnyInHouse) return;
-          bunnyHouse.classList.add("is-restless");
-          setLine("已经两分钟了。我在门口练习越狱，主要是为了提醒你别太得意。");
-        }, restlessIn);
         houseTimers.release = setTimeout(() => releaseBunnyFromHouse("timeout"), remainingMs);
         if (!resumed) {
-          setLine("好，我进小屋。三分钟内不乱啃字，算我今天职业素养上线。");
+          setLine("好，我进小屋。两分钟内不乱啃字，算我给阅读秩序一点面子。");
         }
       }
-
-      obedienceButtons.forEach((button) => {
-        button.addEventListener("click", () => setObedience(button.dataset.obedience));
-      });
-      updateObedienceButtons();
 
       function moveBunnyNearRect(targetRect, direction = "left") {
         const bunnyRect = bunny.getBoundingClientRect();
@@ -2682,11 +2610,10 @@
 
       function biteText(options = {}) {
         const force = Boolean(options.force);
-        const profile = currentObedience();
         if (bunnyInHouse) return;
         if (document.hidden || drag || chat.classList.contains("is-open")) return;
-        if (!force && Date.now() - lastPointerAt < profile.idleMs) return;
-        if (activeBites.length >= (force ? 8 : profile.maxBites)) return;
+        if (!force && Date.now() - lastPointerAt < BITE_IDLE_MS) return;
+        if (activeBites.length >= (force ? 8 : MAX_ACTIVE_BITES)) return;
         if (bunny.classList.contains("is-eating")) return;
         const nodes = collectBiteNodes();
         if (!nodes.length) return;
@@ -2763,7 +2690,7 @@
         }
       }, 18000);
       setInterval(() => {
-        if (Math.random() < currentObedience().chance) biteText();
+        if (Math.random() < BITE_CHANCE) biteText();
       }, 18000);
       setInterval(checkHunger, 60000);
       setInterval(() => {
