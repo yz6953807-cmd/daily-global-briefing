@@ -1481,8 +1481,9 @@
       const FIVE_MINUTES = 5 * 60;
       const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
       const HOUSE_QUIET_MS = 2 * 60 * 1000;
-      const BITE_IDLE_MS = 6500;
-      const BITE_CHANCE = 0.42;
+      const BITE_IDLE_MS = 5000;
+      const BITE_MIN_MS = 35000;
+      const BITE_MAX_MS = 40000;
       const MAX_ACTIVE_BITES = 3;
       const lastVisit = Number(getStore("briefingBunnyLastVisit"));
       const visits = Number(getStore("briefingBunnyVisits")) + 1;
@@ -2171,22 +2172,19 @@
       let activeSeconds = Number(sessionStorage.getItem("bunnyActiveSeconds") || 0);
       function updateRewardProgress() {
         const minutes = Math.min(5, Math.floor(activeSeconds / 60));
-        basketStatus.textContent = sessionStorage.getItem("bunnySessionRewarded") === "1"
-          ? "本次已进货"
-          : `浏览 ${minutes}/5 分钟`;
+        basketStatus.textContent = `浏览 ${minutes}/5 分钟`;
         basketProgress.style.width = `${Math.min(100, (activeSeconds / FIVE_MINUTES) * 100)}%`;
       }
       updateRewardProgress();
       setInterval(() => {
-        if (document.hidden || sessionStorage.getItem("bunnySessionRewarded") === "1") return;
+        if (document.hidden) return;
         activeSeconds += 1;
+        while (activeSeconds >= FIVE_MINUTES) {
+          awardFood("five-minute-session");
+          activeSeconds -= FIVE_MINUTES;
+        }
         sessionStorage.setItem("bunnyActiveSeconds", String(activeSeconds));
         updateRewardProgress();
-        if (activeSeconds >= FIVE_MINUTES) {
-          sessionStorage.setItem("bunnySessionRewarded", "1");
-          awardFood("five-minute-session");
-          updateRewardProgress();
-        }
       }, 1000);
 
       let hungryMode = false;
@@ -2766,15 +2764,21 @@
         setLine(restored ? pick(restoreSnarks) : pick(snarks), true);
       }
 
+      function scheduleNextBite() {
+        const delay = BITE_MIN_MS + Math.random() * (BITE_MAX_MS - BITE_MIN_MS);
+        setTimeout(() => {
+          biteText();
+          scheduleNextBite();
+        }, delay);
+      }
+
       setInterval(moveRandomly, 7600);
       setInterval(() => {
         if (!bunnyInHouse && !chat.classList.contains("is-open") && Math.random() > 0.62) {
           setLine(pick(snarks));
         }
       }, 18000);
-      setInterval(() => {
-        if (Math.random() < BITE_CHANCE) biteText();
-      }, 10000);
+      scheduleNextBite();
       setInterval(checkHunger, 60000);
       setInterval(() => {
         if (!bunnyInHouse && hungryMode && Math.random() > 0.34) biteText({ force: true });
