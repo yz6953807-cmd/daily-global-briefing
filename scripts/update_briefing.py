@@ -34,9 +34,20 @@ DATE_STR = TODAY.isoformat()
 USER_AGENT = "daily-global-briefing/1.0 (+https://yz6953807-cmd.github.io/daily-global-briefing/)"
 ARK_ENDPOINT = os.environ.get("ARK_ENDPOINT", "https://ark.cn-beijing.volces.com/api/v3/chat/completions")
 ARK_MODEL = os.environ.get("ARK_MODEL") or "doubao-seed-1-6-250615"
+RECENT_DATES = {TODAY, TODAY - timedelta(days=1)}
+MAX_ARTICLES = 8
+MAX_SOURCE_ITEMS = 2
+MAX_GROUP_ITEMS = 4
 
 
 FEEDS = [
+    ("Financial Times", "https://www.ft.com/rss/home", "财经"),
+    ("WSJ Markets", "https://feeds.a.dj.com/rss/RSSMarketsMain.xml", "财经"),
+    ("WSJ Technology", "https://feeds.a.dj.com/rss/RSSWSJD.xml", "科技"),
+    ("CNBC Top News", "https://www.cnbc.com/id/100003114/device/rss/rss.html", "财经"),
+    ("CNBC World News", "https://www.cnbc.com/id/100727362/device/rss/rss.html", "政策"),
+    ("CNBC Technology", "https://www.cnbc.com/id/19854910/device/rss/rss.html", "科技"),
+    ("Nikkei Asia", "https://asia.nikkei.com/rss/feed/nar", "财经"),
     ("The Guardian Business", "https://www.theguardian.com/business/rss", "财经"),
     ("The Guardian Technology", "https://www.theguardian.com/technology/rss", "科技"),
     ("The Guardian Environment", "https://www.theguardian.com/environment/rss", "能源"),
@@ -45,12 +56,22 @@ FEEDS = [
     ("BBC Technology", "https://feeds.bbci.co.uk/news/technology/rss.xml", "科技"),
     ("BBC World", "https://feeds.bbci.co.uk/news/world/rss.xml", "政策"),
     ("TechCrunch", "https://techcrunch.com/feed/", "科技"),
+    ("MIT Technology Review", "https://www.technologyreview.com/feed/", "科技"),
+    ("The Verge", "https://www.theverge.com/rss/index.xml", "科技"),
+    ("Ars Technica", "https://feeds.arstechnica.com/arstechnica/index", "科技"),
+    ("OpenAI News", "https://openai.com/news/rss.xml", "AI"),
+    ("Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml", "政策"),
+    ("DW News", "https://rss.dw.com/rdf/rss-en-all", "政策"),
+    ("France 24", "https://www.france24.com/en/rss", "政策"),
+    ("Euronews", "https://www.euronews.com/rss?level=theme&name=news", "政策"),
     ("SEC Press Releases", "https://www.sec.gov/news/pressreleases.rss", "财经"),
     ("UN News", "https://news.un.org/feed/subscribe/en/news/all/rss.xml", "政策"),
     ("Federal Reserve", "https://www.federalreserve.gov/feeds/press_all.xml", "财经"),
     ("ECB", "https://www.ecb.europa.eu/rss/press.html", "财经"),
     ("IMF", "https://www.imf.org/en/News/RSS", "财经"),
     ("Nature", "https://www.nature.com/nature.rss", "科技"),
+    ("STAT News", "https://www.statnews.com/feed/", "科技"),
+    ("NASA News", "https://www.nasa.gov/news-release/feed/", "科技"),
     ("arXiv AI", "https://rss.arxiv.org/rss/cs.AI", "AI"),
     ("arXiv Machine Learning", "https://rss.arxiv.org/rss/cs.LG", "AI"),
 ]
@@ -111,10 +132,19 @@ SOFT_NEWS_KEYWORDS = [
     "music", "duck off", "career spotlight", "travel", "restaurant", "garden",
     "wellness", "ageing", "aging", "lifestyle", "horoscope", "quiz", "tv",
     "book review", "theatre", "theater", "dating", "royal", "weather forecast",
+    "editor's letter", "editors letter", "photo essay", "week in review",
+    "all challenges big and small",
 ]
 
 
 SOURCE_CN = {
+    "Financial Times": "金融时报",
+    "WSJ Markets": "华尔街日报市场频道",
+    "WSJ Technology": "华尔街日报科技频道",
+    "CNBC Top News": "CNBC 头条新闻",
+    "CNBC World News": "CNBC 世界新闻",
+    "CNBC Technology": "CNBC 科技频道",
+    "Nikkei Asia": "日经亚洲",
     "The Guardian Business": "卫报商业频道",
     "The Guardian Technology": "卫报科技频道",
     "The Guardian Environment": "卫报环境频道",
@@ -123,14 +153,61 @@ SOURCE_CN = {
     "BBC Technology": "BBC 科技频道",
     "BBC World": "BBC 世界新闻",
     "TechCrunch": "TechCrunch 科技媒体",
+    "MIT Technology Review": "MIT 科技评论",
+    "The Verge": "The Verge 科技媒体",
+    "Ars Technica": "Ars Technica 科技媒体",
+    "OpenAI News": "OpenAI 官方新闻",
+    "Al Jazeera": "半岛电视台",
+    "DW News": "德国之声",
+    "France 24": "法国 24",
+    "Euronews": "欧洲新闻台",
     "SEC Press Releases": "美国证券交易委员会",
     "UN News": "联合国新闻",
     "Federal Reserve": "美联储",
     "ECB": "欧洲央行",
     "IMF": "国际货币基金组织",
     "Nature": "Nature 期刊",
+    "STAT News": "STAT 医药科技新闻",
+    "NASA News": "NASA 官方新闻",
     "arXiv AI": "arXiv AI 论文库",
     "arXiv Machine Learning": "arXiv 机器学习论文库",
+}
+
+
+SOURCE_GROUP = {
+    "Financial Times": "global-financial-media",
+    "WSJ Markets": "global-financial-media",
+    "WSJ Technology": "global-financial-media",
+    "CNBC Top News": "global-financial-media",
+    "CNBC World News": "global-financial-media",
+    "CNBC Technology": "global-financial-media",
+    "Nikkei Asia": "asia-media",
+    "The Guardian Business": "uk-europe-media",
+    "The Guardian Technology": "uk-europe-media",
+    "The Guardian Environment": "uk-europe-media",
+    "The Guardian Science": "uk-europe-media",
+    "BBC Business": "uk-europe-media",
+    "BBC Technology": "uk-europe-media",
+    "BBC World": "uk-europe-media",
+    "Al Jazeera": "global-world-media",
+    "DW News": "uk-europe-media",
+    "France 24": "uk-europe-media",
+    "Euronews": "uk-europe-media",
+    "TechCrunch": "tech-media",
+    "MIT Technology Review": "tech-media",
+    "The Verge": "tech-media",
+    "Ars Technica": "tech-media",
+    "OpenAI News": "official-institutions",
+    "SEC Press Releases": "official-institutions",
+    "UN News": "official-institutions",
+    "Federal Reserve": "official-institutions",
+    "ECB": "official-institutions",
+    "IMF": "official-institutions",
+    "NASA News": "official-institutions",
+    "Nature": "science-research",
+    "STAT News": "science-research",
+    "arXiv AI": "science-research",
+    "arXiv Machine Learning": "science-research",
 }
 
 
@@ -252,11 +329,89 @@ def score_item(item: FeedItem) -> float:
     score += impact_hits * 3.5
     if any(word in text for word in ["breaking", "tariff", "central bank", "ai", "chip", "oil", "sanction", "inflation", "growth", "ipo", "fraud", "antitrust"]):
         score += 5
-    if item.source in {"Federal Reserve", "ECB", "IMF", "SEC Press Releases", "Nature"}:
+    if item.source in {"Federal Reserve", "ECB", "IMF", "SEC Press Releases", "UN News", "OpenAI News", "NASA News", "Nature"}:
         score += 2.5
-    if item.source in {"TechCrunch", "BBC Business", "BBC Technology"}:
+    if item.source in {"Financial Times", "WSJ Markets", "WSJ Technology", "CNBC Top News", "CNBC World News", "Nikkei Asia"}:
+        score += 2.0
+    if item.source in {"TechCrunch", "MIT Technology Review", "The Verge", "Ars Technica", "BBC Business", "BBC Technology"}:
         score += 1.5
     return score
+
+
+def published_local_date(item: FeedItem):
+    return item.published.astimezone(TZ).date()
+
+
+def is_recent_publication(item: FeedItem) -> bool:
+    return published_local_date(item) in RECENT_DATES
+
+
+def source_group(source: str) -> str:
+    return SOURCE_GROUP.get(source, "other-authoritative-source")
+
+
+def source_family(source: str) -> str:
+    family_prefixes = {
+        "CNBC": "CNBC",
+        "WSJ": "Wall Street Journal",
+        "The Guardian": "The Guardian",
+        "BBC": "BBC",
+        "arXiv": "arXiv",
+    }
+    for prefix, family in family_prefixes.items():
+        if source.startswith(prefix):
+            return family
+    return source
+
+
+def date_window_cn() -> str:
+    return " / ".join(f"{day.month}月{day.day}日" for day in sorted(RECENT_DATES, reverse=True))
+
+
+def date_window_en() -> str:
+    return " / ".join(day.strftime("%b %-d, %Y") if sys.platform != "win32" else day.strftime("%b %d, %Y") for day in sorted(RECENT_DATES, reverse=True))
+
+
+def diversify_items(candidates: list[FeedItem], limit: int = 12) -> list[FeedItem]:
+    family_counts: dict[str, int] = {}
+    group_counts: dict[str, int] = {}
+    selected: list[FeedItem] = []
+
+    def try_add(item: FeedItem, *, unique_family: bool, relax_group: bool = False) -> bool:
+        family = source_family(item.source)
+        group = source_group(item.source)
+        if item in selected:
+            return False
+        if unique_family and family_counts.get(family, 0) > 0:
+            return False
+        if family_counts.get(family, 0) >= MAX_SOURCE_ITEMS:
+            return False
+        if group_counts.get(group, 0) >= MAX_GROUP_ITEMS:
+            if not relax_group:
+                return False
+        selected.append(item)
+        family_counts[family] = family_counts.get(family, 0) + 1
+        group_counts[group] = group_counts.get(group, 0) + 1
+        return True
+
+    for item in candidates:
+        try_add(item, unique_family=True)
+        if len(selected) >= limit:
+            return selected
+
+    for item in candidates:
+        try_add(item, unique_family=False)
+        if len(selected) >= limit:
+            return selected
+
+    # Keep the same-publisher cap strict, but relax group caps if a quiet news day
+    # leaves too few cross-category items.
+    for item in candidates:
+        try_add(item, unique_family=False, relax_group=True)
+        if len(selected) >= limit:
+            break
+
+    return selected
 
 
 def collect_items() -> list[FeedItem]:
@@ -265,11 +420,11 @@ def collect_items() -> list[FeedItem]:
         all_items.extend(parse_feed(source, url, category))
         time.sleep(0.2)
 
+    recent_items = [item for item in all_items if is_recent_publication(item)]
     seen: set[str] = set()
     deduped: list[FeedItem] = []
-    for item in all_items:
-        key = re.sub(r"[^a-z0-9]+", " ", item.title.lower()).strip()
-        key = " ".join(key.split()[:12])
+    for item in recent_items:
+        key = topic_key(item)
         if key in seen:
             continue
         seen.add(key)
@@ -278,8 +433,12 @@ def collect_items() -> list[FeedItem]:
             deduped.append(item)
 
     deduped.sort(key=lambda item: (item.score, item.published), reverse=True)
-    selected = deduped[:12]
-    log(f"collected {len(all_items)} feed items, selected {len(selected)}")
+    selected = diversify_items(deduped, 12)
+    log(
+        f"collected {len(all_items)} feed items, "
+        f"{len(recent_items)} within {date_window_cn()}, selected {len(selected)} "
+        f"from {len({source_family(item.source) for item in selected})} source families"
+    )
     return selected
 
 
@@ -312,12 +471,16 @@ def ask_ark(items: list[FeedItem]) -> dict | None:
     user = {
         "date": DATE_STR,
         "timezone": "Asia/Shanghai",
+        "allowed_publication_dates": sorted(day.isoformat() for day in RECENT_DATES),
         "task": (
             "从这些公开来源条目中筛选 8 条最重要新闻，生成中英文网页日报。"
+            "只能使用 allowed_publication_dates 内发布或更新的条目；如果不足 8 条，宁可少写，不要使用更早日期。"
+            "来源必须多元：同一来源最多 2 条，尽量覆盖全球财经媒体、国际新闻机构、官方机构、科技专业源和研究来源。"
             "优先全球范围内真正重磅的信息：央行和财政政策、市场和通胀冲击、IPO/上市、并购融资、公司丑闻或监管调查、反垄断、重大诉讼、网络安全泄露、AI/芯片/云/数据中心、能源通道、地缘安全和关键科技突破。"
             "剔除无关痛痒的地方政治直播、体育娱乐、生活方式、职业介绍、软性人物故事和泛泛科普。"
             "中文要专业但易懂，每条两段；英文是对应真实英文版本。"
             "如果条目摘要缺少数据，请用来源、时间、机构、影响链条和观察点补足，不要伪造数字。"
+            "source 字段必须原样使用 items.source 的英文来源名，url 必须原样使用 items.url。"
         ),
         "required_json_schema": {
             "summary_cn": "一句今日主线，70-120字",
@@ -401,6 +564,26 @@ def has_any(text: str, words: list[str]) -> bool:
     return any(word in text for word in words)
 
 
+def topic_key(item: FeedItem) -> str:
+    text = f"{item.title} {item.summary}".lower()
+    topic_patterns = [
+        ("openai-broadcom-chip", ["openai", "broadcom", "chip"]),
+        ("google-play-store-payments", ["google", "play store", "payments"]),
+        ("microsoft-quantum-claims", ["microsoft", "quantum", "claims"]),
+        ("cerebras-earnings", ["cerebras", "earnings"]),
+        ("nvidia-smuggled-chips", ["nvidia", "smuggled", "chips"]),
+        ("north-sea-oil-gas", ["north sea", "oil", "gas"]),
+        ("oil-price-gouging", ["oil", "price gouging"]),
+        ("france-heatwave-infrastructure", ["heatwave", "french infrastructure"]),
+        ("micron-ai-chips-profit", ["micron", "profit", "ai", "chips"]),
+    ]
+    for key, words in topic_patterns:
+        if all(word in text for word in words):
+            return key
+    key = re.sub(r"[^a-z0-9]+", " ", item.title.lower()).strip()
+    return " ".join(key.split()[:12])
+
+
 def fallback_cn_title(index: int, item: FeedItem, categories: list[str]) -> str:
     text = f"{item.title} {item.summary}".lower()
     cases = [
@@ -410,10 +593,12 @@ def fallback_cn_title(index: int, item: FeedItem, categories: list[str]) -> str:
         (["grid operator", "extra power", "supply crunch"], "英国电网高价采购备用电力，极端天气考验能源韧性"),
         (["cerebras", "stock plunges"], "Cerebras 财报后股价大跌，AI 芯片公司盈利预期受审视"),
         (["openai", "custom chip", "broadcom"], "OpenAI 推进自研芯片，AI 算力供应链继续重组"),
-        (["chip war", "washington"], "欧洲反击美国芯片战，半导体政策博弈继续升级"),
+        (["chip war", "match act", "export control"], "全球芯片政策博弈升级，半导体供应链继续被安全议程重写"),
+        (["nato", "iran war"], "北约与伊朗冲突立场分歧，美国盟友关系承压"),
         (["spacesail", "starlink"], "中国低轨卫星项目受关注，全球卫星互联网竞争升温"),
         (["ebola", "congo"], "刚果埃博拉疫情扩散，公共卫生响应压力上升"),
         (["reinforcement learning", "beneficial models"], "强化学习研究推进，AI 模型安全与长期收益成为焦点"),
+        (["micron", "profit", "chips"], "Micron 利润暴增，AI 芯片需求继续推高存储周期"),
         (["ipo", "listing", "go public"], "IPO 与上市动态升温，资本市场风险偏好出现新信号"),
         (["antitrust", "investigation", "probe", "lawsuit"], "监管调查和诉讼风险上升，企业合规压力继续加码"),
         (["cyberattack", "data breach", "hack"], "网络攻击和数据泄露风险升温，数字基础设施安全受考验"),
@@ -480,12 +665,26 @@ def fallback_cn_context(item: FeedItem, categories: list[str]) -> tuple[str, str
             "自研芯片",
             "AI 公司正把算力从外部采购品变成战略资产，芯片供应链会进一步平台化和定制化。",
         )
-    if has_any(text, ["chip war", "washington"]):
+    if has_any(text, ["chip war", "match act"]) or ("export control" in text and "chip" in text):
         return (
             "欧洲对美国芯片政策的反弹说明半导体已经不只是产业补贴问题，而是盟友之间也会争夺技术规则和供应链主动权。出口管制、补贴、产能落地和本土采购正在交织。",
             "未来芯片战的复杂性在于，各国既需要合作，又想保留本土产业安全边界。企业需要同时面对美国规则、欧洲主权诉求和亚洲制造网络的现实约束。",
             "芯片政策",
             "半导体供应链正在被安全政策重写，跨国企业的合规和产能布局成本会上升。",
+        )
+    if "nato" in text and "iran" in text:
+        return (
+            "围绕伊朗冲突的立场分歧正在考验美国与北约盟友的协调能力。安全联盟内部如果在军事行动、情报支持或外交背书上出现裂痕，后续会影响中东风险溢价、能源运输预期和欧洲防务讨论。",
+            "这类新闻的重点不是口水仗，而是盟友是否会改变实际行动：包括防务开支、制裁协调、军事部署和能源安全安排。若分歧扩大，市场会重新评估地缘风险的持续时间。",
+            "联盟压力",
+            "地缘冲突会通过能源价格、防务预算、制裁规则和避险情绪传导到全球市场。",
+        )
+    if "micron" in text and "profit" in text and ("chip" in text or "ai" in text):
+        return (
+            "Micron 利润大幅改善，说明 AI 服务器和高带宽存储需求正在把半导体周期重新推向上行。存储芯片过去更容易受价格周期拖累，但 AI 训练和推理需求让高端存储的议价能力变得更重要。",
+            "这条新闻的关键数据不只是利润增幅，而是它反映了 AI 基础设施投资正在扩散到 GPU 之外的存储、封装、电力和服务器链条。后续要看数据中心资本开支是否继续支撑订单。",
+            "AI 需求",
+            "AI 基础设施不是只买 GPU，存储和服务器供应链的利润弹性正在被重新定价。",
         )
     if has_any(text, ["ebola", "congo"]):
         return (
@@ -553,8 +752,8 @@ def fallback_report(items: list[FeedItem]) -> dict:
         ]
         log(f"fallback report has no feed data at {now_label}")
 
-    selected = items[:8]
-    source_count = len({item.source for item in selected})
+    selected = items[:MAX_ARTICLES]
+    source_count = len({source_family(item.source) for item in selected})
     articles = []
     for index, item in enumerate(selected, 1):
         cats = infer_categories(item)
@@ -608,17 +807,17 @@ def fallback_report(items: list[FeedItem]) -> dict:
         )
 
     return {
-        "summary_cn": "今日简报由 GitHub 云端自动任务生成，重点跟踪全球市场、政策、科技、能源和 AI 相关公开信息。当前版本优先保证每天稳定更新；配置豆包密钥后，可进一步提升深度摘要和数据提炼质量。",
-        "summary_en": "This briefing was generated by the GitHub cloud scheduler, tracking public updates across markets, policy, technology, energy, and AI. The current edition prioritizes reliable daily publishing; adding a Doubao/Ark secret can improve synthesis depth and data extraction.",
+        "summary_cn": f"今日简报只纳入发布日期为 {date_window_cn()} 的公开信息，并优先从全球财经媒体、国际新闻机构、官方机构、科技专业源和研究来源中筛选真正可能影响市场、政策和产业方向的重磅消息。",
+        "summary_en": f"This briefing only includes public items published or updated on {date_window_en()}, prioritizing globally relevant market, policy, technology, energy, AI, regulatory, and research signals from diverse authoritative sources.",
         "metrics": [
             {"value": str(len(selected)), "cn": "今日入选重点条目", "en": "selected items"},
             {"value": str(source_count), "cn": "覆盖公开来源数量", "en": "public sources covered"},
-            {"value": DATE_STR, "cn": "云端自动生成日期", "en": "cloud generation date"},
+            {"value": date_window_cn(), "cn": "发布日期硬门槛", "en": "publication-date gate"},
             {"value": "08:30", "cn": "北京时间定时更新", "en": "Beijing scheduled update"},
         ],
         "articles": articles,
-        "footnote_cn": "来源与不确定性：本页由 GitHub Actions 云端任务根据公开 RSS/API 信息自动生成；若未配置豆包/方舟密钥，摘要会更偏事实摘录和影响框架。请以原始来源链接和后续官方更新为准。",
-        "footnote_en": "Sources and caveats: This page is generated by a GitHub Actions cloud job from public RSS/API information. Without a Doubao/Ark secret, summaries lean more toward factual excerpts and impact framing. Always verify against original links and later official updates.",
+        "footnote_cn": f"来源与不确定性：本页由 GitHub Actions 云端任务根据公开 RSS/API 信息自动生成；当前规则只保留 {date_window_cn()} 发布或更新的条目，并对单一来源设置上限。若未配置豆包/方舟密钥，摘要会更偏事实摘录和影响框架。请以原始来源链接和后续官方更新为准。",
+        "footnote_en": f"Sources and caveats: This page is generated by a GitHub Actions cloud job from public RSS/API information. The current rule keeps only items published or updated on {date_window_en()} and caps repeated use of a single source. Always verify against original links and later official updates.",
     }
 
 
@@ -629,13 +828,16 @@ def safe_list(value: list, minimum: int, fallback: list) -> list:
 def normalize_report(report: dict, items: list[FeedItem]) -> dict:
     fallback = fallback_report(items)
     report = report or fallback
+    item_by_url = {item.link: item for item in items}
     articles = report.get("articles") if isinstance(report.get("articles"), list) else []
+    if item_by_url:
+        articles = [article for article in articles if str(article.get("url", "")).strip() in item_by_url]
     if len(articles) < 5:
         return fallback
     report["summary_cn"] = clean_text(report.get("summary_cn") or fallback["summary_cn"], 260)
     report["summary_en"] = clean_text(report.get("summary_en") or fallback["summary_en"], 360)
     report["metrics"] = safe_list(report.get("metrics"), 4, fallback["metrics"])[:4]
-    report["articles"] = articles[:8]
+    report["articles"] = articles[:MAX_ARTICLES]
     report["footnote_cn"] = clean_text(report.get("footnote_cn") or fallback["footnote_cn"], 500)
     report["footnote_en"] = clean_text(report.get("footnote_en") or fallback["footnote_en"], 700)
     for index, article in enumerate(report["articles"], 1):
@@ -653,10 +855,11 @@ def normalize_report(report: dict, items: list[FeedItem]) -> dict:
         article.setdefault("why_en", "Why it matters: This item may affect policy, markets, or supply-chain expectations.")
         article.setdefault("watch_cn", "继续观察：原始来源后续更新和市场反应。")
         article.setdefault("watch_en", "Watch: original-source updates and market reaction.")
-        raw_source = str(article.get("source") or "Public source")
-        article.setdefault("source_en", raw_source)
+        matched_item = item_by_url.get(str(article.get("url", "")).strip())
+        raw_source = matched_item.source if matched_item else str(article.get("source") or "Public source")
+        article["source_en"] = raw_source
         article["source"] = str(article.get("source_cn") or source_cn_name(raw_source))
-        article.setdefault("url", "https://yz6953807-cmd.github.io/daily-global-briefing/")
+        article["url"] = matched_item.link if matched_item else str(article.get("url") or "https://yz6953807-cmd.github.io/daily-global-briefing/")
     return report
 
 
@@ -706,7 +909,7 @@ def build_body(report: dict) -> str:
       <div class="hero-inner">
         <div class="eyebrow">GLOBAL BRIEFING · DAILY INTELLIGENCE</div>
         <h1>今日全球资讯简报</h1>
-        <div class="meta">生成日期：{DATE_STR} · 覆盖时段：最近 24-72 小时公开信息</div>
+        <div class="meta">生成日期：{DATE_STR} · 发布时间：仅 {date_window_cn()} 发布或更新</div>
         <div class="summary">{h(report["summary_cn"])}</div>
       </div>
     </section>
@@ -748,7 +951,7 @@ def english_copy(report: dict) -> dict:
             "hero": {
                 "eyebrow": "GLOBAL BRIEFING · DAILY INTELLIGENCE",
                 "h1": "Daily Global Briefing",
-                "meta": f"Generated: {TODAY.strftime('%B %-d, %Y') if sys.platform != 'win32' else TODAY.strftime('%B %d, %Y')} · Coverage: public information from the past 24-72 hours",
+                "meta": f"Generated: {TODAY.strftime('%B %-d, %Y') if sys.platform != 'win32' else TODAY.strftime('%B %d, %Y')} · Publication dates: {date_window_en()} only",
                 "summary": report["summary_en"],
             },
             "metrics": [[metric.get("value", ""), metric.get("en", metric.get("cn", ""))] for metric in report["metrics"][:4]],
