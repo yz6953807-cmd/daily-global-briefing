@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T10:03:51+08:00",
+  "generatedAt": "2026-06-25T10:43:47+08:00",
   "date": "2026-06-25",
   "report": {
     "summary_cn": "今日简报由 GitHub 云端自动任务生成，重点跟踪全球市场、政策、科技、能源和 AI 相关公开信息。当前版本优先保证每天稳定更新；配置豆包密钥后，可进一步提升深度摘要和数据提炼质量。",
@@ -28,15 +28,15 @@
     ],
     "articles": [
       {
-        "title_cn": "1. Exploit last North Sea oil and gas or risk mass job losses, Andy Burnham urged",
+        "title_cn": "1. 北海油气开发争议升温，能源安全与就业压力重新摆上台面",
         "title_en": "1. Exploit last North Sea oil and gas or risk mass job losses, Andy Burnham urged",
         "tag_cn": "财经 · 政策",
         "tag_en": "Markets · Policy",
         "points": [
           {
-            "value": "The Guardian Business",
+            "value": "卫报商业频道",
             "cn": "权威公开来源",
-            "en": "public source"
+            "en": "The Guardian Business"
           },
           {
             "value": "2026-06-25",
@@ -51,8 +51,8 @@
         ],
         "readouts": [
           {
-            "label_cn": "信息信号",
-            "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+            "label_cn": "能源安全",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
             "label_en": "Signal",
             "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
           },
@@ -64,30 +64,31 @@
           }
         ],
         "paragraphs_cn": [
-          "The Guardian Business 在 2026-06-25 02:00 发布或更新了这条信息：Exploit last North Sea oil and gas or risk mass job losses, Andy Burnham urged。公开摘要显示，British Chamber of Commerce boss Shevaun Haviland says transition to clean energy could be handled better Andy Burnham should be ready to exploit the UK’s remaining North Sea oil and gas resources to avoid mass job losses in Scotland and the north-east, the director of the British Chambers of Commerce (BCC), Shevaun Haviland, has said. The decision about whether to allow extraction at the Jackdaw and Rosebank fields now appears likely to fall to a Burnham administration. Continue reading...",
-          "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。"
+          "卫报商业频道在 2026-06-25 02:00 发布或更新了这条公开信息。围绕北海油气资源继续开发的争论升温，背后是能源安全、就业稳定和气候目标之间的拉扯。传统能源项目即使处在长期转型压力下，短期仍会影响地区就业、财政收入和能源供应弹性。",
+          "这类新闻的关键不是单一油气田，而是欧洲在高电价、工业竞争力和净零目标之间如何取舍。若政策摇摆加剧，能源企业资本开支和供应预期都会更难判断。"
         ],
         "paragraphs_en": [
           "The Guardian Business published or updated this item at 2026-06-25 02:00: Exploit last North Sea oil and gas or risk mass job losses, Andy Burnham urged. The public summary says: British Chamber of Commerce boss Shevaun Haviland says transition to clean energy could be handled better Andy Burnham should be ready to exploit the UK’s remaining North Sea oil and gas resources to avoid mass job losses in Scotland and the north-east, the director of the British Chambers of Commerce (BCC), Shevaun Haviland, has said. The decision about whether to allow extraction at the Jackdaw and Rosebank fields now appears likely to fall to a Burnham administration. Continue reading...",
           "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
         ],
-        "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+        "why_cn": "为什么重要：能源转型不是线性退出，传统油气资产仍可能在供应安全和就业政治中获得更高权重。",
         "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
         "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
         "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "The Guardian Business",
+        "source": "卫报商业频道",
+        "source_en": "The Guardian Business",
         "url": "https://www.theguardian.com/business/2026/jun/24/exploit-last-north-sea-oil-gas-or-risk-mass-job-losses-andy-burham-urged"
       },
       {
-        "title_cn": "2. US AI stock sell-off shakes markets from Wall Street to Asia",
+        "title_cn": "2. AI 科技股抛售扩散，市场重新审视算力投资回报",
         "title_en": "2. US AI stock sell-off shakes markets from Wall Street to Asia",
         "tag_cn": "财经 · 科技",
         "tag_en": "Markets · Technology",
         "points": [
           {
-            "value": "The Guardian Technology",
+            "value": "卫报科技频道",
             "cn": "权威公开来源",
-            "en": "public source"
+            "en": "The Guardian Technology"
           },
           {
             "value": "2026-06-23",
@@ -102,8 +103,8 @@
         ],
         "readouts": [
           {
-            "label_cn": "信息信号",
-            "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+            "label_cn": "估值重估",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
             "label_en": "Signal",
             "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
           },
@@ -115,30 +116,31 @@
           }
         ],
         "paragraphs_cn": [
-          "The Guardian Technology 在 2026-06-23 22:16 发布或更新了这条信息：US AI stock sell-off shakes markets from Wall Street to Asia。公开摘要显示，Losses spread globally as investors questioned soaring valuations and spending on AI infrastructure A tech sell-off shook global markets on Tuesday as attention turned away from developments in the US war with Iran and toward the future of AI companies and chipmakers that have driven stock markets to record highs. The tech-heavy Nasdaq index closed 2.2% lower on Tuesday. The S&P 500 was also down by Tuesday afternoon, dropping 1.43% while the Dow remained steady. Continue reading...",
-          "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。"
+          "卫报科技频道在 2026-06-23 22:16 发布或更新了这条公开信息。美国 AI 相关股票抛售继续向全球市场传导，投资者开始从“技术想象空间”转向“资本开支能否兑现回报”的审计逻辑。半导体、云计算、服务器、电力和数据中心链条都会受到估值重估影响。",
+          "这类波动不代表 AI 长期趋势结束，而是市场在重新计算投入周期、融资成本和企业端付费速度。接下来真正重要的是云厂商资本开支指引、AI 芯片订单能见度和应用收入转化。"
         ],
         "paragraphs_en": [
           "The Guardian Technology published or updated this item at 2026-06-23 22:16: US AI stock sell-off shakes markets from Wall Street to Asia. The public summary says: Losses spread globally as investors questioned soaring valuations and spending on AI infrastructure A tech sell-off shook global markets on Tuesday as attention turned away from developments in the US war with Iran and toward the future of AI companies and chipmakers that have driven stock markets to record highs. The tech-heavy Nasdaq index closed 2.2% lower on Tuesday. The S&P 500 was also down by Tuesday afternoon, dropping 1.43% while the Dow remained steady. Continue reading...",
           "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
         ],
-        "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+        "why_cn": "为什么重要：AI 交易从叙事驱动转向回报驱动，可能影响全球科技股权重、硬件订单和风险资本退出节奏。",
         "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
         "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
         "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "The Guardian Technology",
+        "source": "卫报科技频道",
+        "source_en": "The Guardian Technology",
         "url": "https://www.theguardian.com/business/2026/jun/23/ai-stocks-sell-off-us-markets"
       },
       {
-        "title_cn": "3. Trump says he’s ordered investigation into oil companies over alleged price gouging",
+        "title_cn": "3. 美国要求调查油企价格操纵，能源通胀政治压力升温",
         "title_en": "3. Trump says he’s ordered investigation into oil companies over alleged price gouging",
         "tag_cn": "财经 · 政策",
         "tag_en": "Markets · Policy",
         "points": [
           {
-            "value": "The Guardian Business",
+            "value": "卫报商业频道",
             "cn": "权威公开来源",
-            "en": "public source"
+            "en": "The Guardian Business"
           },
           {
             "value": "2026-06-24",
@@ -153,8 +155,8 @@
         ],
         "readouts": [
           {
-            "label_cn": "信息信号",
-            "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+            "label_cn": "监管调查",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
             "label_en": "Signal",
             "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
           },
@@ -166,30 +168,31 @@
           }
         ],
         "paragraphs_cn": [
-          "The Guardian Business 在 2026-06-24 23:21 发布或更新了这条信息：Trump says he’s ordered investigation into oil companies over alleged price gouging。公开摘要显示，Trump says he instructed justice department to investigate oil firms over high gas prices amid Middle East conflict Donald Trump said on Wednesday that he had instructed the US Department of Justice to investigate oil companies for alleged price gouging, accusing them of not lowering gas prices enough amid conflict in the Middle East. “The big oil companies are not dropping their price at the pump commensurate with the sharply lower prices they are paying for oil. Those prices are dropping like a rock! In other wo…",
-          "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。"
+          "卫报商业频道在 2026-06-24 23:21 发布或更新了这条公开信息。美国围绕油企价格行为的调查压力上升，说明能源价格已经从市场问题进入政治和监管议程。油价、炼油利润和消费者通胀之间的关系，正在成为政府干预和企业合规的焦点。",
+          "如果调查扩大，油企可能面临更高披露压力、监管风险和利润审查。对市场来说，重点要看这是否只是政治表态，还是会演变成实际执法、罚款或行业规则变化。"
         ],
         "paragraphs_en": [
           "The Guardian Business published or updated this item at 2026-06-24 23:21: Trump says he’s ordered investigation into oil companies over alleged price gouging. The public summary says: Trump says he instructed justice department to investigate oil firms over high gas prices amid Middle East conflict Donald Trump said on Wednesday that he had instructed the US Department of Justice to investigate oil companies for alleged price gouging, accusing them of not lowering gas prices enough amid conflict in the Middle East. “The big oil companies are not dropping their price at the pump commensurate with the sharply lower prices they are paying for oil. Those prices are dropping like a rock! In other wo…",
           "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
         ],
-        "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+        "why_cn": "为什么重要：能源通胀一旦进入执法和政治议程，企业利润、油价预期和选民成本感知都会被重新定价。",
         "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
         "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
         "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "The Guardian Business",
+        "source": "卫报商业频道",
+        "source_en": "The Guardian Business",
         "url": "https://www.theguardian.com/us-news/2026/jun/24/trump-doj-investigation-oil-company-price-gouging"
       },
       {
-        "title_cn": "4. Great Britain’s grid operator pays £10m for extra power to avoid supply crunch tonight",
+        "title_cn": "4. 英国电网高价采购备用电力，极端天气考验能源韧性",
         "title_en": "4. Great Britain’s grid operator pays £10m for extra power to avoid supply crunch tonight",
         "tag_cn": "财经 · 能源",
         "tag_en": "Markets · Energy",
         "points": [
           {
-            "value": "The Guardian Business",
+            "value": "卫报商业频道",
             "cn": "权威公开来源",
-            "en": "public source"
+            "en": "The Guardian Business"
           },
           {
             "value": "2026-06-24",
@@ -204,8 +207,8 @@
         ],
         "readouts": [
           {
-            "label_cn": "信息信号",
-            "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+            "label_cn": "电网压力",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
             "label_en": "Signal",
             "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
           },
@@ -217,30 +220,31 @@
           }
         ],
         "paragraphs_cn": [
-          "The Guardian Business 在 2026-06-24 23:33 发布或更新了这条信息：Great Britain’s grid operator pays £10m for extra power to avoid supply crunch tonight。公开摘要显示，Neso expected to pay millions to secure enough electricity to meet demand as households turn on fans and air conditioning Great Britain’s grid operator is expected to pay millions to fire up gas power plants to avoid a rare summer power supply crunch on Wednesday evening as extreme heat puts pressure on the energy system. The National Energy System Operator (Neso) is expected to pay about £10m on Wednesday to secure enough electricity to meet demand as households turn on air conditioners and electric fans, accordi…",
-          "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。"
+          "卫报商业频道在 2026-06-24 23:33 发布或更新了这条公开信息。英国电网为避免供应紧张而高价采购额外电力，显示极端天气、用电高峰和发电调度正在同时考验电力系统。电网稳定已经从技术问题变成影响通胀、工业生产和民生成本的基础设施问题。",
+          "这类事件会让储能、备用容量、需求响应和电网投资重新获得政策优先级。若高温或寒潮频繁出现，电力系统的冗余成本会持续进入企业和家庭账单。"
         ],
         "paragraphs_en": [
           "The Guardian Business published or updated this item at 2026-06-24 23:33: Great Britain’s grid operator pays £10m for extra power to avoid supply crunch tonight. The public summary says: Neso expected to pay millions to secure enough electricity to meet demand as households turn on fans and air conditioning Great Britain’s grid operator is expected to pay millions to fire up gas power plants to avoid a rare summer power supply crunch on Wednesday evening as extreme heat puts pressure on the energy system. The National Energy System Operator (Neso) is expected to pay about £10m on Wednesday to secure enough electricity to meet demand as households turn on air conditioners and electric fans, accordi…",
           "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
         ],
-        "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+        "why_cn": "为什么重要：电力系统越紧，能源转型和 AI 数据中心扩张的真实约束就越清楚。",
         "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
         "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
         "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "The Guardian Business",
+        "source": "卫报商业频道",
+        "source_en": "The Guardian Business",
         "url": "https://www.theguardian.com/business/2026/jun/24/heatwave-great-britain-grid-operator-extra-electricity-power-plants"
       },
       {
-        "title_cn": "5. Cerebras stock plunges after earnings as CEO says margin outlook was misunderstood",
+        "title_cn": "5. Cerebras 财报后股价大跌，AI 芯片公司盈利预期受审视",
         "title_en": "5. Cerebras stock plunges after earnings as CEO says margin outlook was misunderstood",
         "tag_cn": "财经 · 科技",
         "tag_en": "Markets · Technology",
         "points": [
           {
-            "value": "TechCrunch",
+            "value": "TechCrunch 科技媒体",
             "cn": "权威公开来源",
-            "en": "public source"
+            "en": "TechCrunch"
           },
           {
             "value": "2026-06-25",
@@ -255,8 +259,8 @@
         ],
         "readouts": [
           {
-            "label_cn": "信息信号",
-            "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+            "label_cn": "财报冲击",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
             "label_en": "Signal",
             "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
           },
@@ -268,30 +272,31 @@
           }
         ],
         "paragraphs_cn": [
-          "TechCrunch 在 2026-06-25 06:41 发布或更新了这条信息：Cerebras stock plunges after earnings as CEO says margin outlook was misunderstood。公开摘要显示，In its first earnings report since going public, the AI chipmaker forecast a narrower gross margin in its core business, scaring investors.",
-          "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。"
+          "TechCrunch 科技媒体在 2026-06-25 06:41 发布或更新了这条公开信息。AI 芯片公司 Cerebras 财报后股价大幅波动，反映市场正在严格审查 AI 硬件公司的利润率、订单质量和增长可持续性。只要估值依赖高增长，任何毛利或收入指引的不确定都会被放大。",
+          "这类个股波动有风向标意义：AI 硬件不再只看技术路线，也要看客户集中度、产能安排、价格压力和资本市场融资环境。投资者会继续比较它与 Nvidia、云厂商自研芯片和 ASIC 路线的竞争位置。"
         ],
         "paragraphs_en": [
           "TechCrunch published or updated this item at 2026-06-25 06:41: Cerebras stock plunges after earnings as CEO says margin outlook was misunderstood. The public summary says: In its first earnings report since going public, the AI chipmaker forecast a narrower gross margin in its core business, scaring investors.",
           "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
         ],
-        "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+        "why_cn": "为什么重要：AI 芯片赛道正在从“供不应求”叙事进入盈利质量和客户兑现阶段。",
         "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
         "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
         "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "TechCrunch",
+        "source": "TechCrunch 科技媒体",
+        "source_en": "TechCrunch",
         "url": "https://techcrunch.com/2026/06/24/cerebras-stock-plunges-after-earnings-as-ceo-says-margin-outlook-was-misunderstood/"
       },
       {
-        "title_cn": "6. Reinforcement Learning Towards Broadly and Persistently Beneficial Models",
+        "title_cn": "6. 强化学习研究推进，AI 模型安全与长期收益成为焦点",
         "title_en": "6. Reinforcement Learning Towards Broadly and Persistently Beneficial Models",
         "tag_cn": "财经 · 科技",
         "tag_en": "Markets · Technology",
         "points": [
           {
-            "value": "arXiv AI",
+            "value": "arXiv AI 论文库",
             "cn": "权威公开来源",
-            "en": "public source"
+            "en": "arXiv AI"
           },
           {
             "value": "2026-06-24",
@@ -306,8 +311,8 @@
         ],
         "readouts": [
           {
-            "label_cn": "信息信号",
-            "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+            "label_cn": "技术路线",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
             "label_en": "Signal",
             "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
           },
@@ -319,30 +324,31 @@
           }
         ],
         "paragraphs_cn": [
-          "arXiv AI 在 2026-06-24 12:00 发布或更新了这条信息：Reinforcement Learning Towards Broadly and Persistently Beneficial Models。公开摘要显示，arXiv:2606.24014v1 Announce Type: new Abstract: As AI systems are deployed across increasingly diverse and high-stakes settings, model alignment must generalize beyond the tasks and domains seen during training. This is especially important for reinforcement learning (RL), which can introduce unexpected misalignment through reward hacking, deception, or other unintended strategies. We study whether RL on beneficial behavior, instantiated in realistic domains, can produce broad and persistent alignment generalizati…",
-          "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。"
+          "arXiv AI 论文库在 2026-06-24 12:00 发布或更新了这条公开信息。AI 研究继续围绕强化学习、模型长期收益和复杂图学习推进，说明行业不只在追求更大的模型，也在探索更稳定、更可控、更能适配现实任务的训练方法。",
+          "这类研究短期不一定直接改变市场价格，但会影响未来模型安全、企业部署成本和开源生态方向。真正值得跟踪的是这些方法是否能降低训练成本、提升可靠性并进入主流开发框架。"
         ],
         "paragraphs_en": [
           "arXiv AI published or updated this item at 2026-06-24 12:00: Reinforcement Learning Towards Broadly and Persistently Beneficial Models. The public summary says: arXiv:2606.24014v1 Announce Type: new Abstract: As AI systems are deployed across increasingly diverse and high-stakes settings, model alignment must generalize beyond the tasks and domains seen during training. This is especially important for reinforcement learning (RL), which can introduce unexpected misalignment through reward hacking, deception, or other unintended strategies. We study whether RL on beneficial behavior, instantiated in realistic domains, can produce broad and persistent alignment generalizati…",
           "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
         ],
-        "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+        "why_cn": "为什么重要：AI 竞争不只是参数规模竞争，也包括训练方法、可靠性和落地成本的竞争。",
         "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
         "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
         "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "arXiv AI",
+        "source": "arXiv AI 论文库",
+        "source_en": "arXiv AI",
         "url": "https://arxiv.org/abs/2606.24014"
       },
       {
-        "title_cn": "7. OpenAI unveils its first custom chip, built by Broadcom",
+        "title_cn": "7. OpenAI 推进自研芯片，AI 算力供应链继续重组",
         "title_en": "7. OpenAI unveils its first custom chip, built by Broadcom",
         "tag_cn": "科技 · AI",
         "tag_en": "Technology · AI",
         "points": [
           {
-            "value": "TechCrunch",
+            "value": "TechCrunch 科技媒体",
             "cn": "权威公开来源",
-            "en": "public source"
+            "en": "TechCrunch"
           },
           {
             "value": "2026-06-24",
@@ -357,8 +363,8 @@
         ],
         "readouts": [
           {
-            "label_cn": "信息信号",
-            "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+            "label_cn": "自研芯片",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
             "label_en": "Signal",
             "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
           },
@@ -370,30 +376,31 @@
           }
         ],
         "paragraphs_cn": [
-          "TechCrunch 在 2026-06-24 22:54 发布或更新了这条信息：OpenAI unveils its first custom chip, built by Broadcom。公开摘要显示，Named Jalapeño, the new processor was designed specifically for the unique needs of OpenAI's inference systems.",
-          "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。"
+          "TechCrunch 科技媒体在 2026-06-24 22:54 发布或更新了这条公开信息。OpenAI 推进自研芯片并与 Broadcom 等供应链力量绑定，意味着 AI 模型公司正在从买算力转向控制关键算力基础设施。自研芯片不仅是降本问题，也关系到训练、推理、供应保障和议价权。",
+          "如果大型模型公司继续向上游延伸，GPU 供应链、云厂商合作关系和芯片设计生态都会被重塑。未来 AI 竞争会越来越像能源和制造业竞争：谁掌握关键基础设施，谁就有更强的长期议价能力。"
         ],
         "paragraphs_en": [
           "TechCrunch published or updated this item at 2026-06-24 22:54: OpenAI unveils its first custom chip, built by Broadcom. The public summary says: Named Jalapeño, the new processor was designed specifically for the unique needs of OpenAI's inference systems.",
           "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
         ],
-        "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+        "why_cn": "为什么重要：AI 公司正把算力从外部采购品变成战略资产，芯片供应链会进一步平台化和定制化。",
         "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
         "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
         "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "TechCrunch",
+        "source": "TechCrunch 科技媒体",
+        "source_en": "TechCrunch",
         "url": "https://techcrunch.com/2026/06/24/openai-unveils-its-first-custom-chip-built-by-broadcom/"
       },
       {
-        "title_cn": "8. Europe is pushing back on Washington’s chip war",
+        "title_cn": "8. 欧洲反击美国芯片战，半导体政策博弈继续升级",
         "title_en": "8. Europe is pushing back on Washington’s chip war",
         "tag_cn": "科技 · 政策",
         "tag_en": "Technology · Policy",
         "points": [
           {
-            "value": "TechCrunch",
+            "value": "TechCrunch 科技媒体",
             "cn": "权威公开来源",
-            "en": "public source"
+            "en": "TechCrunch"
           },
           {
             "value": "2026-06-25",
@@ -408,8 +415,8 @@
         ],
         "readouts": [
           {
-            "label_cn": "信息信号",
-            "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+            "label_cn": "芯片政策",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
             "label_en": "Signal",
             "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
           },
@@ -421,18 +428,19 @@
           }
         ],
         "paragraphs_cn": [
-          "TechCrunch 在 2026-06-25 08:08 发布或更新了这条信息：Europe is pushing back on Washington’s chip war。公开摘要显示，As ASML CEO Christophe Fouquet told TechCrunch in May, what China can currently buy are older-generation deep ultraviolet tools — gear first shipped about a decade ago — the same machines the MATCH Act would now put off limits.",
-          "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。"
+          "TechCrunch 科技媒体在 2026-06-25 08:08 发布或更新了这条公开信息。欧洲对美国芯片政策的反弹说明半导体已经不只是产业补贴问题，而是盟友之间也会争夺技术规则和供应链主动权。出口管制、补贴、产能落地和本土采购正在交织。",
+          "未来芯片战的复杂性在于，各国既需要合作，又想保留本土产业安全边界。企业需要同时面对美国规则、欧洲主权诉求和亚洲制造网络的现实约束。"
         ],
         "paragraphs_en": [
           "TechCrunch published or updated this item at 2026-06-25 08:08: Europe is pushing back on Washington’s chip war. The public summary says: As ASML CEO Christophe Fouquet told TechCrunch in May, what China can currently buy are older-generation deep ultraviolet tools — gear first shipped about a decade ago — the same machines the MATCH Act would now put off limits.",
           "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
         ],
-        "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+        "why_cn": "为什么重要：半导体供应链正在被安全政策重写，跨国企业的合规和产能布局成本会上升。",
         "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
         "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
         "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "TechCrunch",
+        "source": "TechCrunch 科技媒体",
+        "source_en": "TechCrunch",
         "url": "https://techcrunch.com/2026/06/24/europe-is-pushing-back-on-washingtons-chip-war/"
       }
     ],

@@ -114,6 +114,26 @@ SOFT_NEWS_KEYWORDS = [
 ]
 
 
+SOURCE_CN = {
+    "The Guardian Business": "卫报商业频道",
+    "The Guardian Technology": "卫报科技频道",
+    "The Guardian Environment": "卫报环境频道",
+    "The Guardian Science": "卫报科学频道",
+    "BBC Business": "BBC 商业频道",
+    "BBC Technology": "BBC 科技频道",
+    "BBC World": "BBC 世界新闻",
+    "TechCrunch": "TechCrunch 科技媒体",
+    "SEC Press Releases": "美国证券交易委员会",
+    "UN News": "联合国新闻",
+    "Federal Reserve": "美联储",
+    "ECB": "欧洲央行",
+    "IMF": "国际货币基金组织",
+    "Nature": "Nature 期刊",
+    "arXiv AI": "arXiv AI 论文库",
+    "arXiv Machine Learning": "arXiv 机器学习论文库",
+}
+
+
 @dataclass
 class FeedItem:
     title: str
@@ -373,6 +393,151 @@ def en_category(categories: list[str]) -> str:
     return " · ".join(mapping.get(cat, cat) for cat in categories[:2]) if categories else "Global"
 
 
+def source_cn_name(source: str) -> str:
+    return SOURCE_CN.get(source, source)
+
+
+def has_any(text: str, words: list[str]) -> bool:
+    return any(word in text for word in words)
+
+
+def fallback_cn_title(index: int, item: FeedItem, categories: list[str]) -> str:
+    text = f"{item.title} {item.summary}".lower()
+    cases = [
+        (["ai stock sell-off", "ai stock sell off"], "AI 科技股抛售扩散，市场重新审视算力投资回报"),
+        (["north sea", "oil and gas"], "北海油气开发争议升温，能源安全与就业压力重新摆上台面"),
+        (["price gouging", "oil companies"], "美国要求调查油企价格操纵，能源通胀政治压力升温"),
+        (["grid operator", "extra power", "supply crunch"], "英国电网高价采购备用电力，极端天气考验能源韧性"),
+        (["cerebras", "stock plunges"], "Cerebras 财报后股价大跌，AI 芯片公司盈利预期受审视"),
+        (["openai", "custom chip", "broadcom"], "OpenAI 推进自研芯片，AI 算力供应链继续重组"),
+        (["chip war", "washington"], "欧洲反击美国芯片战，半导体政策博弈继续升级"),
+        (["spacesail", "starlink"], "中国低轨卫星项目受关注，全球卫星互联网竞争升温"),
+        (["ebola", "congo"], "刚果埃博拉疫情扩散，公共卫生响应压力上升"),
+        (["reinforcement learning", "beneficial models"], "强化学习研究推进，AI 模型安全与长期收益成为焦点"),
+        (["ipo", "listing", "go public"], "IPO 与上市动态升温，资本市场风险偏好出现新信号"),
+        (["antitrust", "investigation", "probe", "lawsuit"], "监管调查和诉讼风险上升，企业合规压力继续加码"),
+        (["cyberattack", "data breach", "hack"], "网络攻击和数据泄露风险升温，数字基础设施安全受考验"),
+    ]
+    for words, title in cases:
+        if has_any(text, words):
+            return f"{index}. {title}"
+
+    if "AI" in categories or has_any(text, ["ai", "artificial intelligence", "model", "gpu"]):
+        return f"{index}. AI 与算力产业出现新动向，技术路线和商业回报继续受检验"
+    if "能源" in categories or has_any(text, ["oil", "gas", "power", "grid", "energy"]):
+        return f"{index}. 全球能源供需出现新变化，价格、就业和通胀传导值得关注"
+    if "财经" in categories or has_any(text, ["market", "stock", "debt", "rate", "bank", "earnings"]):
+        return f"{index}. 全球资本市场出现新信号，投资者重新评估风险和回报"
+    if "科技" in categories:
+        return f"{index}. 关键科技产业出现新进展，供应链和竞争格局继续变化"
+    if "政策" in categories:
+        return f"{index}. 重大政策和监管动态更新，全球风险预期可能调整"
+    return f"{index}. 今日全球重点消息更新，后续影响仍需跟踪"
+
+
+def fallback_cn_context(item: FeedItem, categories: list[str]) -> tuple[str, str, str, str]:
+    text = f"{item.title} {item.summary}".lower()
+    theme = zh_category(categories)
+    if has_any(text, ["ai stock sell-off", "ai stock sell off"]):
+        return (
+            "美国 AI 相关股票抛售继续向全球市场传导，投资者开始从“技术想象空间”转向“资本开支能否兑现回报”的审计逻辑。半导体、云计算、服务器、电力和数据中心链条都会受到估值重估影响。",
+            "这类波动不代表 AI 长期趋势结束，而是市场在重新计算投入周期、融资成本和企业端付费速度。接下来真正重要的是云厂商资本开支指引、AI 芯片订单能见度和应用收入转化。",
+            "估值重估",
+            "AI 交易从叙事驱动转向回报驱动，可能影响全球科技股权重、硬件订单和风险资本退出节奏。",
+        )
+    if has_any(text, ["north sea", "oil and gas"]):
+        return (
+            "围绕北海油气资源继续开发的争论升温，背后是能源安全、就业稳定和气候目标之间的拉扯。传统能源项目即使处在长期转型压力下，短期仍会影响地区就业、财政收入和能源供应弹性。",
+            "这类新闻的关键不是单一油气田，而是欧洲在高电价、工业竞争力和净零目标之间如何取舍。若政策摇摆加剧，能源企业资本开支和供应预期都会更难判断。",
+            "能源安全",
+            "能源转型不是线性退出，传统油气资产仍可能在供应安全和就业政治中获得更高权重。",
+        )
+    if has_any(text, ["price gouging", "oil companies"]):
+        return (
+            "美国围绕油企价格行为的调查压力上升，说明能源价格已经从市场问题进入政治和监管议程。油价、炼油利润和消费者通胀之间的关系，正在成为政府干预和企业合规的焦点。",
+            "如果调查扩大，油企可能面临更高披露压力、监管风险和利润审查。对市场来说，重点要看这是否只是政治表态，还是会演变成实际执法、罚款或行业规则变化。",
+            "监管调查",
+            "能源通胀一旦进入执法和政治议程，企业利润、油价预期和选民成本感知都会被重新定价。",
+        )
+    if has_any(text, ["grid operator", "extra power", "supply crunch"]):
+        return (
+            "英国电网为避免供应紧张而高价采购额外电力，显示极端天气、用电高峰和发电调度正在同时考验电力系统。电网稳定已经从技术问题变成影响通胀、工业生产和民生成本的基础设施问题。",
+            "这类事件会让储能、备用容量、需求响应和电网投资重新获得政策优先级。若高温或寒潮频繁出现，电力系统的冗余成本会持续进入企业和家庭账单。",
+            "电网压力",
+            "电力系统越紧，能源转型和 AI 数据中心扩张的真实约束就越清楚。",
+        )
+    if has_any(text, ["cerebras", "stock plunges"]):
+        return (
+            "AI 芯片公司 Cerebras 财报后股价大幅波动，反映市场正在严格审查 AI 硬件公司的利润率、订单质量和增长可持续性。只要估值依赖高增长，任何毛利或收入指引的不确定都会被放大。",
+            "这类个股波动有风向标意义：AI 硬件不再只看技术路线，也要看客户集中度、产能安排、价格压力和资本市场融资环境。投资者会继续比较它与 Nvidia、云厂商自研芯片和 ASIC 路线的竞争位置。",
+            "财报冲击",
+            "AI 芯片赛道正在从“供不应求”叙事进入盈利质量和客户兑现阶段。",
+        )
+    if has_any(text, ["openai", "custom chip", "broadcom"]):
+        return (
+            "OpenAI 推进自研芯片并与 Broadcom 等供应链力量绑定，意味着 AI 模型公司正在从买算力转向控制关键算力基础设施。自研芯片不仅是降本问题，也关系到训练、推理、供应保障和议价权。",
+            "如果大型模型公司继续向上游延伸，GPU 供应链、云厂商合作关系和芯片设计生态都会被重塑。未来 AI 竞争会越来越像能源和制造业竞争：谁掌握关键基础设施，谁就有更强的长期议价能力。",
+            "自研芯片",
+            "AI 公司正把算力从外部采购品变成战略资产，芯片供应链会进一步平台化和定制化。",
+        )
+    if has_any(text, ["chip war", "washington"]):
+        return (
+            "欧洲对美国芯片政策的反弹说明半导体已经不只是产业补贴问题，而是盟友之间也会争夺技术规则和供应链主动权。出口管制、补贴、产能落地和本土采购正在交织。",
+            "未来芯片战的复杂性在于，各国既需要合作，又想保留本土产业安全边界。企业需要同时面对美国规则、欧洲主权诉求和亚洲制造网络的现实约束。",
+            "芯片政策",
+            "半导体供应链正在被安全政策重写，跨国企业的合规和产能布局成本会上升。",
+        )
+    if has_any(text, ["ebola", "congo"]):
+        return (
+            "刚果埃博拉疫情响应压力上升，公共卫生风险再次提醒市场：低收入地区的医疗资源缺口可能迅速变成区域安全和人道主义问题。疫情若扩散，会影响边境管理、国际援助和当地经济活动。",
+            "虽然它未必直接冲击全球市场，但公共卫生事件常常通过人员流动、财政压力和国际组织资源调配产生间接影响。需要关注病例增长、疫苗供应和 WHO/UN 后续行动。",
+            "公共卫生",
+            "疫情治理能力是国家韧性的一部分，也会影响援助资金、地区稳定和供应链连续性。",
+        )
+    if has_any(text, ["reinforcement learning", "beneficial models", "graph learning"]):
+        return (
+            "AI 研究继续围绕强化学习、模型长期收益和复杂图学习推进，说明行业不只在追求更大的模型，也在探索更稳定、更可控、更能适配现实任务的训练方法。",
+            "这类研究短期不一定直接改变市场价格，但会影响未来模型安全、企业部署成本和开源生态方向。真正值得跟踪的是这些方法是否能降低训练成本、提升可靠性并进入主流开发框架。",
+            "技术路线",
+            "AI 竞争不只是参数规模竞争，也包括训练方法、可靠性和落地成本的竞争。",
+        )
+
+    if "AI" in categories:
+        return (
+            f"{source_cn_name(item.source)}更新了一条与 AI 和算力产业相关的重要信息。它被纳入简报，是因为这类变化可能影响模型公司、芯片供应链、云计算资本开支和企业数字化预算。",
+            "后续需要关注它是否带来真实订单、成本下降、监管变化或竞争格局调整。AI 新闻最容易被口号放大，判断时要优先看资金流、算力约束和商业化证据。",
+            "AI 信号",
+            "AI 产业已进入基础设施竞争阶段，模型能力、芯片供给和商业回报需要一起看。",
+        )
+    if "能源" in categories:
+        return (
+            f"{source_cn_name(item.source)}更新了一条能源相关信息，涉及供需、价格、电力系统或政策约束。能源新闻的重要性在于，它很容易沿着运输成本、工业成本和居民账单传导。",
+            "后续需要关注价格反应、监管表态、企业资本开支和供应链调整。只要能源系统出现紧张，通胀和政策压力往往会重新抬头。",
+            "能源传导",
+            "能源变化会通过通胀、财政补贴和工业竞争力影响更广泛的经济预期。",
+        )
+    if "财经" in categories:
+        return (
+            f"{source_cn_name(item.source)}更新了一条资本市场和企业经营相关信息。它的价值在于可能改变投资者对增长、利润、融资成本或风险偏好的判断。",
+            "后续需要看市场价格是否跟随反应，以及企业、监管者或央行是否给出进一步信号。财经新闻不能只看标题，要看它是否改变现金流、利率或风险溢价。",
+            "市场信号",
+            "如果信息改变盈利、融资或监管预期，资产价格通常会比舆论更快反应。",
+        )
+    if "科技" in categories:
+        return (
+            f"{source_cn_name(item.source)}更新了一条关键科技相关信息，可能涉及平台、芯片、网络安全、数据基础设施或科研突破。科技新闻的重点在于它能否改变产业链分工和企业投入节奏。",
+            "后续需要关注商业化路径、监管约束、供应链瓶颈和资本开支。真正重要的科技变化通常会同时影响产品路线、成本结构和竞争壁垒。",
+            "科技趋势",
+            "技术突破只有进入成本、供应链和用户采用，才会变成真正的产业变量。",
+        )
+    return (
+        f"{source_cn_name(item.source)}更新了一条全球政策和风险相关信息，可能影响机构判断、政府决策或市场预期。",
+        "后续需要关注官方确认、市场反应和跨境传导。国际新闻的重点不是热闹程度，而是它能否改变规则、成本或风险分布。",
+        "全球风险",
+        "政策和地缘变化常常通过规则、制裁、贸易和资本流动影响企业与市场。",
+    )
+
+
 def fallback_report(items: list[FeedItem]) -> dict:
     if not items:
         now_label = datetime.now(TZ).strftime("%Y-%m-%d %H:%M")
@@ -395,8 +560,10 @@ def fallback_report(items: list[FeedItem]) -> dict:
         cats = infer_categories(item)
         published = item.published.astimezone(TZ).strftime("%Y-%m-%d %H:%M")
         summary = item.summary or item.title
-        title_cn = f"{index}. {item.title}"
+        title_cn = fallback_cn_title(index, item, cats)
         title_en = f"{index}. {item.title}"
+        cn_first, cn_second, readout_label, why_text = fallback_cn_context(item, cats)
+        source_cn = source_cn_name(item.source)
         articles.append(
             {
                 "title_cn": title_cn,
@@ -404,14 +571,14 @@ def fallback_report(items: list[FeedItem]) -> dict:
                 "tag_cn": zh_category(cats),
                 "tag_en": en_category(cats),
                 "points": [
-                    {"value": item.source, "cn": "权威公开来源", "en": "public source"},
+                    {"value": source_cn, "cn": "权威公开来源", "en": item.source},
                     {"value": published.split()[0], "cn": "发布时间", "en": "published date"},
                     {"value": cats[0] if cats else "全球", "cn": "主要主题", "en": "primary theme"},
                 ],
                 "readouts": [
                     {
-                        "label_cn": "信息信号",
-                        "text_cn": "该条目被选入今日简报，是因为它与市场定价、政策变化、科技基础设施或全球风险传导相关。",
+                        "label_cn": readout_label,
+                        "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
                         "label_en": "Signal",
                         "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission.",
                     },
@@ -423,18 +590,19 @@ def fallback_report(items: list[FeedItem]) -> dict:
                     },
                 ],
                 "paragraphs_cn": [
-                    f"{item.source} 在 {published} 发布或更新了这条信息：{item.title}。公开摘要显示，{summary}",
-                    "这条新闻的价值不只在标题，而在它可能改变预期的方式：如果它涉及央行、财政、能源、供应链、AI、芯片或地缘政策，就可能继续传导到利率、通胀、企业资本开支、贸易流向和市场风险偏好。由于这是公开源自动生成版本，后续仍应点击原文核对细节和最新修订。",
+                    f"{source_cn}在 {published} 发布或更新了这条公开信息。{cn_first}",
+                    cn_second,
                 ],
                 "paragraphs_en": [
                     f"{item.source} published or updated this item at {published}: {item.title}. The public summary says: {summary}",
                     "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions.",
                 ],
-                "why_cn": "为什么重要：它可能影响市场预期、政策判断或产业链决策，尤其需要关注是否有新的数据、监管动作或供应约束。",
+                "why_cn": f"为什么重要：{why_text}",
                 "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
                 "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
                 "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-                "source": item.source,
+                "source": source_cn,
+                "source_en": item.source,
                 "url": item.link,
             }
         )
@@ -485,7 +653,9 @@ def normalize_report(report: dict, items: list[FeedItem]) -> dict:
         article.setdefault("why_en", "Why it matters: This item may affect policy, markets, or supply-chain expectations.")
         article.setdefault("watch_cn", "继续观察：原始来源后续更新和市场反应。")
         article.setdefault("watch_en", "Watch: original-source updates and market reaction.")
-        article.setdefault("source", "Public source")
+        raw_source = str(article.get("source") or "Public source")
+        article.setdefault("source_en", raw_source)
+        article["source"] = str(article.get("source_cn") or source_cn_name(raw_source))
         article.setdefault("url", "https://yz6953807-cmd.github.io/daily-global-briefing/")
     return report
 
@@ -593,6 +763,8 @@ def english_copy(report: dict) -> dict:
                     "paragraphs": article.get("paragraphs_en", article.get("paragraphs_cn", [])),
                     "why": article.get("why_en", article.get("why_cn", "")),
                     "watch": article.get("watch_en", article.get("watch_cn", "")),
+                    "source": article.get("source_en", article.get("source", "")),
+                    "url": article.get("url", ""),
                 }
                 for article in report["articles"]
             ],
