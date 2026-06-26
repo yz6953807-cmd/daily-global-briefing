@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-26T09:52:09+08:00",
+  "generatedAt": "2026-06-26T10:11:29+08:00",
   "date": "2026-06-26",
   "report": {
     "summary_cn": "今日简报只纳入发布日期为 6月26日 / 6月25日 的公开信息，并优先从全球财经媒体、国际新闻机构、官方机构、科技专业源和研究来源中筛选真正可能影响市场、政策和产业方向的重磅消息。",
@@ -82,60 +82,7 @@
       },
       {
         "title_cn": "2. AI 与算力产业出现新动向，技术路线和商业回报继续受检验",
-        "title_en": "2. Krieg: For Iran control of the Strait of Hormuz is about the spoils of war",
-        "tag_cn": "财经 · 政策",
-        "tag_en": "Markets · Policy",
-        "points": [
-          {
-            "value": "半岛电视台",
-            "value_en": "Al Jazeera",
-            "cn": "权威公开来源",
-            "en": "public source"
-          },
-          {
-            "value": "2026-06-26",
-            "cn": "发布时间",
-            "en": "published date"
-          },
-          {
-            "value": "财经",
-            "cn": "主要主题",
-            "en": "primary theme"
-          }
-        ],
-        "readouts": [
-          {
-            "label_cn": "AI 信号",
-            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
-            "label_en": "Signal",
-            "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
-          },
-          {
-            "label_cn": "阅读方式",
-            "text_cn": "先看来源、发布时间和影响链条，再判断它是否会改变资产价格、企业决策或政策预期。",
-            "label_en": "How to read it",
-            "text_en": "Read the source, timestamp, and transmission path before judging whether it changes asset prices, corporate decisions, or policy expectations."
-          }
-        ],
-        "paragraphs_cn": [
-          "半岛电视台在 2026-06-26 02:24 发布或更新了这条公开信息。半岛电视台更新了一条与 AI 和算力产业相关的重要信息。它被纳入简报，是因为这类变化可能影响模型公司、芯片供应链、云计算资本开支和企业数字化预算。",
-          "后续需要关注它是否带来真实订单、成本下降、监管变化或竞争格局调整。AI 新闻最容易被口号放大，判断时要优先看资金流、算力约束和商业化证据。"
-        ],
-        "paragraphs_en": [
-          "Al Jazeera published or updated this item at 2026-06-26 02:24: Krieg: For Iran control of the Strait of Hormuz is about the spoils of war. The public summary says: Andreas Krieg said Iran possesses sufficient geographic and military leverage in the Strait of Hormuz.",
-          "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
-        ],
-        "why_cn": "为什么重要：AI 产业已进入基础设施竞争阶段，模型能力、芯片供给和商业回报需要一起看。",
-        "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
-        "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
-        "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
-        "source": "半岛电视台",
-        "source_en": "Al Jazeera",
-        "url": "https://www.aljazeera.com/video/newsfeed/2026/6/25/aje-onl-nf_krieg_control-of-the-strait-of-hormuz-spoils-of-war-250626w?traffic_source=rss"
-      },
-      {
-        "title_cn": "3. AI 与算力产业出现新动向，技术路线和商业回报继续受检验",
-        "title_en": "3. Warning over power bank fire risk on flights as summer holidays begin",
+        "title_en": "2. Warning over power bank fire risk on flights as summer holidays begin",
         "tag_cn": "财经 · 科技",
         "tag_en": "Markets · Technology",
         "points": [
@@ -187,8 +134,8 @@
         "url": "https://www.bbc.co.uk/news/articles/cly716qd146o?at_medium=RSS&at_campaign=rss"
       },
       {
-        "title_cn": "4. Micron 利润暴增，AI 芯片需求继续推高存储周期",
-        "title_en": "4. SK Hynix surges 12% after Micron earnings; blockbuster Nasdaq listing",
+        "title_cn": "3. Micron 利润暴增，AI 芯片需求继续推高存储周期",
+        "title_en": "3. SK Hynix surges 12% after Micron earnings; blockbuster Nasdaq listing",
         "tag_cn": "财经 · 科技",
         "tag_en": "Markets · Technology",
         "points": [
@@ -240,8 +187,8 @@
         "url": "https://www.cnbc.com/2026/06/25/chip-tech-stocks-sk-hynix-nasdaq-adr-listing-29-billion-ai-investment.html"
       },
       {
-        "title_cn": "5. OpenAI 推进自研芯片，AI 算力供应链继续重组",
-        "title_en": "5. Competition intensifies for Anthropic and OpenAI ahead of IPOs",
+        "title_cn": "4. OpenAI 推进自研芯片，AI 算力供应链继续重组",
+        "title_en": "4. Competition intensifies for Anthropic and OpenAI ahead of IPOs",
         "tag_cn": "财经 · 科技",
         "tag_en": "Markets · Technology",
         "points": [
@@ -293,8 +240,8 @@
         "url": "https://www.ft.com/content/8c02de04-5516-405b-941d-289e586d8eb8"
       },
       {
-        "title_cn": "6. IPO 与上市动态升温，资本市场风险偏好出现新信号",
-        "title_en": "6. Piero Cipollone: Central bank money for the digital era",
+        "title_cn": "5. IPO 与上市动态升温，资本市场风险偏好出现新信号",
+        "title_en": "5. Piero Cipollone: Central bank money for the digital era",
         "tag_cn": "财经 · 政策",
         "tag_en": "Markets · Policy",
         "points": [
@@ -346,8 +293,8 @@
         "url": "https://www.ecb.europa.eu//press/key/date/2026/html/ecb.sp260625~db26a75179.en.pdf"
       },
       {
-        "title_cn": "7. AI 与算力产业出现新动向，技术路线和商业回报继续受检验",
-        "title_en": "7. The Download: Europe’s heat wave hits the grid, and IBM’s chip targets Moore’s Law",
+        "title_cn": "6. AI 与算力产业出现新动向，技术路线和商业回报继续受检验",
+        "title_en": "6. The Download: Europe’s heat wave hits the grid, and IBM’s chip targets Moore’s Law",
         "tag_cn": "科技 · 政策",
         "tag_en": "Technology · Policy",
         "points": [
@@ -399,8 +346,8 @@
         "url": "https://www.technologyreview.com/2026/06/25/1139738/the-download-europe-heat-wave-ibm-chip-moores-law/"
       },
       {
-        "title_cn": "8. AI 与算力产业出现新动向，技术路线和商业回报继续受检验",
-        "title_en": "8. The Hitchhiker's Guide to Agentic AI: From Foundations to Systems",
+        "title_cn": "7. AI 与算力产业出现新动向，技术路线和商业回报继续受检验",
+        "title_en": "7. The Hitchhiker's Guide to Agentic AI: From Foundations to Systems",
         "tag_cn": "财经 · 能源",
         "tag_en": "Markets · Energy",
         "points": [
@@ -450,6 +397,59 @@
         "source": "arXiv AI 论文库",
         "source_en": "arXiv AI",
         "url": "https://arxiv.org/abs/2606.24937"
+      },
+      {
+        "title_cn": "8. 监管调查和诉讼风险上升，企业合规压力继续加码",
+        "title_en": "8. US Supreme Court sides with Bayer, blocking thousands of Roundup cancer lawsuits",
+        "tag_cn": "政策 · AI",
+        "tag_en": "Policy · AI",
+        "points": [
+          {
+            "value": "法国 24",
+            "value_en": "France 24",
+            "cn": "权威公开来源",
+            "en": "public source"
+          },
+          {
+            "value": "2026-06-26",
+            "cn": "发布时间",
+            "en": "published date"
+          },
+          {
+            "value": "政策",
+            "cn": "主要主题",
+            "en": "primary theme"
+          }
+        ],
+        "readouts": [
+          {
+            "label_cn": "AI 信号",
+            "text_cn": "该条目被选入今日简报，是因为它可能影响市场定价、政策变化、科技基础设施或全球风险传导。",
+            "label_en": "Signal",
+            "text_en": "This item is included because it connects to market pricing, policy change, technology infrastructure, or global risk transmission."
+          },
+          {
+            "label_cn": "阅读方式",
+            "text_cn": "先看来源、发布时间和影响链条，再判断它是否会改变资产价格、企业决策或政策预期。",
+            "label_en": "How to read it",
+            "text_en": "Read the source, timestamp, and transmission path before judging whether it changes asset prices, corporate decisions, or policy expectations."
+          }
+        ],
+        "paragraphs_cn": [
+          "法国 24在 2026-06-26 06:07 发布或更新了这条公开信息。法国 24更新了一条与 AI 和算力产业相关的重要信息。它被纳入简报，是因为这类变化可能影响模型公司、芯片供应链、云计算资本开支和企业数字化预算。",
+          "后续需要关注它是否带来真实订单、成本下降、监管变化或竞争格局调整。AI 新闻最容易被口号放大，判断时要优先看资金流、算力约束和商业化证据。"
+        ],
+        "paragraphs_en": [
+          "France 24 published or updated this item at 2026-06-26 06:07: US Supreme Court sides with Bayer, blocking thousands of Roundup cancer lawsuits. The public summary says: The US Supreme Court on Thursday sided with Bayer in a ruling expected to block thousands of lawsuits claiming its Roundup weedkiller caused cancer by failing to carry adequate warning labels. The decision hands a victory to President Donald Trump's administration but drew backlash from allies in the \"Make America Healthy Again\" movement.",
+          "The value of the item is not only the headline, but how it may change expectations. If it touches central banks, fiscal policy, energy, supply chains, AI, chips, or geopolitics, it can still transmit into rates, inflation, corporate capex, trade flows, and risk appetite. Because this is an automated public-source edition, readers should open the original source to verify details and later revisions."
+        ],
+        "why_cn": "为什么重要：AI 产业已进入基础设施竞争阶段，模型能力、芯片供给和商业回报需要一起看。",
+        "why_en": "Why it matters: It may affect market expectations, policy judgment, or supply-chain decisions, especially if it introduces new data, regulatory action, or supply constraints.",
+        "watch_cn": "继续观察：原始来源后续更新、相关机构表态、市场价格反应、企业公告和监管细则。",
+        "watch_en": "Watch: updates from the original source, official responses, market-price reactions, company disclosures, and regulatory details.",
+        "source": "法国 24",
+        "source_en": "France 24",
+        "url": "https://www.france24.com/en/americas/20260625-supreme-court-bayer-roundup-cancer-lawsuits"
       }
     ],
     "footnote_cn": "来源与不确定性：本页由 GitHub Actions 云端任务根据公开 RSS/API 信息自动生成；当前规则只保留 6月26日 / 6月25日 发布或更新的条目，并对单一来源设置上限。若未配置豆包/方舟密钥，摘要会更偏事实摘录和影响框架。请以原始来源链接和后续官方更新为准。",
@@ -464,15 +464,6 @@
       "published": "2026-06-25 23:41",
       "summary": "Stock markets on both sides of Atlantic up as concerns ease over prospect of another inflationary shock Business live – latest updates Oil prices have fallen to pre-Iran war levels as more oil tankers exited the strait of Hormuz. Brent crude, the global benchmark, fell to a low of $72.24 a barrel on Thursday, slightly lower than the day before the US and Israel launched missile attacks on Tehran on 28 February. Prices have fallen more than 20% this month. Continue reading...",
       "url": "https://www.theguardian.com/business/2026/jun/25/oil-price-falls-pre-iran-war-levels-more-tankers-exit-strait-of-hormuz"
-    },
-    {
-      "title": "Krieg: For Iran control of the Strait of Hormuz is about the spoils of war",
-      "source": "Al Jazeera",
-      "category": "政策",
-      "categories": "财经 · 政策 · 能源 · AI",
-      "published": "2026-06-26 02:24",
-      "summary": "Andreas Krieg said Iran possesses sufficient geographic and military leverage in the Strait of Hormuz.",
-      "url": "https://www.aljazeera.com/video/newsfeed/2026/6/25/aje-onl-nf_krieg_control-of-the-strait-of-hormuz-spoils-of-war-250626w?traffic_source=rss"
     },
     {
       "title": "Warning over power bank fire risk on flights as summer holidays begin",
@@ -547,15 +538,6 @@
       "url": "https://www.statnews.com/2026/06/25/supreme-court-blocks-thousands-lawsuits-roundup-weedkiller-cancer/?utm_campaign=rss"
     },
     {
-      "title": "Cargo ship hit by projectile in Hormuz as Iran issues renewed passage warning",
-      "source": "Euronews",
-      "category": "政策",
-      "categories": "政策 · AI",
-      "published": "2026-06-26 01:14",
-      "summary": "The British military said a cargo ship on the new Omani UN-backed route sustained bridge damage from a projectile, hours after the IRGC warned that vessels without Iranian permission were transiting \"illegally\".",
-      "url": "http://www.euronews.com/2026/06/25/cargo-ship-hit-by-projectile-in-hormuz-as-iran-issues-renewed-passage-warning"
-    },
-    {
       "title": "Polymarket says hackers stole users’ funds",
       "source": "TechCrunch",
       "category": "科技",
@@ -563,6 +545,24 @@
       "published": "2026-06-26 03:58",
       "summary": "The prediction market giant Polymarket said it's refunding users who had funds stolen due to a third-party breach.",
       "url": "https://techcrunch.com/2026/06/25/polymarket-says-hackers-stole-users-funds/"
+    },
+    {
+      "title": "IBM claims world’s first sub-1 nanometer chip technology",
+      "source": "Ars Technica",
+      "category": "科技",
+      "categories": "科技 · 能源 · AI",
+      "published": "2026-06-25 18:00",
+      "summary": "IBM’s nanostack transistors could boost chip performance or energy efficiency.",
+      "url": "https://arstechnica.com/gadgets/2026/06/ibm-claims-worlds-first-sub-1-nanometer-chip-technology/"
+    },
+    {
+      "title": "NASA Selects Rocket Lab to Launch Sun, Earth Science Missions",
+      "source": "NASA News",
+      "category": "科技",
+      "categories": "财经 · 科技 · 政策",
+      "published": "2026-06-26 04:06",
+      "summary": "NASA has selected Rocket Lab to provide the launch service for both the agency’s PolSIR (Polarized Submillimeter Ice-cloud Radiometer) and Total and Spectral Solar Irradiance Sensor-2 (TSIS-2) missions. The two selections are part of NASA’s Venture-Class Acquisition of Dedicated and Rideshare (VADR) launch services contract. This contract allows the agency to award fixed-price indefinite-delivery/indefinite-quantity launch […]",
+      "url": "https://www.nasa.gov/missions/tsis-2/nasa-selects-rocket-lab-to-launch-sun-earth-science-missions/"
     }
   ]
 }
