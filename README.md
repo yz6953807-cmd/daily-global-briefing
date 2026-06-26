@@ -18,6 +18,7 @@ https://yz6953807-cmd.github.io/daily-global-briefing/
 - `markdown/`：每日 Markdown 归档文件。
 - `images/`：每日主题背景图和图片资产，其中 `today-bg.png` 是固定链接当前使用的背景，`YYYY-MM-DD-bg.png` 是日期归档背景。
 - `doubao-worker/`：小兔连接豆包大语言模型的后端代理模板，API Key 只放在代理服务端，不写进公开网页。
+- `部署豆包代理.command`：双击运行后，会引导输入豆包模型 ID、Cloudflare 登录、保存 API Key secret 并部署代理。
 - `.nojekyll`：告诉 GitHub Pages 按普通静态网页发布。
 
 ## 互动小兔监督员
@@ -26,13 +27,17 @@ https://yz6953807-cmd.github.io/daily-global-briefing/
 
 如果部署了 `doubao-worker/` 里的代理，并在聊天框输入 `设置豆包接口 https://你的代理地址/chat`，小兔会优先调用豆包大语言模型回答；未配置时会自动退回公开知识源兜底。
 
+如果需要部署代理，可以双击 `部署豆包代理.command`。注意：如果火山方舟提示 API Key 不存在或未授权，需要先在方舟控制台重新生成有效 Key，并复制模型 ID 或接入点 ID。
+
 ## 每天更新逻辑
 
-每天 8:30 自动任务会先根据当天新闻主线生成一张新的主题背景图，再生成新的报告。最新版会写成 `index.html`，当天背景会写成 `images/today-bg.png`，然后一起推送到 GitHub 仓库：
+GitHub Actions 云端任务每天会在北京时间 08:20、08:50、10:30 多次尝试自动更新，避免单次定时任务被 GitHub 队列延迟或跳过。任务会抓取公开来源、生成新的报告，把最新版写成 `index.html`，把当天数据写入 `data/latest-news.json` 和 `data/YYYY-MM-DD-news.json`，并把运行状态写入 `data/status.json`。当天背景继续使用 `images/today-bg.png`，并保留日期归档图。
 
 https://github.com/yz6953807-cmd/daily-global-briefing
 
 GitHub Pages 更新后，朋友继续打开同一个固定链接即可看到最新版。
+
+如果固定链接看起来没有变，先打开 `data/status.json` 或页面底部的“云端更新时间”。它们会显示最近一次云端任务的北京时间、运行编号和生成日期。
 
 ## 手动推送
 

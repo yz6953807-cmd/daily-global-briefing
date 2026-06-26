@@ -2,15 +2,24 @@ name: Daily global briefing update
 
 on:
   schedule:
-    # 00:30 UTC = 08:30 Asia/Shanghai.
-    - cron: "30 0 * * *"
+    # Multiple UTC runs give GitHub's scheduled-job queue room to recover.
+    # 00:20/00:50/02:30 UTC = 08:20/08:50/10:30 Asia/Shanghai.
+    - cron: "20 0 * * *"
+    - cron: "50 0 * * *"
+    - cron: "30 2 * * *"
   workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why this manual briefing run is being triggered"
+        required: false
+        default: "manual refresh"
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
-  group: daily-global-briefing
+  group: daily-global-briefing-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -20,26 +29,41 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      - name: Show run context
+        run: |
+          date -u
+          echo "event=${{ github.event_name }}"
+          echo "ref=${{ github.ref }}"
+          echo "run_id=${{ github.run_id }}"
+          echo "reason=${{ github.event.inputs.reason || 'scheduled refresh' }}"
+
       - name: Generate briefing
         env:
           ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
           ARK_MODEL: ${{ secrets.ARK_MODEL }}
+          DAILY_BRIEFING_TRIGGER: ${{ github.event_name }}
+          DAILY_BRIEFING_RUN_ID: ${{ github.run_id }}
+          DAILY_BRIEFING_RUN_ATTEMPT: ${{ github.run_attempt }}
+          DAILY_BRIEFING_REASON: ${{ github.event.inputs.reason || 'scheduled refresh' }}
         run: python scripts/update_briefing.py
 
       - name: Commit and push if changed
         run: |
           git config user.name "daily-briefing-bot"
           git config user.email "actions@github.com"
+          git pull --rebase origin main
           git add index.html archive data images
           if git diff --cached --quiet; then
             echo "No briefing changes to commit."
           else
-            git commit -m "Update daily global briefing $(date -u +%Y-%m-%d)"
-            git push
+            git commit -m "Update daily global briefing $(TZ=Asia/Shanghai date +%Y-%m-%d)"
+            git push || (git pull --rebase origin main && git push)
           fi

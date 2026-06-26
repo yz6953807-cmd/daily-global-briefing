@@ -4,8 +4,8 @@
 
 1. GitHub 云端自动更新
    - 文件：`.github/workflows/daily-briefing.yml`
-   - 时间：每天北京时间 8:30
-   - 作用：在 GitHub 云端抓取公开来源，生成 `index.html`，并自动提交到仓库。
+   - 时间：每天北京时间 08:20、08:50、10:30 多次尝试
+   - 作用：在 GitHub 云端抓取公开来源，生成 `index.html`、`data/latest-news.json`、`data/status.json`，并自动提交到仓库。
    - 优点：不依赖本地电脑是否开机。
 
 2. 本地 Codex 自动任务
@@ -22,6 +22,8 @@
 - 绿色：当天云端任务成功。
 - 红色：任务失败，点进去可以看失败原因。
 - 没有当天记录：GitHub Actions 可能没启用，或者仓库 Actions 权限被关掉。
+
+也可以直接打开固定链接下的 `data/status.json`。如果里面的 `date` 不是今天，说明云端任务没有把今天的版本提交成功；如果 `date` 是今天但网页没变，通常是 GitHub Pages 部署或浏览器缓存还没刷新。
 
 ## 手动立即更新
 

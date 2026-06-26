@@ -29,7 +29,8 @@ from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 TZ = ZoneInfo("Asia/Shanghai")
-TODAY = datetime.now(TZ).date()
+RUN_STARTED_AT = datetime.now(TZ)
+TODAY = RUN_STARTED_AT.date()
 DATE_STR = TODAY.isoformat()
 USER_AGENT = "daily-global-briefing/1.0 (+https://yz6953807-cmd.github.io/daily-global-briefing/)"
 ARK_ENDPOINT = os.environ.get("ARK_ENDPOINT", "https://ark.cn-beijing.volces.com/api/v3/chat/completions")
@@ -38,6 +39,36 @@ RECENT_DATES = {TODAY, TODAY - timedelta(days=1)}
 MAX_ARTICLES = 8
 MAX_SOURCE_ITEMS = 2
 MAX_GROUP_ITEMS = 4
+
+
+def run_metadata(article_count: int | None = None, source_count: int | None = None) -> dict[str, object]:
+    """Small status payload committed with every successful scheduled run."""
+    status: dict[str, object] = {
+        "date": DATE_STR,
+        "generatedAt": RUN_STARTED_AT.isoformat(timespec="seconds"),
+        "timezone": "Asia/Shanghai",
+        "trigger": os.environ.get("DAILY_BRIEFING_TRIGGER", "local"),
+        "runId": os.environ.get("DAILY_BRIEFING_RUN_ID", ""),
+        "runAttempt": os.environ.get("DAILY_BRIEFING_RUN_ATTEMPT", ""),
+        "reason": os.environ.get("DAILY_BRIEFING_REASON", ""),
+    }
+    if article_count is not None:
+        status["articleCount"] = article_count
+    if source_count is not None:
+        status["sourceItemCount"] = source_count
+    return status
+
+
+def status_line_cn() -> str:
+    run_id = os.environ.get("DAILY_BRIEFING_RUN_ID", "").strip()
+    run_text = f" · GitHub Actions run {run_id}" if run_id else ""
+    return f"云端更新时间：{RUN_STARTED_AT.strftime('%Y-%m-%d %H:%M:%S')} Asia/Shanghai{run_text}"
+
+
+def status_line_en() -> str:
+    run_id = os.environ.get("DAILY_BRIEFING_RUN_ID", "").strip()
+    run_text = f" · GitHub Actions run {run_id}" if run_id else ""
+    return f"Cloud refresh: {RUN_STARTED_AT.strftime('%Y-%m-%d %H:%M:%S')} Asia/Shanghai{run_text}"
 
 
 FEEDS = [
@@ -941,6 +972,7 @@ def build_body(report: dict) -> str:
     <div class="footnote">
       {h(report["footnote_cn"])}
     </div>
+    <div class="update-status">{h(status_line_cn())}</div>
   </footer>
 """
 
@@ -972,6 +1004,7 @@ def english_copy(report: dict) -> dict:
                 for article in report["articles"]
             ],
             "footnote": report["footnote_en"],
+            "status": status_line_en(),
         }
     }
 
@@ -1006,13 +1039,15 @@ def write_outputs(report: dict, items: list[FeedItem]) -> None:
     data_dir = ROOT / "data"
     data_dir.mkdir(exist_ok=True)
     payload = {
-        "generatedAt": datetime.now(TZ).isoformat(timespec="seconds"),
+        "generatedAt": RUN_STARTED_AT.isoformat(timespec="seconds"),
         "date": DATE_STR,
         "report": report,
         "sourceItems": item_payload(items),
     }
     (data_dir / "latest-news.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     (data_dir / f"{DATE_STR}-news.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    status = run_metadata(article_count=len(report["articles"]), source_count=len(items))
+    (data_dir / "status.json").write_text(json.dumps(status, ensure_ascii=False, indent=2), encoding="utf-8")
 
     images_dir = ROOT / "images"
     today_bg = images_dir / "today-bg.png"
